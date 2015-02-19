@@ -4,5 +4,7 @@ compiler:
 
 before_install:
   - cmake .
+  
+script: make
 
 
