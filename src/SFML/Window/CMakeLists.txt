@@ -149,7 +149,7 @@ if(BUILD_SHARED_LIBS)
 endif()
 
 # define the sfml-window target
-sfml_add_library(dsfml-window
+sfml_add_library(dsfmlc-window
                  SOURCES ${SRC} ${PLATFORM_SRC}
-                 DEPENDS dsfml-system
+                 DEPENDS dsfmlc-system
                  EXTERNAL_LIBS ${WINDOW_EXT_LIBS})

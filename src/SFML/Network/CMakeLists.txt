@@ -85,7 +85,7 @@ if(BUILD_SHARED_LIBS)
 endif()
 
 # define the sfml-network target
-sfml_add_library(dsfml-network
+sfml_add_library(dsfmlc-network
                  SOURCES ${SRC}
-                 DEPENDS dsfml-system
+                 DEPENDS dsfmlc-system
                  EXTERNAL_LIBS ${NETWORK_EXT_LIBS})

@@ -42,9 +42,14 @@ set(SRC
     ${DINCROOT}/DStream.hpp
     ${DSRCROOT}/Err.cpp
     ${DINCROOT}/Err.h
+    ${DSRCROOT}/String.cpp
+    ${DINCROOT}/String.h
     ${DINCROOT}/Export.h
     ${DINCROOT}/Types.h
 )
+
+
+
 source_group("" FILES ${SRC})
 
 # add platform specific sources
@@ -84,6 +89,10 @@ if(UNIX)
     set(SYSTEM_EXT_LIBS ${SYSTEM_EXT_LIBS} pthread)
 endif()
 if(LINUX)
+    set(SRC
+        ${DSRCROOT}/Threads.cpp
+        ${DINCROOT}/Threads.h
+    )
     set(SYSTEM_EXT_LIBS ${SYSTEM_EXT_LIBS} rt)
 endif()
 
@@ -93,6 +102,6 @@ if(BUILD_SHARED_LIBS)
 endif()
 
 # define the sfml-system target
-sfml_add_library(dsfml-system
+sfml_add_library(dsfmlc-system
                  SOURCES ${SRC} ${PLATFORM_SRC}
                  EXTERNAL_LIBS ${SYSTEM_EXT_LIBS})

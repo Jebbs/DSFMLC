@@ -71,7 +71,7 @@ if(BUILD_SHARED_LIBS)
 endif()
 
 # define the sfml-audio target
-sfml_add_library(dsfml-audio
+sfml_add_library(dsfmlc-audio
                  SOURCES ${SRC}
-                 DEPENDS dsfml-system
+                 DEPENDS dsfmlc-system
                  EXTERNAL_LIBS ${OPENAL_LIBRARY} ${SNDFILE_LIBRARY})

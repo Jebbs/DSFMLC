@@ -49,8 +49,6 @@ set(SRC
     ${DINCROOT}/Export.h
     ${DSRCROOT}/CreateRenderStates.hpp
     ${DSRCROOT}/CreateTransform.hpp
-    ${DINCROOT}/Err.h
-    ${DSRCROOT}/Err.cpp
     ${DSRCROOT}/Font.cpp
     ${DSRCROOT}/FontStruct.h
     ${DINCROOT}/Font.h
@@ -66,7 +64,6 @@ set(SRC
     ${DSRCROOT}/Shader.cpp
     ${DSRCROOT}/ShaderStruct.h
     ${DINCROOT}/Shader.h
-    ${DSRCROOT}/TextStruct.h
     ${DSRCROOT}/Texture.cpp
     ${DSRCROOT}/TextureStruct.h
     ${DINCROOT}/Texture.h
@@ -167,7 +164,7 @@ if(BUILD_SHARED_LIBS)
 endif()
 
 # define the sfml-graphics target
-sfml_add_library(dsfml-graphics
+sfml_add_library(dsfmlc-graphics
                  SOURCES ${SRC} ${DRAWABLES_SRC} ${RENDER_TEXTURE_SRC} ${STB_SRC}
-                 DEPENDS dsfml-window dsfml-system
+                 DEPENDS dsfmlc-window dsfmlc-system
                  EXTERNAL_LIBS ${GRAPHICS_EXT_LIBS})
