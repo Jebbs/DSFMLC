@@ -33,7 +33,7 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Graphics/TextStruct.h>
 #include <DSFML/Graphics/Font.h>
 #include <SFML/Graphics/Color.hpp>
-#include <SFML/Graphics/ConvertTransform.hpp>
+#include <DSFML/Graphics/CreateTransform.hpp>
 
 
 
@@ -58,9 +58,9 @@ void sfText_destroy(sfText* text)
 }
 
 
-void sfText_setPosition(sfText* text, sfVector2f position)
+void sfText_setPosition(sfText* text, float positionX, float positionY)
 {
-    text->This.setPosition(position.x, position.y);
+    text->This.setPosition(positionX, positionY);
 }
 
 
@@ -70,26 +70,23 @@ void sfText_setRotation(sfText* text, float angle)
 }
 
 
-void sfText_setScale(sfText* text, sfVector2f scale)
+void sfText_setScale(sfText* text, float scaleX, float scaleY)
 {
-    text->This.setScale(scale.x, scale.y);
+    text->This.setScale(scaleX, scaleY);
 }
 
 
-void sfText_setOrigin(sfText* text, sfVector2f origin)
+void sfText_setOrigin(sfText* text, float originX, float originY)
 {
-    text->This.setOrigin(origin.x, origin.y);
+    text->This.setOrigin(originX, originY);
 }
 
 
-sfVector2f sfText_getPosition(const sfText* text)
+void sfText_getPosition(const sfText* text, float* positionX, float* positionY)
 {
-
     sf::Vector2f sfmlPos = text->This.getPosition();
-    position.x = sfmlPos.x;
-    position.y = sfmlPos.y;
-
-    return position;
+    *positionX = sfmlPos.x;
+    *positionY = sfmlPos.y;
 }
 
 
@@ -99,29 +96,25 @@ float sfText_getRotation(const sfText* text)
 }
 
 
-sfVector2f sfText_getScale(const sfText* text)
+void sfText_getScale(const sfText* text, float* scaleX, float* scaleY)
 {
     sf::Vector2f sfmlScale = text->This.getScale();
-    scale.x = sfmlScale.x;
-    scale.y = sfmlScale.y;
-
-    return scale;
+    *scaleX = sfmlScale.x;
+    *scaleY = sfmlScale.y;
 }
 
 
-sfVector2f sfText_getOrigin(const sfText* text)
+void sfText_getOrigin(const sfText* text, float* originX, float* originY)
 {
     sf::Vector2f sfmlOrigin = text->This.getOrigin();
-    origin.x = sfmlOrigin.x;
-    origin.y = sfmlOrigin.y;
-
-    return origin;
+    *originX = sfmlOrigin.x;
+    *originY = sfmlOrigin.y;
 }
 
 
-void sfText_move(sfText* text, sfVector2f offset)
+void sfText_move(sfText* text, float offsetX, float offsetY)
 {
-    text->This.move(offset.x, offset.y);
+    text->This.move(offsetX, offsetY);
 }
 
 
@@ -131,23 +124,21 @@ void sfText_rotate(sfText* text, float angle)
 }
 
 
-void sfText_scale(sfText* text, sfVector2f factors)
+void sfText_scale(sfText* text, float factorX, float factorY)
 {
-    text->This.scale(factors.x, factors.y);
+    text->This.scale(factorX, factorY);
 }
 
 
-sfTransform sfText_getTransform(const sfText* text)
+void sfText_getTransform(const sfText* text, float* transform)
 {
-    text->Transform = convertTransform(text->This.getTransform());
-    return text->Transform;
+    createTransform(text->This.getTransform(), transform);
 }
 
 
-sfTransform sfText_getInverseTransform(const sfText* text)
+void sfText_getInverseTransform(const sfText* text, float* transform)
 {
-    text->InverseTransform = convertTransform(text->This.getInverseTransform());
-    return text->InverseTransform;
+    createTransform(text->This.getInverseTransform(), transform);
 }
 
 
@@ -157,7 +148,7 @@ void sfText_setString(sfText* text, const char* string)
 }
 
 
-void sfText_setUnicodeString(sfText* text, const sfUint32* string)
+void sfText_setUnicodeString(sfText* text, const DUint* string)
 {
     sf::String UTF32Text = string;
     text->This.setString(UTF32Text);
@@ -166,28 +157,26 @@ void sfText_setUnicodeString(sfText* text, const sfUint32* string)
 
 void sfText_setFont(sfText* text, const sfFont* font)
 {
-    CSFML_CHECK(font);
-
     text->This.setFont(font->This);
     text->Font = font;
 }
 
 
-void sfText_setCharacterSize(sfText* text, unsigned int size)
+void sfText_setCharacterSize(sfText* text, DUint size)
 {
     text->This.setCharacterSize(size);
 }
 
 
-void sfText_setStyle(sfText* text, sfUint32 style)
+void sfText_setStyle(sfText* text, DUint style)
 {
     text->This.setStyle(style);
 }
 
 
-void sfText_setColor(sfText* text, sfColor color)
+void sfText_setColor(sfText* text, DUbyte r, DUbyte g, DUbyte b, DUbyte a)
 {
-    text->This.setColor(sf::Color(color.r, color.g, color.b, color.a));
+    text->This.setColor(sf::Color(r, g, b, a));
 }
 
 
@@ -199,71 +188,63 @@ const char* sfText_getString(const sfText* text)
 }
 
 
-const sfUint32* sfText_getUnicodeString(const sfText* text)
+const DUint* sfText_getUnicodeString(const sfText* text)
 {
     return text->This.getString().getData();
 }
 
 
-const sfFont* sfText_getFont(const sfText* text)
+sfFont* sfText_getFont(const sfText* text)
 {
-    return text->Font;
+    return const_cast<sfFont*>(text->Font);
 }
 
 
-unsigned int sfText_getCharacterSize(const sfText* text)
+DUint sfText_getCharacterSize(const sfText* text)
 {
     text->This.getCharacterSize();
 }
 
 
-sfUint32 sfText_getStyle(const sfText* text)
+DUint sfText_getStyle(const sfText* text)
 {
     text->This.getStyle();
 }
 
 
-sfColor sfText_getColor(const sfText* text)
+void sfText_getColor(const sfText* text, DUbyte* r, DUbyte* g, DUbyte* b, DUbyte* a)
 {
     sf::Color sfmlColor = text->This.getColor();
-    color.r = sfmlColor.r;
-    color.g = sfmlColor.g;
-    color.b = sfmlColor.b;
-    color.a = sfmlColor.a;
-
-    return color;
+    *r = sfmlColor.r;
+    *g = sfmlColor.g;
+    *b = sfmlColor.b;
+    *a = sfmlColor.a;
 }
 
 
-sfVector2f sfText_findCharacterPos(const sfText* text, size_t index)
+void sfText_findCharacterPos(const sfText* text, size_t index, float* posX, float* posY)
 {
     sf::Vector2f sfmlPos = text->This.findCharacterPos(index);
-    position.x = sfmlPos.x;
-    position.y = sfmlPos.y;
-
-    return position;
+    *posX = sfmlPos.x;
+    *posY = sfmlPos.y;
 }
 
 
-sfFloatRect sfText_getLocalBounds(const sfText* text)
+void sfText_getLocalBounds(const sfText* text, float* left, float* top, float* width, float* height)
 {
     sf::FloatRect sfmlRect = text->This.getLocalBounds();
-    rect.left = sfmlRect.left;
-    rect.top = sfmlRect.top;
-    rect.width = sfmlRect.width;
-    rect.height = sfmlRect.height;
-
-    return rect;
+    *left = sfmlRect.left;
+    *top = sfmlRect.top;
+    *width = sfmlRect.width;
+    *height = sfmlRect.height;
 }
 
 
-sfFloatRect sfText_getGlobalBounds(const sfText* text)
+void sfText_getGlobalBounds(const sfText* text, float* left, float* top, float* width, float* height)
 {
     sf::FloatRect sfmlRect = text->This.getGlobalBounds();
-    rect.left = sfmlRect.left;
-    rect.top = sfmlRect.top;
-    rect.width = sfmlRect.width;
-    rect.height = sfmlRect.height;
-
-    return rect;
+    *left = sfmlRect.left;
+    *top = sfmlRect.top;
+    *width = sfmlRect.width;
+    *height = sfmlRect.height;
 }

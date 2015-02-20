@@ -35,91 +35,51 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Graphics/RenderWindowStruct.h>
 #include <DSFML/Window/WindowStruct.h>
 
-
-
-
-sfTexture* sfTexture_create(DUint width, DUint height)
+//Construct a new texture
+sfTexture* sfTexture_construct(void)
 {
-    sfTexture* texture = new sfTexture;
-    
-    if (!texture->This->create(width, height))
-    {
-        delete texture;
-        texture = 0;
-    }
-
-    return texture;
+    return new sfTexture;
 }
 
 
-sfTexture* sfTexture_createFromFile(const char* filename, DInt left, DInt top, DInt width, DInt height)
-{
-    sfTexture* texture = new sfTexture;
+DBool sfTexture_create(sfTexture* texture, DUint width, DUint height)
+{ 
+    return texture->This->create(width, height)?DTrue:DFalse;
 
-    
+}
+
+
+DBool sfTexture_loadFromFile(sfTexture* texture, const char* filename, DInt left, DInt top, DInt width, DInt height)
+{
     sf::IntRect rect = sf::IntRect(left, top, width, height);
 
-    if (!texture->This->loadFromFile(filename, rect))
-    {
-        delete texture;
-        texture = 0;
-    }
-
-    return texture;
+    return texture->This->loadFromFile(filename, rect)?DTrue:DFalse;
 }
 
 
-sfTexture* sfTexture_createFromMemory(const void* data, size_t sizeInBytes, DInt left, DInt top, DInt width, DInt height)
+DBool sfTexture_loadFromMemory(sfTexture* texture, const void* data, size_t sizeInBytes, DInt left, DInt top, DInt width, DInt height)
 {
-    sfTexture* texture = new sfTexture;
-
-    
-    
     sf::IntRect rect = sf::IntRect(left, top, width, height);
 
-    if (!texture->This->loadFromMemory(data, sizeInBytes, rect))
-    {
-        delete texture;
-        texture = 0;
-    }
-
-    return texture;
+    return texture->This->loadFromMemory(data, sizeInBytes, rect)?DTrue:DFalse;
 }
 
 
-sfTexture* sfTexture_createFromStream(DStream* stream, DInt left, DInt top, DInt width, DInt height)
+DBool sfTexture_loadFromStream(sfTexture* texture, DStream* stream, DInt left, DInt top, DInt width, DInt height)
 {
-
-    sfTexture* texture = new sfTexture;
-
     sf::IntRect rect = sf::IntRect(left, top, width, height);
 
     sfmlStream Stream = sfmlStream(stream);
 
-    if (!texture->This->loadFromStream(Stream, rect))
-    {
-        delete texture;
-        texture = 0;
-    }
-
-    return texture;
+    return texture->This->loadFromStream(Stream, rect)?DTrue:DFalse;
 }
 
 
-sfTexture* sfTexture_createFromImage(const sfImage* image, DInt left, DInt top, DInt width, DInt height)
+DBool sfTexture_loadFromImage(sfTexture* texture, const sfImage* image, DInt left, DInt top, DInt width, DInt height)
 {
-    sfTexture* texture = new sfTexture;
-
-    
     sf::IntRect rect = sf::IntRect(left, top, width, height);
 
-    if (!texture->This->loadFromImage(image->This, rect))
-    {
-        delete texture;
-        texture = 0;
-    }
-
-    return texture;
+    return texture->This->loadFromImage(image->This, rect)?DTrue:DFalse;
 }
 
 

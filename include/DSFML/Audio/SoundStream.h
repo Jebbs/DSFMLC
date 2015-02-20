@@ -35,9 +35,11 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Audio/Export.h>
 #include <DSFML/Audio/SoundStreamStruct.h>
 
-DSFML_AUDIO_API sfSoundStream* sfSoundStream_create( DUint channelCount, DUint sampleRate, SoundStreamCallBacks* callBacks);// add a link to the methods?!
+DSFML_AUDIO_API sfSoundStream* sfSoundStream_construct(SoundStreamCallBacks* callBacks);
 
 DSFML_AUDIO_API void sfSoundStream_destroy(sfSoundStream* soundStream);
+
+DSFML_AUDIO_API void sfSoundStream_initialize(sfSoundStream* soundStream, DUint channelCount, DUint sampleRate);
 
 DSFML_AUDIO_API void sfSoundStream_play(sfSoundStream* soundStream);
 
@@ -82,53 +84,4 @@ DSFML_AUDIO_API float sfSoundStream_getAttenuation(const sfSoundStream* soundStr
 DSFML_AUDIO_API DBool sfSoundStream_getLoop(const sfSoundStream* soundStream);
 
 DSFML_AUDIO_API DLong sfSoundStream_getPlayingOffset(const sfSoundStream* soundStream);
-
-
-//////
-//Old Methods
-//////
-
-
-/*
-
-//Get the format of the stream from the channel count
-DSFML_AUDIO_API DUint sfSoundStream_getFormatFromChannelCount(DUint channelCount);
-
-//start playing the sound data
-DSFML_AUDIO_API void sfSoundStream_alSourcePlay(DUint sourceID);
-
-//pause the sound data
-DSFML_AUDIO_API void sfSoundStream_alSourcePause(DUint sourceID);
-
-//stoop playing the sound data
-DSFML_AUDIO_API void sfSoundStream_alSourceStop(DUint sourceID);
-
-//Generate buffers for holding sound data
-DSFML_AUDIO_API void sfSoundStream_alGenBuffers(DInt bufferCount, DUint* buffers);
-
-//Delete the buffers
-DSFML_AUDIO_API void sfSoundStream_deleteBuffers(DUint sourceID, DInt bufferCount, DUint* buffers);
-
-//get the playing offset
-DSFML_AUDIO_API DLong sfSoundStream_getPlayingOffset(DUint sourceID, DLong samplesProcessed, DUint theSampleRate, DUint theChannelCount);
-
-//Clear the queue
-DSFML_AUDIO_API void sfSoundStream_clearQueue(DUint sourceID);
-
-//Get the number of buffers that have been processed
-DSFML_AUDIO_API DInt sfSoundStream_getNumberOfBuffersProccessed(DUint sourceID);
-
-//Unqueue buffers for playing
-DSFML_AUDIO_API DUint sfSoundStream_UnqueueBuffer(DUint sourceID);
-
-//get the size of a particular buffer
-DSFML_AUDIO_API DInt sfSoundStream_getBufferSampleSize(DUint bufferID);
-
-//Fill a buffer with data
-DSFML_AUDIO_API void sfSoundStream_fillBuffer(DUint bufferID, const DShort* samples, DLong sampleCount, DUint soundFormat, DUint sampleRate);
-
-//Put a buffer in the playing queue
-DSFML_AUDIO_API void sfSoundStream_queueBuffer(DUint sourceID, DUint* bufferID);
-
-*/
 #endif // DSFML_SOUNDSTREAM_H

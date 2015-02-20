@@ -34,12 +34,15 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Graphics/TextureStruct.h>
 #include <DSFML/Graphics/CreateTransform.hpp>
 
+sfShader* sfShader_construct(void)
+{
+    return new sfShader;
+}
 
-
-sfShader* sfShader_createFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename)
+DBool sfShader_loadFromFile(sfShader* shader, const char* vertexShaderFilename, const char* fragmentShaderFilename)
 {
     bool success = false;
-    sfShader* shader = new sfShader;
+    
     if (vertexShaderFilename || fragmentShaderFilename)
     {
         if (!vertexShaderFilename)
@@ -59,20 +62,14 @@ sfShader* sfShader_createFromFile(const char* vertexShaderFilename, const char* 
         }
     }
 
-    if (!success)
-    {
-        delete shader;
-        shader = 0;
-    }
-
-    return shader;
+    return success?DTrue:DFalse;
 }
 
 
-sfShader* sfShader_createFromMemory(const char* vertexShader, const char* fragmentShader)
+DBool sfShader_loadFromMemory(sfShader* shader, const char* vertexShader, const char* fragmentShader)
 {
     bool success = false;
-    sfShader* shader = new sfShader;
+
     if (vertexShader || fragmentShader)
     {
         if (!vertexShader)
@@ -92,53 +89,38 @@ sfShader* sfShader_createFromMemory(const char* vertexShader, const char* fragme
         }
     }
 
-    if (!success)
-    {
-        delete shader;
-        shader = 0;
-    }
-
-    return shader;
+    return success?DTrue:DFalse;
 }
 
 
-sfShader* sfShader_createFromStream(void* vertexShaderStream, void* fragmentShaderStream)
+DBool sfShader_loadFromStream(sfShader* shader, DStream* vertexShaderStream, DStream* fragmentShaderStream)
 {
     bool success = false;
     
-    sfShader* shader = new sfShader;
-    /*
     if (vertexShaderStream || fragmentShaderStream)
     {
         if (!vertexShaderStream)
         {
             // fragment shader only
-            CallbackStream stream(fragmentShaderStream);
+            sfmlStream stream(fragmentShaderStream);
             success = shader->This.loadFromStream(stream, sf::Shader::Fragment);
         }
         else if (!fragmentShaderStream)
         {
             // vertex shader only
-            CallbackStream stream(vertexShaderStream);
+            sfmlStream stream(vertexShaderStream);
             success = shader->This.loadFromStream(stream, sf::Shader::Vertex);
         }
         else
         {
             // vertex + fragment shaders
-            CallbackStream vertexStream(vertexShaderStream);
-            CallbackStream fragmentStream(fragmentShaderStream);
+            sfmlStream vertexStream(vertexShaderStream);
+            sfmlStream fragmentStream(fragmentShaderStream);
             success = shader->This.loadFromStream(vertexStream, fragmentStream);
         }
     }
-    */
 
-    if (!success)
-    {
-        delete shader;
-        shader = 0;
-    }
-
-    return shader;
+    return success?DTrue:DFalse;
 }
 
 

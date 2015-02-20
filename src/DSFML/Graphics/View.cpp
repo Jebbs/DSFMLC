@@ -40,7 +40,6 @@ sfView* sfView_create(void)
 }
 
 
-
 sfView* sfView_createFromRect(float left, float top, float width, float height)
 {
     sfView* view = new sfView;
@@ -50,12 +49,10 @@ sfView* sfView_createFromRect(float left, float top, float width, float height)
 }
 
 
-
 sfView* sfView_copy(const sfView* view)
 {
     return new sfView(*view);
 }
-
 
 
 void sfView_destroy(sfView* view)
@@ -64,12 +61,10 @@ void sfView_destroy(sfView* view)
 }
 
 
-
 void sfView_setCenter(sfView* view, float centerX, float centerY)
 {
     view->This.setCenter(centerX, centerY);
 }
-
 
 
 void sfView_setSize(sfView* view, float sizeX, float sizeY)
@@ -78,12 +73,10 @@ void sfView_setSize(sfView* view, float sizeX, float sizeY)
 }
 
 
-
 void sfView_setRotation(sfView* view, float angle)
 {
     view->This.setRotation(angle);
 }
-
 
 
 void sfView_setViewport(sfView* view, float left, float top, float width, float height)
@@ -92,18 +85,14 @@ void sfView_setViewport(sfView* view, float left, float top, float width, float 
 }
 
 
-
 void sfView_reset(sfView* view, float left, float top, float width, float height)
 {
     view->This.reset(sf::FloatRect(left, top, width, height));
 }
 
 
-
 void sfView_getCenter(const sfView* view, float* x, float* y)
 {
-    //sfVector2f center = {0, 0};
-    //CSFML_CHECK_RETURN(view, center);
 
     sf::Vector2f sfmlCenter = view->This.getCenter();
     *x = sfmlCenter.x;
@@ -111,11 +100,8 @@ void sfView_getCenter(const sfView* view, float* x, float* y)
 }
 
 
-
 void sfView_getSize(const sfView* view, float* x, float* y)
 {
-    //sfVector2f size = {0, 0};
-    //CSFML_CHECK_RETURN(view, size);
 
     sf::Vector2f sfmlSize = view->This.getSize();
     *x = sfmlSize.x;
@@ -124,12 +110,10 @@ void sfView_getSize(const sfView* view, float* x, float* y)
 }
 
 
-
 float sfView_getRotation(const sfView* view)
 {
     view->This.getRotation();
 }
-
 
 
 void sfView_getViewport(const sfView* view, float* left, float* top, float* width, float* height)
@@ -143,19 +127,16 @@ void sfView_getViewport(const sfView* view, float* left, float* top, float* widt
 }
 
 
-
 void sfView_move(sfView* view, float offsetX, float offsetY)
 {
     view->This.move(offsetX, offsetY);
 }
 
 
-
 void sfView_rotate(sfView* view, float angle)
 {
     view->This.rotate(angle);
 }
-
 
 
 void sfView_zoom(sfView* view, float factor)

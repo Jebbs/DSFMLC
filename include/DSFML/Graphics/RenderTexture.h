@@ -35,9 +35,11 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Graphics/Export.h>
 #include <DSFML/Graphics/Types.h>
 
+//Construct a new render texture
+DSFML_GRAPHICS_API sfRenderTexture* sfRenderTexture_construct(void);
 
 // Construct a new render texture
-DSFML_GRAPHICS_API sfRenderTexture* sfRenderTexture_create(DUint width, DUint height, DBool depthBuffer);
+DSFML_GRAPHICS_API void sfRenderTexture_create(sfRenderTexture* renderTexture, DUint width, DUint height, DBool depthBuffer);
 
 // Destroy an existing render texture
 DSFML_GRAPHICS_API void sfRenderTexture_destroy(sfRenderTexture* renderTexture);

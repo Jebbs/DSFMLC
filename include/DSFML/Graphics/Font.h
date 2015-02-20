@@ -38,18 +38,19 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/System/DStream.hpp>
 #include <stddef.h>
 
+//Construct a new font
+DSFML_GRAPHICS_API sfFont* sfFont_construct(void);
+
+//Load a new font from a file
+DSFML_GRAPHICS_API DBool sfFont_loadFromFile(sfFont* font, const char* filename);
 
 
-//Create a new font from a file
-DSFML_GRAPHICS_API sfFont* sfFont_createFromFile(const char* filename);
+//Load a new image font a file in memory
+DSFML_GRAPHICS_API DBool sfFont_loadFromMemory(sfFont* font, const void* data, size_t sizeInBytes);
 
 
-//Create a new image font a file in memory
-DSFML_GRAPHICS_API sfFont* sfFont_createFromMemory(const void* data, size_t sizeInBytes);
-
-
-//Create a new image font a custom stream
-DSFML_GRAPHICS_API sfFont* sfFont_createFromStream(DStream* stream);
+//Load a new image font a custom stream
+DSFML_GRAPHICS_API DBool sfFont_loadFromStream(sfFont* font, DStream* stream);
 
 
 // Copy an existing font
@@ -74,6 +75,7 @@ DSFML_GRAPHICS_API DInt sfFont_getLineSpacing(const sfFont* font, DUint characte
 
 //Get the texture pointer for a particular font
 DSFML_GRAPHICS_API sfTexture* sfFont_getTexturePtr(const sfFont* font);
+
 
 //Update the internal texture associated with the font
 DSFML_GRAPHICS_API void sfFont_updateTexture(const sfFont* font, DUint characterSize);

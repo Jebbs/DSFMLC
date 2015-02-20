@@ -28,81 +28,26 @@ Copyright (C) 2007-2013 Laurent Gomila (laurent.gom@gmail.com)
 All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license.php
 */
 
-#ifndef DSFML_SOUNDSTREAMSTRUCT_H
-#define DSFML_SOUNDSTREAMSTRUCT_H
+#ifndef DSFML_STRING_H
+#define DSFML_STRING_H
 
-#include <SFML/Audio/SoundStream.hpp>
-#include <DSFML/Config.h>
+//Headers
+#include <DSFML/System/Export.h>
+#include <DSFML/System/Types.h>
+#include <stddef.h>
 
+//Convert to utf8
+DSFML_SYSTEM_API void utf16to8(const DUshort* inStr, size_t inLen, const DUbyte* outStr, size_t* outLen);
+DSFML_SYSTEM_API void utf32to8(const DUint* inStr, size_t inLen, const DUbyte* outStr, size_t* outLen);
 
-struct sfChunk
-{
-	const DShort* samples;
-	DUint sampleCount;
-};
+//Convert to utf16
+DSFML_SYSTEM_API void utf8to16(const DUbyte* inStr, size_t inLen, const DUshort* outStr, size_t* outLen);
+DSFML_SYSTEM_API void utf32to16(const DUint* inStr, size_t inLen, const DUshort* outStr, size_t* outLen);
 
-typedef struct sfChunk sfChunk;
-
-//class to use in D
-class SoundStreamCallBacks
-{
-public:
-	virtual DBool onGetData(sfChunk* chunk);
-	virtual void onSeek(DLong time);
-};
+//Convert to utf32
+DSFML_SYSTEM_API void utf8to32(const DUbyte* inStr, size_t inLen, const DUint* outStr, size_t* outLen);
+DSFML_SYSTEM_API void utf16to32(const DUshort* inStr, size_t inLen, const DUint* outStr, size_t* outLen);
 
 
-class sfSoundStreamImp : public sf::SoundStream
-{
 
-private:
-	SoundStreamCallBacks* callBacks;
-
-public:
-
-	sfSoundStreamImp(SoundStreamCallBacks* newCallBacks)
-	{
-		callBacks = newCallBacks;
-		
-	}
-	
-	void SoundStreamInitialize(DUint channelCount, DUint sampleRate)
-	{
-	    initialize(channelCount, sampleRate);
-	}
-	
-
-protected:
-	virtual bool onGetData(Chunk& data)
-	{
-		sfChunk chunk;
-		DBool ret = callBacks->onGetData(&chunk);
-
-		data.samples = chunk.samples;
-		data.sampleCount = chunk.sampleCount;
-
-		return (ret == DTrue);
-	}
-
-	virtual void onSeek(sf::Time timeOffset)
-	{
-		callBacks->onSeek(timeOffset.asMicroseconds());
-	}
-
-
-};
-
-struct sfSoundStream
-{
-	sfSoundStream(SoundStreamCallBacks* newCallBacks):
-	This(newCallBacks)
-	{
-	}
-
-	sfSoundStreamImp This;
-};
-
-
-#endif // DSFML_SOUNDSTREAMSTRUCT_H
-
-
+#endif//DSFML_STRING_H

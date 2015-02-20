@@ -33,16 +33,18 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Graphics/RenderTextureStruct.h>
 #include <DSFML/Graphics/CreateRenderStates.hpp>
 
-
-sfRenderTexture* sfRenderTexture_create(DUint width, DUint height, DBool depthBuffer)
+sfRenderTexture* sfRenderTexture_construct(void)
 {
-    sfRenderTexture* renderTexture = new sfRenderTexture;
+    return new sfRenderTexture;
+}
+
+void sfRenderTexture_create(sfRenderTexture* renderTexture, DUint width, DUint height, DBool depthBuffer)
+{
+
     renderTexture->This.create(width, height, depthBuffer == DTrue);
     renderTexture->Target = new sfTexture(const_cast<sf::Texture*>(&renderTexture->This.getTexture()));
     renderTexture->DefaultView.This = renderTexture->This.getDefaultView();
     renderTexture->CurrentView.This = renderTexture->This.getView();
-
-    return renderTexture;
 }
 
 

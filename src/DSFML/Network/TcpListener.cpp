@@ -74,18 +74,9 @@ DInt sfTcpListener_listen(sfTcpListener* listener,DUshort port)
 
 
 ////////////////////////////////////////////////////////////
-DInt sfTcpListener_accept(sfTcpListener* listener, sfTcpSocket** connected)
+DInt sfTcpListener_accept(sfTcpListener* listener, sfTcpSocket* connected)
 {
-    *connected = new sfTcpSocket;
-    
-    sf::Socket::Status status = listener->This.accept((*connected)->This);
-
-    if(!status != sf::Socket::Done)
-    {
-        delete *connected;
-        *connected = 0;
-    }
+    sf::Socket::Status status = listener->This.accept(connected->This);
 
     return status;
-
 }

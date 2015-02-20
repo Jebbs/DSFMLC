@@ -34,8 +34,6 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 
 // Headers
 #include <DSFML/Graphics/Export.h>
-#include <DSFML/Graphics/Color.h>
-#include <DSFML/Graphics/Rect.h>
 #include <DSFML/Graphics/Types.h>
 #include <DSFML/Graphics/Transform.h>
 #include <stddef.h>
@@ -53,128 +51,128 @@ typedef enum
 
 
 
-/// \brief Create a new text
-CSFML_GRAPHICS_API sfText* sfText_create(void);
+//Create a new text
+DSFML_GRAPHICS_API sfText* sfText_construct(void);
 
 
-/// \brief Copy an existing text
-CSFML_GRAPHICS_API sfText* sfText_copy(const sfText* text);
+//Copy an existing text
+DSFML_GRAPHICS_API sfText* sfText_copy(const sfText* text);
 
 
-/// \brief Destroy an existing text
-CSFML_GRAPHICS_API void sfText_destroy(sfText* text);
+//Destroy an existing text
+DSFML_GRAPHICS_API void sfText_destroy(sfText* text);
 
 
 /// \brief Set the position of a text
-CSFML_GRAPHICS_API void sfText_setPosition(sfText* text, sfVector2f position);
+DSFML_GRAPHICS_API void sfText_setPosition(sfText* text, float positionX, float positionY);
 
 
 /// \brief Set the orientation of a text
-CSFML_GRAPHICS_API void sfText_setRotation(sfText* text, float angle);
+DSFML_GRAPHICS_API void sfText_setRotation(sfText* text, float angle);
 
 
 /// \brief Set the scale factors of a text
-CSFML_GRAPHICS_API void sfText_setScale(sfText* text, sfVector2f scale);
+DSFML_GRAPHICS_API void sfText_setScale(sfText* text, float scaleX, float scaleY);
 
 
 /// \brief Set the local origin of a text
-CSFML_GRAPHICS_API void sfText_setOrigin(sfText* text, sfVector2f origin);
+DSFML_GRAPHICS_API void sfText_setOrigin(sfText* text, float originX, float originY);
 
 
 /// \brief Get the position of a text
-CSFML_GRAPHICS_API sfVector2f sfText_getPosition(const sfText* text);
+DSFML_GRAPHICS_API void sfText_getPosition(const sfText* text, float* positionX, float* positionY);
 
 
 /// \brief Get the orientation of a text
-CSFML_GRAPHICS_API float sfText_getRotation(const sfText* text);
+DSFML_GRAPHICS_API float sfText_getRotation(const sfText* text);
 
 
 /// \brief Get the current scale of a text
-CSFML_GRAPHICS_API sfVector2f sfText_getScale(const sfText* text);
+DSFML_GRAPHICS_API void sfText_getScale(const sfText* text, float* scaleX, float* scaleY);
 
 
 /// \brief Get the local origin of a text
-CSFML_GRAPHICS_API sfVector2f sfText_getOrigin(const sfText* text);
+DSFML_GRAPHICS_API void sfText_getOrigin(const sfText* text, float* originX, float* originY);
 
 
 /// \brief Move a text by a given offset
-CSFML_GRAPHICS_API void sfText_move(sfText* text, sfVector2f offset);
+DSFML_GRAPHICS_API void sfText_move(sfText* text, float offsetX, float offsetY);
 
 
 /// \brief Rotate a text
-CSFML_GRAPHICS_API void sfText_rotate(sfText* text, float angle);
+DSFML_GRAPHICS_API void sfText_rotate(sfText* text, float angle);
 
 
 /// \brief Scale a text
-CSFML_GRAPHICS_API void sfText_scale(sfText* text, sfVector2f factors);
+DSFML_GRAPHICS_API void sfText_scale(sfText* text, float factorX, float factorY);
 
 
 /// \brief Get the combined transform of a text
-CSFML_GRAPHICS_API sfTransform sfText_getTransform(const sfText* text);
+DSFML_GRAPHICS_API void sfText_getTransform(const sfText* text, float* transform);
 
 
 /// \brief Get the inverse of the combined transform of a text
-CSFML_GRAPHICS_API sfTransform sfText_getInverseTransform(const sfText* text);
+DSFML_GRAPHICS_API void sfText_getInverseTransform(const sfText* text, float* transform);
 
 
 /// \brief Set the string of a text (from an ANSI string)
-CSFML_GRAPHICS_API void sfText_setString(sfText* text, const char* string);
+DSFML_GRAPHICS_API void sfText_setString(sfText* text, const char* string);
 
 
 /// \brief Set the string of a text (from a unicode string)
-CSFML_GRAPHICS_API void sfText_setUnicodeString(sfText* text, const sfUint32* string);
+DSFML_GRAPHICS_API void sfText_setUnicodeString(sfText* text, const DUint* string);
 
 
 /// \brief Set the font of a text
-CSFML_GRAPHICS_API void sfText_setFont(sfText* text, const sfFont* font);
+DSFML_GRAPHICS_API void sfText_setFont(sfText* text, const sfFont* font);
 
 
 /// \brief Set the character size of a text
-CSFML_GRAPHICS_API void sfText_setCharacterSize(sfText* text, unsigned int size);
+DSFML_GRAPHICS_API void sfText_setCharacterSize(sfText* text, DUint size);
 
 
 /// \brief Set the style of a text
-CSFML_GRAPHICS_API void sfText_setStyle(sfText* text, sfUint32 style);
+DSFML_GRAPHICS_API void sfText_setStyle(sfText* text, DUint style);
 
 
 /// \brief Set the global color of a text
-CSFML_GRAPHICS_API void sfText_setColor(sfText* text, sfColor color);
+DSFML_GRAPHICS_API void sfText_setColor(sfText* text, DUbyte r, DUbyte g, DUbyte b, DUbyte a);
 
 
 /// \brief Get the string of a text (returns an ANSI string)
-CSFML_GRAPHICS_API const char* sfText_getString(const sfText* text);
+DSFML_GRAPHICS_API const char* sfText_getString(const sfText* text);
 
 
 /// \brief Get the string of a text (returns a unicode string)
-CSFML_GRAPHICS_API const sfUint32* sfText_getUnicodeString(const sfText* text);
+DSFML_GRAPHICS_API const DUint* sfText_getUnicodeString(const sfText* text);
 
 
 /// \brief Get the font used by a text
-CSFML_GRAPHICS_API const sfFont* sfText_getFont(const sfText* text);
+DSFML_GRAPHICS_API sfFont* sfText_getFont(const sfText* text);
 
 
 /// \brief Get the size of the characters of a text
-CSFML_GRAPHICS_API unsigned int sfText_getCharacterSize(const sfText* text);
+DSFML_GRAPHICS_API DUint sfText_getCharacterSize(const sfText* text);
 
 
 /// \brief Get the style of a text
-CSFML_GRAPHICS_API sfUint32 sfText_getStyle(const sfText* text);
+DSFML_GRAPHICS_API DUint sfText_getStyle(const sfText* text);
 
 
 /// \brief Get the global color of a text
-CSFML_GRAPHICS_API sfColor sfText_getColor(const sfText* text);
+DSFML_GRAPHICS_API void sfText_getColor(const sfText* text, DUbyte* r, DUbyte* g, DUbyte* b, DUbyte* a);
 
 
 /// \brief Return the position of the \a index-th character in a text
-CSFML_GRAPHICS_API sfVector2f sfText_findCharacterPos(const sfText* text, size_t index);
+DSFML_GRAPHICS_API void sfText_findCharacterPos(const sfText* text, size_t index, float* posX, float* posY);
 
 
 /// \brief Get the local bounding rectangle of a text
-CSFML_GRAPHICS_API sfFloatRect sfText_getLocalBounds(const sfText* text);
+DSFML_GRAPHICS_API void sfText_getLocalBounds(const sfText* text, float* left, float* top, float* width, float* height);
 
 
 /// \brief Get the global bounding rectangle of a text
-CSFML_GRAPHICS_API sfFloatRect sfText_getGlobalBounds(const sfText* text);
+DSFML_GRAPHICS_API void sfText_getGlobalBounds(const sfText* text, float* left, float* top, float* width, float* height);
 
 
 #endif // SFML_TEXT_H

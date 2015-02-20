@@ -33,7 +33,7 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Audio/SoundRecorderStruct.h>
 
 
-sfSoundRecorder* sfSoundRecorder_create(SoundRecorderCallBacks* newCallBacks)
+sfSoundRecorder* sfSoundRecorder_construct(SoundRecorderCallBacks* newCallBacks)
 {
 	return new sfSoundRecorder(newCallBacks);
 }

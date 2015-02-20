@@ -34,7 +34,12 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/ConvertEvent.h>
 
 
-sfWindow* sfWindow_create(DUint width, DUint height, DUint bitsPerPixel, const char* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
+sfWindow* sfWindow_construct(void)
+{
+    return new sfWindow;
+}
+
+void sfWindow_createFromSettings(sfWindow* window, DUint width, DUint height, DUint bitsPerPixel, const DUint* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
 {
     // Convert video mode
     sf::VideoMode videoMode(width, height, bitsPerPixel);
@@ -49,38 +54,10 @@ sfWindow* sfWindow_create(DUint width, DUint height, DUint bitsPerPixel, const c
         params.minorVersion      = minorVersion;
 
 
-    // Create the window
-    sfWindow* window = new sfWindow;
     window->This.create(videoMode, title, style, params);
-
-    return window;
 }
 
-
-sfWindow* sfWindow_createUnicode(DUint width, DUint height, DUint bitsPerPixel, const DUint* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
-{
-    // Convert video mode
-    sf::VideoMode videoMode(width, height, bitsPerPixel);
-
-    // Convert context settings
-    sf::ContextSettings params;
-
-        params.depthBits         = depthBits;
-        params.stencilBits       = stencilBits;
-        params.antialiasingLevel = antialiasingLevel;
-        params.majorVersion      = majorVersion;
-        params.minorVersion      = minorVersion;
-
-
-    // Create the window
-    sfWindow* window = new sfWindow;
-    window->This.create(videoMode, title, style, params);
-
-    return window;
-}
-
-
-sfWindow* sfWindow_createFromHandle(sfWindowHandle handle, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
+void sfWindow_createFromHandle(sfWindow* window, sfWindowHandle handle, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
 {
     // Convert context settings
     sf::ContextSettings params;
@@ -90,11 +67,7 @@ sfWindow* sfWindow_createFromHandle(sfWindowHandle handle, DUint depthBits, DUin
     params.majorVersion      = majorVersion;
     params.minorVersion      = minorVersion;
 
-    // Create the window
-    sfWindow* window = new sfWindow;
     window->This.create(handle, params);
-
-    return window;
 }
 
 

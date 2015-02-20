@@ -36,14 +36,19 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 
 
 
-sfSoundStream* sfSoundStream_create( DUint channelCount, DUint sampleRate, SoundStreamCallBacks* callBacks)
+sfSoundStream* sfSoundStream_construct(SoundStreamCallBacks* callBacks)
 {
-    return new sfSoundStream(channelCount, sampleRate, callBacks);
+    return new sfSoundStream(callBacks);
 }
 
 void sfSoundStream_destroy(sfSoundStream* soundStream)
 {
     delete soundStream;
+}
+
+void sfSoundStream_initialize(sfSoundStream* soundStream, DUint channelCount, DUint sampleRate)
+{
+    soundStream->This.SoundStreamInitialize(channelCount, sampleRate);    
 }
 
 void sfSoundStream_play(sfSoundStream* soundStream)

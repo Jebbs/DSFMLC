@@ -38,21 +38,23 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <stddef.h>
 #include <DSFML/System/DStream.hpp>
 
+//Construct a new texture
+DSFML_GRAPHICS_API sfTexture* sfTexture_construct(void);
 
 //Create a new texture
-DSFML_GRAPHICS_API sfTexture* sfTexture_create(DUint width, DUint height);
+DSFML_GRAPHICS_API DBool sfTexture_create(sfTexture* texture, DUint width, DUint height);
 
 //Create a new texture from a file
-DSFML_GRAPHICS_API sfTexture* sfTexture_createFromFile(const char* filename, DInt left, DInt top, DInt width, DInt height);
+DSFML_GRAPHICS_API DBool sfTexture_loadFromFile(sfTexture* texture, const char* filename, DInt left, DInt top, DInt width, DInt height);
 
 //Create a new texture from a file in memory
-DSFML_GRAPHICS_API sfTexture* sfTexture_createFromMemory(const void* data, size_t sizeInBytes, DInt left, DInt top, DInt width, DInt height);
+DSFML_GRAPHICS_API DBool sfTexture_loadFromMemory(sfTexture* texture, const void* data, size_t sizeInBytes, DInt left, DInt top, DInt width, DInt height);
 
 //Create a new texture from a custom stream
-DSFML_GRAPHICS_API sfTexture* sfTexture_createFromStream(DStream* stream, DInt left, DInt top, DInt width, DInt height);
+DSFML_GRAPHICS_API DBool sfTexture_loadFromStream(sfTexture* texture, DStream* stream, DInt left, DInt top, DInt width, DInt height);
 
 //Create a new texture from an image
-DSFML_GRAPHICS_API sfTexture* sfTexture_createFromImage(const sfImage* image, DInt left, DInt top, DInt width, DInt height);
+DSFML_GRAPHICS_API DBool sfTexture_loadFromImage(sfTexture* texture, const sfImage* image, DInt left, DInt top, DInt width, DInt height);
 
 //Copy an existing texture
 DSFML_GRAPHICS_API sfTexture* sfTexture_copy(const sfTexture* texture);

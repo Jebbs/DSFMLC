@@ -36,6 +36,14 @@ All Libraries used by SFML
 #include <SFML/Network/IpAddress.hpp>
 #include <string.h>
 
+#include <iostream>
+
+//annonymous namespace for storing the received raw data
+namespace
+{
+    char* receivedData;
+}
+
 
 sfTcpSocket* sfTcpSocket_create(void)
 {
@@ -104,18 +112,23 @@ DInt sfTcpSocket_send(sfTcpSocket* socket, const void* data, size_t size)
 }
 
 
-DInt sfTcpSocket_receive(sfTcpSocket* socket, void* data, size_t maxSize, size_t* sizeReceived)
+void* sfTcpSocket_receive(sfTcpSocket* socket, size_t maxSize, size_t* sizeReceived, DInt* status)
 {
 
-    if (sizeReceived)
+    //D does not like passing an array to C++ and having it altered here, so we will be creating a temp
+    //way to store the data and pass it up to D. It should work normally, so I will look into it for 2.2.
+
+    if(receivedData)
     {
-        return socket->This.receive(data, maxSize, *sizeReceived);
+        delete receivedData;
+        receivedData = 0;
     }
-    else
-    {
-        std::size_t size = 0;
-        return socket->This.receive(data, maxSize, size);
-    }
+    
+    receivedData = new char[maxSize];
+    *status = static_cast<DInt>(socket->This.receive(receivedData, maxSize, *sizeReceived));
+
+    return receivedData;
+
 }
 
 

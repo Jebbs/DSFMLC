@@ -35,7 +35,7 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <SFML/System/Vector3.hpp>
 #include <DSFML/Config.h>
 
-sfSound* sfSound_create(void)
+sfSound* sfSound_construct(void)
 {
     return new sfSound;
 }

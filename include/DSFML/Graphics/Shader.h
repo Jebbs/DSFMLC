@@ -38,18 +38,19 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/System/DStream.hpp>
 
 
-
+//Construct a new shader
+DSFML_GRAPHICS_API sfShader* sfShader_construct(void);
 
 //Load both the vertex and fragment shaders from files
-DSFML_GRAPHICS_API sfShader* sfShader_createFromFile(const char* vertexShaderFilename, const char* fragmentShaderFilename);
+DSFML_GRAPHICS_API DBool sfShader_loadFromFile(sfShader* shader, const char* vertexShaderFilename, const char* fragmentShaderFilename);
 
 
 //Load both the vertex and fragment shaders from source codes in memory
-DSFML_GRAPHICS_API sfShader* sfShader_createFromMemory(const char* vertexShader, const char* fragmentShader);
+DSFML_GRAPHICS_API DBool sfShader_loadFromMemory(sfShader* shader, const char* vertexShader, const char* fragmentShader);
 
 
 //Load both the vertex and fragment shaders from custom streams
-DSFML_GRAPHICS_API sfShader* sfShader_createFromStream(void* vertexShaderStream, void* fragmentShaderStream);
+DSFML_GRAPHICS_API DBool sfShader_loadFromStream(sfShader* shader, DStream* vertexShaderStream, DStream* fragmentShaderStream);
 
 
 //Destroy an existing shader

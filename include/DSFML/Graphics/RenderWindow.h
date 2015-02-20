@@ -39,15 +39,20 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Window/WindowHandle.h>
 #include <DSFML/Window/Window.h>
 
-
 //Construct a new render window
-DSFML_GRAPHICS_API sfRenderWindow* sfRenderWindow_create(DUint width, DUint height, DUint bitsPerPixel, const char* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
+DSFML_GRAPHICS_API sfRenderWindow* sfRenderWindow_construct(void);
 
-//Construct a new render window (with a UTF-32 title)
-DSFML_GRAPHICS_API sfRenderWindow* sfRenderWindow_createUnicode(DUint width, DUint height, DUint bitsPerPixel, const DUint* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
+//Construct a new render window from settings
+DSFML_GRAPHICS_API sfRenderWindow* sfRenderWindow_constructFromSettings(DUint width, DUint height, DUint bitsPerPixel, const DUint* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
 
 //Construct a render window from an existing control
-DSFML_GRAPHICS_API sfRenderWindow* sfRenderWindow_createFromHandle(sfWindowHandle handle, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
+DSFML_GRAPHICS_API sfRenderWindow* sfRenderWindow_constructFromHandle(sfWindowHandle handle, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
+
+//Create(or recreate) a new render window from settings
+DSFML_GRAPHICS_API void sfRenderWindow_createFromSettings(sfRenderWindow* renderWindow, DUint width, DUint height, DUint bitsPerPixel, const DUint* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
+
+//Create(or recreate) a render window from an existing control
+DSFML_GRAPHICS_API void sfRenderWindow_createFromHandle(sfRenderWindow* renderWindow, sfWindowHandle handle, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
 
 //Destroy an existing render window
 DSFML_GRAPHICS_API void sfRenderWindow_destroy(sfRenderWindow* renderWindow);

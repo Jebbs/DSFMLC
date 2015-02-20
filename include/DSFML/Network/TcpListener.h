@@ -62,7 +62,7 @@ DSFML_NETWORK_API DInt sfTcpListener_listen(sfTcpListener* listener, DUshort por
 
 
 //Accept a new connection
-DSFML_NETWORK_API DInt sfTcpListener_accept(sfTcpListener* listener, sfTcpSocket** connected);
+DSFML_NETWORK_API DInt sfTcpListener_accept(sfTcpListener* listener, sfTcpSocket* connected);
 
 
 #endif // DSFML_TCPLISTENER_H

@@ -32,75 +32,47 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Graphics/Image.h>
 #include <DSFML/Graphics/ImageStruct.h>
 
-sfImage* sfImage_create(DUint width, DUint height)
+sfImage* sfImage_construct(void)
 {
-    sfImage* image = new sfImage;
-    image->This.create(width, height);
+    return new sfImage;
+}
 
-    return image;
+void sfImage_create(sfImage* image, DUint width, DUint height)
+{
+    image->This.create(width, height);
 }
 
 
-sfImage* sfImage_createFromColor(DUint width, DUint height, DUbyte r, DUbyte b, DUbyte g, DUbyte a)
+void sfImage_createFromColor(sfImage* image, DUint width, DUint height, DUbyte r, DUbyte b, DUbyte g, DUbyte a)
 {
-    sfImage* image = new sfImage;
     image->This.create(width, height, sf::Color(r, g, b, a));
 
-    return image;
 }
 
 
-sfImage* sfImage_createFromPixels(DUint width, DUint height, const DUbyte* data)
+void sfImage_createFromPixels(sfImage* image, DUint width, DUint height, const DUbyte* data)
 {
-    sfImage* image = new sfImage;
     image->This.create(width, height, data);
-
-    return image;
 }
 
 
-sfImage* sfImage_createFromFile(const char* filename)
+DBool sfImage_loadFromFile(sfImage* image, const char* filename)
 {
-    sfImage* image = new sfImage;
-
-    if (!image->This.loadFromFile(filename))
-    {
-        delete image;
-        image = 0;
-    }
-
-    return image;
+    return image->This.loadFromFile(filename)?DTrue:DFalse;
 }
 
 
-sfImage* sfImage_createFromMemory(const void* data, size_t sizeInBytes)
+DBool sfImage_loadFromMemory(sfImage* image, const void* data, size_t sizeInBytes)
 {
-    sfImage* image = new sfImage;
-
-    if (!image->This.loadFromMemory(data, sizeInBytes))
-    {
-        delete image;
-        image = 0;
-    }
-
-    return image;
+    return image->This.loadFromMemory(data, sizeInBytes)?DTrue:DFalse;
 }
 
 
-sfImage* sfImage_createFromStream(DStream* stream)
+DBool sfImage_loadFromStream(sfImage* image, DStream* stream)
 {
-
-    sfImage* image = new sfImage;
-
     sfmlStream Stream = sfmlStream(stream);
     
-    if (!image->This.loadFromStream(Stream))
-    {
-        delete image;
-        image = 0;
-    }
-
-    return image;
+    return image->This.loadFromStream(Stream)?DTrue:DFalse;
 }
 
 
@@ -119,7 +91,7 @@ void sfImage_destroy(sfImage* image)
 
 DBool sfImage_saveToFile(const sfImage* image, const char* filename)
 {
-    return image->This.saveToFile(filename)?DTrue: DFalse;
+    return image->This.saveToFile(filename)?DTrue:DFalse;
 }
 
 

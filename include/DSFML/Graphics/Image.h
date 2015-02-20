@@ -38,23 +38,26 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <stddef.h>
 
 
+//Construct a new image
+DSFML_GRAPHICS_API sfImage* sfImage_construct(void);
+
 //Create an image
-DSFML_GRAPHICS_API sfImage* sfImage_create(DUint width, DUint height);
+DSFML_GRAPHICS_API void sfImage_create(sfImage* image, DUint width, DUint height);
 
 //Create an image and fill it with a unique color
-DSFML_GRAPHICS_API sfImage* sfImage_createFromColor(DUint width, DUint height, DUbyte r, DUbyte b, DUbyte g, DUbyte a);
+DSFML_GRAPHICS_API void sfImage_createFromColor(sfImage* image, DUint width, DUint height, DUbyte r, DUbyte b, DUbyte g, DUbyte a);
 
 //Create an image from an array of pixels
-DSFML_GRAPHICS_API sfImage* sfImage_createFromPixels(DUint width, DUint height, const DUbyte* pixels);
+DSFML_GRAPHICS_API void sfImage_createFromPixels(sfImage* image, DUint width, DUint height, const DUbyte* pixels);
 
 //Create an image from a file on disk
-DSFML_GRAPHICS_API sfImage* sfImage_createFromFile(const char* filename);
+DSFML_GRAPHICS_API DBool sfImage_loadFromFile(sfImage* image, const char* filename);
 
 //Create an image from a file in memory
-DSFML_GRAPHICS_API sfImage* sfImage_createFromMemory(const void* data, size_t size);
+DSFML_GRAPHICS_API DBool sfImage_loadFromMemory(sfImage* image, const void* data, size_t size);
 
 //Create an image from a custom stream
-DSFML_GRAPHICS_API sfImage* sfImage_createFromStream(DStream* stream);
+DSFML_GRAPHICS_API DBool sfImage_loadFromStream(sfImage* image, DStream* stream);
 
 //Copy an existing image
 DSFML_GRAPHICS_API sfImage* sfImage_copy(const sfImage* image);

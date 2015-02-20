@@ -36,7 +36,7 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Audio/Types.h>
 
 
-DSFML_AUDIO_API sfSound* sfSound_create(void);
+DSFML_AUDIO_API sfSound* sfSound_construct(void);
 
 DSFML_AUDIO_API sfSound* sfSound_copy(const sfSound* sound);
 

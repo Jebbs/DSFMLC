@@ -36,7 +36,7 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Audio/SoundRecorderStruct.h>
 
 
-DSFML_AUDIO_API sfSoundRecorder* sfSoundRecorder_create(SoundRecorderCallBacks* newCallBacks);
+DSFML_AUDIO_API sfSoundRecorder* sfSoundRecorder_construct(SoundRecorderCallBacks* newCallBacks);
 
 DSFML_AUDIO_API void sfSoundRecorder_destroy(sfSoundRecorder* soundRecorder);
 

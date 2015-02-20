@@ -29,9 +29,8 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <SFML/Graphics/Text.hpp>
-#include <SFML/Graphics/FontStruct.h>
-
-
+#include <DSFML/Graphics/FontStruct.h>
+#include <DSFML/Config.h>
 #include <string>
 
 

@@ -34,61 +34,39 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Graphics/FontStruct.h>
 #include <SFML/System/InputStream.hpp>
 
-
-
-sfFont* sfFont_createFromFile(const char* filename)
+sfFont* sfFont_construct()
 {
     sfFont* font = new sfFont;
-
-    if (!font->This.loadFromFile(filename))
-    {
-        delete font;
-        font = NULL;
-        return font;
-    }
-
     font->fontTexture = new sfTexture;
-
+    
+    //Delete the internal texture and set OwnInstance to false
+    //This will allow us to set the sf::Texture vatiable to the address
+    //of the one returned by the font without copying it or destroying it.
+    delete font->fontTexture->This;
+    font->fontTexture->This = 0;
+    font->fontTexture->OwnInstance = false;
+    
     return font;
+}
+
+DBool sfFont_loadFromFile(sfFont* font, const char* filename)
+{
+    return (font->This.loadFromFile(filename))?DTrue:DFalse;
 }
 
 
 
-sfFont* sfFont_createFromMemory(const void* data, size_t sizeInBytes)
+DBool sfFont_loadFromMemory(sfFont* font, const void* data, size_t sizeInBytes)
 {
-    sfFont* font = new sfFont;
-    if (!font->This.loadFromMemory(data, sizeInBytes))
-    {
-        delete font;
-        font = NULL;
-        return font;
-    }
-
-    font->fontTexture = new sfTexture;
-
-    return font;
+    return (font->This.loadFromMemory(data, sizeInBytes))?DTrue:DFalse;
 }
 
 
 
-sfFont* sfFont_createFromStream(DStream* stream)
+DBool sfFont_loadFromStream(sfFont* font, DStream* stream)
 {
-
-    sfFont* font = new sfFont;
-
-     
-
     font->Stream = sfmlStream(stream);
-    if (!font->This.loadFromStream(font->Stream))
-    {
-        delete font;
-        font = NULL;
-        return font;
-    }
-
-    font->fontTexture = new sfTexture;
-
-    return font;
+    return (font->This.loadFromStream(font->Stream))?DTrue:DFalse;
 }
 
 
@@ -142,12 +120,16 @@ DInt sfFont_getLineSpacing(const sfFont* font, DUint characterSize)
 
 
 
-sfTexture* sfFont_getTexturePtr(const sfFont* font)//, DUint characterSize)
+sfTexture* sfFont_getTexturePtr(const sfFont* font)
 {
     return font->fontTexture;
 }
 
 void sfFont_updateTexture(const sfFont* font, DUint characterSize)
 {
-    *font->fontTexture->This = font->This.getTexture(characterSize);
+
+    //Get the address of the underlying sf::Texture to avoid copying it.
+    //This is safe because the underlying sf::Texture is only exposed in const form.
+    font->fontTexture->This = const_cast<sf::Texture*>(&(font->This.getTexture(characterSize)));
+
 }

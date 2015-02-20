@@ -37,34 +37,12 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Graphics/CreateRenderStates.hpp>
 #include <DSFML/ConvertEvent.h>
 
-
-
-sfRenderWindow* sfRenderWindow_create(DUint width, DUint height, DUint bitsPerPixel, const char* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
+sfRenderWindow* sfRenderWindow_construct(void)
 {
-    // Convert video mode
-    sf::VideoMode videoMode(width, height, bitsPerPixel);
-
-    // Create context settings
-    sf::ContextSettings params;
-    
-    params.depthBits         = depthBits;
-    params.stencilBits       = stencilBits;
-    params.antialiasingLevel = antialiasingLevel;
-    params.majorVersion      = majorVersion;
-    params.minorVersion      = minorVersion;
-    
-
-    // Create the window
-    sfRenderWindow* renderWindow = new sfRenderWindow;
-    renderWindow->This.create(videoMode, title, style, params);
-    renderWindow->DefaultView.This = renderWindow->This.getDefaultView();
-    renderWindow->CurrentView.This = renderWindow->This.getView();
-
-    return renderWindow;
+    return new sfRenderWindow;
 }
 
-
-sfRenderWindow* sfRenderWindow_createUnicode(DUint width, DUint height, DUint bitsPerPixel, const DUint* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
+sfRenderWindow* sfRenderWindow_constructFromSettings(DUint width, DUint height, DUint bitsPerPixel, const DUint* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
 {
     // Convert video mode
     sf::VideoMode videoMode(width, height, bitsPerPixel);
@@ -88,9 +66,7 @@ sfRenderWindow* sfRenderWindow_createUnicode(DUint width, DUint height, DUint bi
     return renderWindow;
 }
 
-
-
-sfRenderWindow* sfRenderWindow_createFromHandle(sfWindowHandle handle, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
+sfRenderWindow* sfRenderWindow_constructFromHandle(sfWindowHandle handle, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
 {
     // Convert context settings
     sf::ContextSettings params;
@@ -111,7 +87,40 @@ sfRenderWindow* sfRenderWindow_createFromHandle(sfWindowHandle handle, DUint dep
     return renderWindow;
 }
 
+void sfRenderWindow_createFromSettings(sfRenderWindow* renderWindow, DUint width, DUint height, DUint bitsPerPixel, const DUint* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
+{
+    // Convert video mode
+    sf::VideoMode videoMode(width, height, bitsPerPixel);
 
+    // Convert context settings
+    sf::ContextSettings params;
+    
+    params.depthBits         = depthBits;
+    params.stencilBits       = stencilBits;
+    params.antialiasingLevel = antialiasingLevel;
+    params.majorVersion      = majorVersion;
+    params.minorVersion      = minorVersion;
+    
+    renderWindow->This.create(videoMode, title, style, params);
+    renderWindow->DefaultView.This = renderWindow->This.getDefaultView();
+    renderWindow->CurrentView.This = renderWindow->This.getView();
+}
+
+void sfRenderWindow_createFromHandle(sfRenderWindow* renderWindow, sfWindowHandle handle, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
+{
+    // Convert context settings
+    sf::ContextSettings params;
+    
+    params.depthBits         = depthBits;
+    params.stencilBits       = stencilBits;
+    params.antialiasingLevel = antialiasingLevel;
+    params.majorVersion      = majorVersion;
+    params.minorVersion      = minorVersion;
+    
+    renderWindow->This.create(handle, params);
+    renderWindow->DefaultView.This = renderWindow->This.getDefaultView();
+    renderWindow->CurrentView.This = renderWindow->This.getView();
+}
 
 void sfRenderWindow_destroy(sfRenderWindow* renderWindow)
 {

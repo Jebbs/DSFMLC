@@ -38,22 +38,16 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Window/WindowHandle.h>
 #include <DSFML/Window/Types.h>
 
-
-
-
-
-
-
 //Construct a new window
-DSFML_WINDOW_API sfWindow* sfWindow_create(DUint width, DUint height, DUint bitsPerPixel, const char* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
+DSFML_WINDOW_API sfWindow* sfWindow_construct(void);
 
 
-//Construct a new window (with a UTF-32 title)
-DSFML_WINDOW_API sfWindow* sfWindow_createUnicode(DUint width, DUint height, DUint bitsPerPixel, const DUint* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
+//Construct a new window from settings
+DSFML_WINDOW_API void sfWindow_createFromSettings(sfWindow* window, DUint width, DUint height, DUint bitsPerPixel, const DUint* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
 
 
 //Construct a window from an existing control
-DSFML_WINDOW_API sfWindow* sfWindow_createFromHandle(sfWindowHandle handle, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
+DSFML_WINDOW_API void sfWindow_createFromHandle(sfWindow* window, sfWindowHandle handle, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
 
 
 // Destroy a window

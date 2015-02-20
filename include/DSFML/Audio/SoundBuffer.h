@@ -37,15 +37,15 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Audio/Types.h>
 #include <stddef.h>
 
-DSFML_AUDIO_API sfSoundBuffer* sfSoundBuffer_create();
+DSFML_AUDIO_API sfSoundBuffer* sfSoundBuffer_construct();
 
-DSFML_AUDIO_API sfSoundBuffer* sfSoundBuffer_createFromFile(const char* filename);
+DSFML_AUDIO_API DBool sfSoundBuffer_loadFromFile(sfSoundBuffer* soundBuffer, const char* filename);
 
-DSFML_AUDIO_API sfSoundBuffer* sfSoundBuffer_createFromMemory(const void* data, size_t sizeInBytes);
+DSFML_AUDIO_API DBool sfSoundBuffer_loadFromMemory(sfSoundBuffer* soundBuffer, const void* data, size_t sizeInBytes);
 
-DSFML_AUDIO_API sfSoundBuffer* sfSoundBuffer_createFromStream(DStream* stream);
+DSFML_AUDIO_API DBool sfSoundBuffer_loadFromStream(sfSoundBuffer* soundBuffer, DStream* stream);
 
-DSFML_AUDIO_API sfSoundBuffer* sfSoundBuffer_createFromSamples(const DShort* samples, size_t sampleCount, DUint channelCount, DUint sampleRate);
+DSFML_AUDIO_API DBool sfSoundBuffer_loadFromSamples(sfSoundBuffer* soundBuffer, const DShort* samples, size_t sampleCount, DUint channelCount, DUint sampleRate);
 
 DSFML_AUDIO_API sfSoundBuffer* sfSoundBuffer_copy(const sfSoundBuffer* soundBuffer);
 
@@ -63,22 +63,4 @@ DSFML_AUDIO_API DUint sfSoundBuffer_getChannelCount(const sfSoundBuffer* soundBu
 
 DSFML_AUDIO_API DLong sfSoundBuffer_getDuration(const sfSoundBuffer* soundBuffer);
 
-
-/*
-//Generate a new buffer
-DSFML_AUDIO_API void sfSoundBuffer_alGenBuffers(DUint* bufferID);
-
-//Delete a buffer
-DSFML_AUDIO_API void sfSoundBuffer_alDeleteBuffer(DUint* bufferID);
-
-//Get the sample rate associated with the buffer
-DSFML_AUDIO_API DUint sfSoundBuffer_getSampleRate(DUint bufferID);
-
-//Get the channel count associated wiht the buffer
-DSFML_AUDIO_API DUint sfSoundBuffer_getChannelCount(DUint bufferID);
-
-//Fill the buffer up with samples
-DSFML_AUDIO_API void sfSoundBuffer_fillBuffer(DUint bufferID, DShort* samples, DLong sampleSize, DUint sampleRate, DUint format);
-
-*/
 #endif // DSFML_SOUNDBUFFER_H

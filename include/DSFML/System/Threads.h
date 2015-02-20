@@ -27,82 +27,11 @@ Copyright (C) 2007-2013 Laurent Gomila (laurent.gom@gmail.com)
 
 All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license.php
 */
+#ifndef DSFML_THREADS_H
+#define DSFML_THREADS_H
 
-#ifndef DSFML_SOUNDSTREAMSTRUCT_H
-#define DSFML_SOUNDSTREAMSTRUCT_H
-
-#include <SFML/Audio/SoundStream.hpp>
-#include <DSFML/Config.h>
-
-
-struct sfChunk
-{
-	const DShort* samples;
-	DUint sampleCount;
-};
-
-typedef struct sfChunk sfChunk;
-
-//class to use in D
-class SoundStreamCallBacks
-{
-public:
-	virtual DBool onGetData(sfChunk* chunk);
-	virtual void onSeek(DLong time);
-};
+//call XInitThreads
+void linux_XInitThreads(void);
 
 
-class sfSoundStreamImp : public sf::SoundStream
-{
-
-private:
-	SoundStreamCallBacks* callBacks;
-
-public:
-
-	sfSoundStreamImp(SoundStreamCallBacks* newCallBacks)
-	{
-		callBacks = newCallBacks;
-		
-	}
-	
-	void SoundStreamInitialize(DUint channelCount, DUint sampleRate)
-	{
-	    initialize(channelCount, sampleRate);
-	}
-	
-
-protected:
-	virtual bool onGetData(Chunk& data)
-	{
-		sfChunk chunk;
-		DBool ret = callBacks->onGetData(&chunk);
-
-		data.samples = chunk.samples;
-		data.sampleCount = chunk.sampleCount;
-
-		return (ret == DTrue);
-	}
-
-	virtual void onSeek(sf::Time timeOffset)
-	{
-		callBacks->onSeek(timeOffset.asMicroseconds());
-	}
-
-
-};
-
-struct sfSoundStream
-{
-	sfSoundStream(SoundStreamCallBacks* newCallBacks):
-	This(newCallBacks)
-	{
-	}
-
-	sfSoundStreamImp This;
-};
-
-
-#endif // DSFML_SOUNDSTREAMSTRUCT_H
-
-
+#endif // DSFML_THREADS_H
