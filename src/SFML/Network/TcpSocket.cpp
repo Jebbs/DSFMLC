@@ -236,8 +236,6 @@ Socket::Status TcpSocket::send(const void* data, std::size_t size)
 ////////////////////////////////////////////////////////////
 Socket::Status TcpSocket::receive(void* data, std::size_t size, std::size_t& received)
 {
-
-    //std::cout << "Datas?" << std::endl;
     
     // First clear the variables to fill
     received = 0;
@@ -248,19 +246,15 @@ Socket::Status TcpSocket::receive(void* data, std::size_t size, std::size_t& rec
         err() << "Cannot receive data from the network (the destination buffer is invalid)" << std::endl;
         return Error;
     }
-    //std::cout << "Getting size received." << std::endl;
+
     // Receive a chunk of bytes
     int sizeReceived = recv(getHandle(), static_cast<char*>(data), static_cast<int>(size), 0);
-    
-    //std::cout << "Gotted size received. It's: " << sizeReceived << std::endl;
-    
+ 
     // Check the number of bytes received
     if (sizeReceived > 0)
     {
-       // std::cout << "Doing the thing." << std::endl;
-        
+     
         received = static_cast<std::size_t>(sizeReceived);
-        std::cout << "Did the thing." << std::endl;
         return Done;
     }
     else if (sizeReceived == 0)
