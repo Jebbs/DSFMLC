@@ -118,7 +118,7 @@ DInt sfTcpSocket_send(sfTcpSocket* socket, const void* data, size_t size)
 }
 
 
-DInt sfTcpSocket_receive(sfTcpSocket* socket,void* data, size_t maxSize, size_t* sizeReceived);
+DInt sfTcpSocket_receive(sfTcpSocket* socket,void* data, size_t maxSize, size_t* sizeReceived)
 {
 
     //D didn't like passing an array to C++ and having it altered here, so we will be creating a temp
@@ -131,7 +131,7 @@ DInt sfTcpSocket_receive(sfTcpSocket* socket,void* data, size_t maxSize, size_t*
     
     DInt status = static_cast<DInt>(socket->This.receive(receivedData, maxSize, *sizeReceived));
         
-    data =  static_cast<void*>receivedData;
+    data =  static_cast<void*>(receivedData);
     
     return status;
 

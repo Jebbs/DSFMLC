@@ -86,7 +86,7 @@ DUshort sfUdpSocket_getLocalPort(const sfUdpSocket* socket)
 DInt sfUdpSocket_bind(sfUdpSocket* socket, DUshort port)
 {
 
-    return static_Cast<DInt>(socket->This.bind(port));
+    return static_cast<DInt>(socket->This.bind(port));
 }
 
 
@@ -102,7 +102,7 @@ DInt sfUdpSocket_send(sfUdpSocket* socket, const void* data, size_t size, const 
     // Convert the address
     sf::IpAddress receiver(ipAddress);
 
-    return static_Cast<DInt>(socket->This.send(data, size, receiver, port));
+    return static_cast<DInt>(socket->This.send(data, size, receiver, port));
 }
 
 
@@ -112,7 +112,7 @@ DInt sfUdpSocket_receive(sfUdpSocket* socket, void* data, size_t maxSize, size_t
     //D didn't like passing an array to C++ and having it altered here, so we will be creating a temp
     //way to store the data and pass it up to D. It should work, so I will look into a different/better solution for 2.2.
 
-    sfTcpSocket_destroyInternalData();
+    sfUdpSocket_destroyInternalData();
     receivedData = new char[maxSize];
 
     // Call SFML internal function
