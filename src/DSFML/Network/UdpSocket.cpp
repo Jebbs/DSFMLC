@@ -36,7 +36,20 @@ All Libraries used by SFML
 #include <SFML/Network/IpAddress.hpp>
 #include <string.h>
 
+//annonymous namespace for storing the received raw data
+namespace
+{
+    char* receivedData;
+}
 
+void sfUdpSocket_destroyInternalData(void)
+{
+     if(receivedData)
+    {
+        delete receivedData;
+        receivedData = 0;
+    }
+}
 
 sfUdpSocket* sfUdpSocket_create(void)
 {
@@ -73,7 +86,7 @@ DUshort sfUdpSocket_getLocalPort(const sfUdpSocket* socket)
 DInt sfUdpSocket_bind(sfUdpSocket* socket, DUshort port)
 {
 
-    return socket->This.bind(port);
+    return static_Cast<DInt>(socket->This.bind(port));
 }
 
 
@@ -89,67 +102,52 @@ DInt sfUdpSocket_send(sfUdpSocket* socket, const void* data, size_t size, const 
     // Convert the address
     sf::IpAddress receiver(ipAddress);
 
-    return socket->This.send(data, size, receiver, port);
+    return static_Cast<DInt>(socket->This.send(data, size, receiver, port));
 }
 
 
 
 DInt sfUdpSocket_receive(sfUdpSocket* socket, void* data, size_t maxSize, size_t* sizeReceived, char* ipAddress, DUshort* port)
 {
+    //D didn't like passing an array to C++ and having it altered here, so we will be creating a temp
+    //way to store the data and pass it up to D. It should work, so I will look into a different/better solution for 2.2.
 
+    sfTcpSocket_destroyInternalData();
+    receivedData = new char[maxSize];
 
     // Call SFML internal function
     sf::IpAddress sender;
     unsigned short senderPort;
     std::size_t received;
 
-    sf::Socket::Status status = socket->This.receive(data, maxSize, received, sender, senderPort);
-    if (status != sf::Socket::Done)
-        return status;
+    DInt status = static_cast<DInt>(socket->This.receive(data, maxSize, *sizeReceived, sender, *port));
+    
+    strncpy(ipAddress, sender.toString().c_str(), 16);
 
-    if (sizeReceived)
-        *sizeReceived = received;
-
-    if (ipAddress)
-        strncpy(ipAddress, sender.toString().c_str(), 16);
-
-    if (port)
-        *port = senderPort;
-
-    return sf::Socket::Done;
+    return status;
 }
 
 
 
 DInt sfUdpSocket_sendPacket(sfUdpSocket* socket, sfPacket* packet, const char* ipAddress, DUshort port)
 {
-
-
     // Convert the address
     sf::IpAddress receiver(ipAddress);
 
-    return socket->This.send(packet->This, receiver, port);
+    return static_cast<DInt>(socket->This.send(packet->This, receiver, port));
 }
 
 
 
 DInt sfUdpSocket_receivePacket(sfUdpSocket* socket, sfPacket* packet, char* ipAddress, DUshort* port)
 {
-
-
     sf::IpAddress sender;
     unsigned short senderPort;
-    sf::Socket::Status status = socket->This.receive(packet->This, sender, senderPort);
-    if (status != sf::Socket::Done)
-        return status;
+    DInt status = static_cast<DInt>(socket->This.receive(packet->This, sender, *port));
+    
+    strncpy(ipAddress, sender.toString().c_str(), 16);
 
-    if (ipAddress)
-        strncpy(ipAddress, sender.toString().c_str(), 16);
-
-    if (port)
-        *port = senderPort;
-
-    return sf::Socket::Done;
+    return status;
 }
 
 

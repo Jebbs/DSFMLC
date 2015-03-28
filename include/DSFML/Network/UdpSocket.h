@@ -38,6 +38,10 @@ All Libraries used by SFML
 #include <stddef.h>
 
 
+//Destroy internal stored data for receiving
+DSFML_NETWORK_API void sfUdpSocket_destroyInternalData(void);
+
+
 //Create a new UDP socket
 DSFML_NETWORK_API sfUdpSocket* sfUdpSocket_create(void);
 
