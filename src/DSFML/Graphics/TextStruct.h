@@ -28,7 +28,7 @@
 ////////////////////////////////////////////////////////////
 // Headers
 ////////////////////////////////////////////////////////////
-#include <SFML/Graphics/Text.hpp>
+#include <DSFML/Graphics/DText.hpp>
 #include <DSFML/Graphics/FontStruct.h>
 #include <DSFML/Config.h>
 #include <string>
@@ -39,7 +39,7 @@
 ////////////////////////////////////////////////////////////
 struct sfText
 {
-    sf::Text            This;
+    sf::DText            This;
     const sfFont*       Font;
     mutable std::string String;
     mutable float Transform[9];

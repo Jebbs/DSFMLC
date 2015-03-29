@@ -175,4 +175,16 @@ DSFML_GRAPHICS_API void sfText_getLocalBounds(const sfText* text, float* left, f
 DSFML_GRAPHICS_API void sfText_getGlobalBounds(const sfText* text, float* left, float* top, float* width, float* height);
 
 
+//Get the array of vertices this Text uses for drawing
+DSFML_GRAPHICS_API const void* sfText_getVertexArray(const sfText* text);
+
+
+//Get the number of vertices this Text uses for drawing
+DSFML_GRAPHICS_API DUint sfText_getVertexCount(const sfText* text);
+
+    
+//Get the PrimitiveType this Text uses for drawing
+DSFML_GRAPHICS_API DInt sfText_getPrimitiveType(const sfText* text);
+
+
 #endif // SFML_TEXT_H

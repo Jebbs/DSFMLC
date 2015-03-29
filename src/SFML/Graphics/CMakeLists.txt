@@ -67,6 +67,11 @@ set(SRC
     ${DSRCROOT}/Texture.cpp
     ${DSRCROOT}/TextureStruct.h
     ${DINCROOT}/Texture.h
+    ${DSRCROOT}/DText.cpp
+    ${DSRCROOT}/DText.hpp
+    ${DSRCROOT}/Text.cpp
+    ${DSRCROOT}/TextStruct.h
+    ${DINCROOT}/Text.h
     ${DSRCROOT}/Transform.cpp
     ${DINCROOT}/Transform.h
     ${DINCROOT}/Types.h

@@ -248,3 +248,18 @@ void sfText_getGlobalBounds(const sfText* text, float* left, float* top, float* 
     *width = sfmlRect.width;
     *height = sfmlRect.height;
 }
+
+const void* sfText_getVertexArray(const sfText* text)
+{
+    return text->This.getVertexArray();
+}
+
+DUint sfText_getVertexCount(const sfText* text)
+{
+    return static_cast<DUint>(text->This.getVertexCount());
+}
+    
+DInt sfText_getPrimitiveType(const sfText* text)
+{
+    return static_cast<DInt>(text->This.getPrimitiveType());
+}
