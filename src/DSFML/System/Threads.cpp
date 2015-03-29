@@ -30,6 +30,7 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 
 //Headers
 #include <X11/Xlib.h>
+#include <DSFML/System/Threads.h>
 
 void linux_XInitThreads(void)
 {

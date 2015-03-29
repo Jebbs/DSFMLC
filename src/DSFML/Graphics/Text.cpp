@@ -180,20 +180,6 @@ void sfText_setColor(sfText* text, DUbyte r, DUbyte g, DUbyte b, DUbyte a)
 }
 
 
-const char* sfText_getString(const sfText* text)
-{
-    text->String = text->This.getString().toAnsiString();
-
-    return text->String.c_str();
-}
-
-
-const DUint* sfText_getUnicodeString(const sfText* text)
-{
-    return text->This.getString().getData();
-}
-
-
 sfFont* sfText_getFont(const sfText* text)
 {
     return const_cast<sfFont*>(text->Font);

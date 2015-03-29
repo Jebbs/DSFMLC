@@ -30,8 +30,11 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #ifndef DSFML_THREADS_H
 #define DSFML_THREADS_H
 
+//Headers
+#include <DSFML/System/Export.h>
+
 //call XInitThreads
-void linux_XInitThreads(void);
+DSFML_SYSTEM_API void linux_XInitThreads(void);
 
 
 #endif // DSFML_THREADS_H

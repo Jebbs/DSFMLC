@@ -90,6 +90,7 @@ if(UNIX)
 endif()
 if(LINUX)
     set(SRC
+        ${SRC}
         ${DSRCROOT}/Threads.cpp
         ${DINCROOT}/Threads.h
     )
