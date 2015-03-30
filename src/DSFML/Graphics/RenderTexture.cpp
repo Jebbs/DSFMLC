@@ -42,7 +42,7 @@ void sfRenderTexture_create(sfRenderTexture* renderTexture, DUint width, DUint h
 {
 
     renderTexture->This.create(width, height, depthBuffer == DTrue);
-    renderTexture->Target = new sfTexture(const_cast<sf::Texture*>(&renderTexture->This.getTexture()));
+    //renderTexture->Target = new sfTexture(const_cast<sf::Texture*>(&renderTexture->This.getTexture()));
     renderTexture->DefaultView.This = renderTexture->This.getDefaultView();
     renderTexture->CurrentView.This = renderTexture->This.getView();
 }
@@ -172,7 +172,8 @@ void sfRenderTexture_resetGLStates(sfRenderTexture* renderTexture)
 sfTexture* sfRenderTexture_getTexture(const sfRenderTexture* renderTexture)
 {
     //Safe because the pointer will only be used in a const instance
-    return const_cast<sfTexture*>(renderTexture->Target);
+    //return const_cast<sfTexture*>(renderTexture->Target);
+    return new sfTexture(const_cast<sf::Texture*>(&renderTexture->This.getTexture()));
 }
 
 

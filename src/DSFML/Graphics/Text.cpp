@@ -40,6 +40,7 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 sfText* sfText_construct(void)
 {
     sfText* text = new sfText;
+    text-This.setFont(NULL);
     text->Font = 0;
 
     return text;
