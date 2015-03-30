@@ -37,7 +37,7 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 
 
 
-sfText* sfText_create(void)
+sfText* sfText_construct(void)
 {
     sfText* text = new sfText;
     text->Font = 0;
