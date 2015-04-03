@@ -107,7 +107,7 @@ DInt sfUdpSocket_send(sfUdpSocket* socket, const void* data, size_t size, const 
 
 
 
-DInt sfUdpSocket_receive(sfUdpSocket* socket, void* data, size_t maxSize, size_t* sizeReceived, char* ipAddress, DUshort* port)
+void* sfUdpSocket_receive(sfUdpSocket* socket, size_t maxSize, size_t* sizeReceived, char* ipAddress, DUshort* port, DInt* status)
 {
     //D didn't like passing an array to C++ and having it altered here, so we will be creating a temp
     //way to store the data and pass it up to D. It should work, so I will look into a different/better solution for 2.2.
@@ -117,14 +117,12 @@ DInt sfUdpSocket_receive(sfUdpSocket* socket, void* data, size_t maxSize, size_t
 
     // Call SFML internal function
     sf::IpAddress sender;
-    unsigned short senderPort;
-    std::size_t received;
 
-    DInt status = static_cast<DInt>(socket->This.receive(data, maxSize, *sizeReceived, sender, *port));
+    *status = static_cast<DInt>(socket->This.receive(receivedData, maxSize, *sizeReceived, sender, *port));
     
     strncpy(ipAddress, sender.toString().c_str(), 16);
 
-    return status;
+    return static_cast<void*>(receivedData);
 }
 
 
