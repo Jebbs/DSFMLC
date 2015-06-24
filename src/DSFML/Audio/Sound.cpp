@@ -157,7 +157,7 @@ float sfSound_getMinDistance(const sfSound* sound)
 
 float sfSound_getAttenuation(const sfSound* sound)
 {
-    sound->This.getAttenuation();
+   return sound->This.getAttenuation();
 }
 
 DLong sfSound_getPlayingOffset(const sfSound* sound)

@@ -110,14 +110,14 @@ DInt sfHttpResponse_getStatus(const sfHttpResponse* httpResponse)
 
 DUint sfHttpResponse_getMajorVersion(const sfHttpResponse* httpResponse)
 {
-    httpResponse->This.getMajorHttpVersion();
+   return httpResponse->This.getMajorHttpVersion();
 }
 
 
 
 DUint sfHttpResponse_getMinorVersion(const sfHttpResponse* httpResponse)
 {
-    httpResponse->This.getMinorHttpVersion();
+    return httpResponse->This.getMinorHttpVersion();
 }
 
 

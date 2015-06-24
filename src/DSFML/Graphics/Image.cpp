@@ -128,7 +128,7 @@ void sfImage_getPixel(const sfImage* image, DUint x, DUint y, DUbyte* r, DUbyte*
 
 const DUbyte* sfImage_getPixelsPtr(const sfImage* image)
 {
-    image->This.getPixelsPtr();
+    return image->This.getPixelsPtr();
 }
 
 

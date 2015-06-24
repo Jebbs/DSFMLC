@@ -90,7 +90,7 @@ DUint sfSoundBuffer_getSampleRate(const sfSoundBuffer* soundBuffer)
 
 DUint sfSoundBuffer_getChannelCount(const sfSoundBuffer* soundBuffer)
 {
-    soundBuffer->This.getChannelCount();
+    return soundBuffer->This.getChannelCount();
 }
 
 DLong sfSoundBuffer_getDuration(const sfSoundBuffer* soundBuffer)

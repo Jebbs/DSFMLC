@@ -112,7 +112,7 @@ void sfView_getSize(const sfView* view, float* x, float* y)
 
 float sfView_getRotation(const sfView* view)
 {
-    view->This.getRotation();
+   return view->This.getRotation();
 }
 
 

@@ -55,7 +55,7 @@ void sfSoundRecorder_stop(sfSoundRecorder* soundRecorder)
 
 DUint sfSoundRecorder_getSampleRate(const sfSoundRecorder* soundRecorder)
 {
-	soundRecorder->This.getSampleRate();
+	return soundRecorder->This.getSampleRate();
 }
 
 DBool sfSoundRecorder_isAvailable(void)

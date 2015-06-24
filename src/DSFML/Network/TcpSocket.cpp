@@ -71,13 +71,13 @@ void sfTcpSocket_setBlocking(sfTcpSocket* socket, DBool blocking)
 
 DBool sfTcpSocket_isBlocking(const sfTcpSocket* socket)
 {
-    socket->This.isBlocking()?DTrue: DFalse;
+    return socket->This.isBlocking()?DTrue: DFalse;
 }
 
 
 DUshort sfTcpSocket_getLocalPort(const sfTcpSocket* socket)
 {
-    socket->This.getLocalPort();
+    return socket->This.getLocalPort();
 }
 
 
@@ -92,7 +92,7 @@ void sfTcpSocket_getRemoteAddress(const sfTcpSocket* socket, char* ipAddress)
 
 DUshort sfTcpSocket_getRemotePort(const sfTcpSocket* socket)
 {
-    socket->This.getRemotePort();
+    return socket->This.getRemotePort();
 }
 
 

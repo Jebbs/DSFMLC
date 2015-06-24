@@ -70,14 +70,14 @@ void sfPacket_clear(sfPacket* packet)
 ////////////////////////////////////////////////////////////
 const void* sfPacket_getData(const sfPacket* packet)
 {
-    packet->This.getData();
+   return packet->This.getData();
 }
 
 
 ////////////////////////////////////////////////////////////
 size_t sfPacket_getDataSize(const sfPacket* packet)
 {
-    packet->This.getDataSize();
+    return packet->This.getDataSize();
 }
 
 

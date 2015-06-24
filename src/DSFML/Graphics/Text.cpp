@@ -92,7 +92,7 @@ void sfText_getPosition(const sfText* text, float* positionX, float* positionY)
 
 float sfText_getRotation(const sfText* text)
 {
-    text->This.getRotation();
+    return text->This.getRotation();
 }
 
 
@@ -188,13 +188,13 @@ sfFont* sfText_getFont(const sfText* text)
 
 DUint sfText_getCharacterSize(const sfText* text)
 {
-    text->This.getCharacterSize();
+    return text->This.getCharacterSize();
 }
 
 
 DUint sfText_getStyle(const sfText* text)
 {
-    text->This.getStyle();
+    return text->This.getStyle();
 }
 
 

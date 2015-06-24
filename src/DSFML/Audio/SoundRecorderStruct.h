@@ -68,7 +68,7 @@ protected:
 
 	virtual bool onProcessSamples(const sf::Int16* samples, std::size_t sampleCount)
 	{
-		callBacks->onProcessSamples(samples, sampleCount);
+		return (callBacks->onProcessSamples(samples, sampleCount) == DTrue);
 	}
 
 	virtual void onStop()
