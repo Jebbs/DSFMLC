@@ -10,7 +10,9 @@ The purpose of DSFMLC is to be a better link between DSFML and SFML than CSFML w
 Building DSFMLC
 =======
 DSFML uses the shared libraries produced by DSFMLC, so you need to build them in order use DSFML.
-For prebuilt binaries you can use [these](https://github.com/Jebbs/DSFML#nightlies), but I currently don't update them as often as I should (That will change soon).  To build from source, you can follow [SFML's tutorial](http://www.sfml-dev.org/tutorials/2.2/compile-with-cmake.php).
+For prebuilt binaries you can use [these](http://jebbs.github.io/DSFML/downloads.html).  
+
+To build from source, you can go [here](http://dsfml.com/docs/buildingfromsource.html) or follow [SFML's tutorial](http://www.sfml-dev.org/tutorials/2.1/compile-with-cmake.php).
 
 Other thoughts
 =======

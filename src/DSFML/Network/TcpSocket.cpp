@@ -127,8 +127,6 @@ void* sfTcpSocket_receive(sfTcpSocket* socket, size_t maxSize, size_t* sizeRecei
     sfTcpSocket_destroyInternalData();
     receivedData = new char[maxSize];
     
-    size_t received;
-    
     *status = static_cast<DInt>(socket->This.receive(receivedData, maxSize, *sizeReceived));
         
     return static_cast<void*>(receivedData);

@@ -140,7 +140,7 @@ DInt sfUdpSocket_sendPacket(sfUdpSocket* socket, sfPacket* packet, const char* i
 DInt sfUdpSocket_receivePacket(sfUdpSocket* socket, sfPacket* packet, char* ipAddress, DUshort* port)
 {
     sf::IpAddress sender;
-    unsigned short senderPort;
+
     DInt status = static_cast<DInt>(socket->This.receive(packet->This, sender, *port));
     
     strncpy(ipAddress, sender.toString().c_str(), 16);

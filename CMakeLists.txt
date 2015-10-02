@@ -21,7 +21,7 @@ include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/Config.cmake)
 
 # setup version numbers
 set(VERSION_MAJOR 2)
-set(VERSION_MINOR 0)
+set(VERSION_MINOR 1)
 set(VERSION_PATCH 0)
 
 # add the SFML header path
@@ -60,12 +60,13 @@ endif()
 
 # define an option for choosing between static and dynamic C runtime (Windows only)
 if(WINDOWS)
-    sfml_set_option(SFML_USE_STATIC_STD_LIBS FALSE BOOL "TRUE to statically link to the standard libraries, FALSE to use them as DLLs")
+    sfml_set_option(SFML_USE_STATIC_STD_LIBS TRUE BOOL "TRUE to statically link to the standard libraries, FALSE to use them as DLLs")
 
-    # the following combination of flags is not valid
-    if (BUILD_SHARED_LIBS AND SFML_USE_STATIC_STD_LIBS)
-        message(FATAL_ERROR "BUILD_SHARED_LIBS and SFML_USE_STATIC_STD_LIBS cannot be used together")
-    endif()
+    # the following combination of flags should not be valid for C++
+    #But we don't care since this will be used from D
+    #if (BUILD_SHARED_LIBS AND SFML_USE_STATIC_STD_LIBS)
+    #    message(FATAL_ERROR "BUILD_SHARED_LIBS and SFML_USE_STATIC_STD_LIBS cannot be used together")
+    #endif()
 
     # for VC++, we can apply it globally by modifying the compiler flags
     if(COMPILER_MSVC AND SFML_USE_STATIC_STD_LIBS)
@@ -187,7 +188,7 @@ else()
 endif()
 
 install(FILES cmake/Modules/FindSFML.cmake DESTINATION ${INSTALL_MISC_DIR}/cmake/Modules)
-#install(FILES license.txt DESTINATION ${INSTALL_MISC_DIR})
+install(FILES license.txt DESTINATION ${INSTALL_MISC_DIR})
 #install(FILES readme.txt DESTINATION ${INSTALL_MISC_DIR})
 
 if(WINDOWS)
