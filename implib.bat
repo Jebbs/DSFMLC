@@ -18,9 +18,9 @@ del libdsfmlc-network.a
 del libdsfmlc-system.a
 
 %impPath%\implib /s dsfmlc-audio.lib dsfmlc-audio-2.dll
-%impPath%\implib /s dsfml-graphics.lib dsfmlc-graphics-2.dll
-%impPath%\implib /s dsfml-window.lib dsfmlc-window-2.dll
-%impPath%\implib /s dsfml-network.lib dsfmlc-network-2.dll
-%impPath%\implib /s dsfml-system.lib dsfmlc-system-2.dll
+%impPath%\implib /s dsfmlc-graphics.lib dsfmlc-graphics-2.dll
+%impPath%\implib /s dsfmlc-window.lib dsfmlc-window-2.dll
+%impPath%\implib /s dsfmlc-network.lib dsfmlc-network-2.dll
+%impPath%\implib /s dsfmlc-system.lib dsfmlc-system-2.dll
 
 cd %start%
