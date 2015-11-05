@@ -1,6 +1,6 @@
 DSFMLC
 =======
-[![Build Status](https://travis-ci.org/Jebbs/DSFMLC.svg)](https://travis-ci.org/Jebbs/DSFMLC)
+[![Build Status](https://travis-ci.org/Jebbs/DSFMLC.svg)](https://travis-ci.org/Jebbs/DSFMLC) [![Build status](https://ci.appveyor.com/api/projects/status/33wb291gyvobq447/branch/master?svg=true)](https://ci.appveyor.com/project/Jebbs/dsfmlc/branch/master)
 
 DSFMLC is a C/C++ library based off of CSFML to allow DSFML the ablility to interact with and use the SFML library.
 
