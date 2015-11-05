@@ -1,10 +1,28 @@
+os:
+  - linux
+  - osx
+
 language: cpp
-compiler:
-  - gcc
 
-before_install:
-  - sudo apt-get install -y libpthread-stubs0-dev libgl1-mesa-dev libx11-dev libxrandr-dev libfreetype6-dev libglew1.5-dev libjpeg8-dev libsndfile1-dev libopenal-dev
-  - cmake .
+compiler: gcc
 
-script: make
+sudo: false
+
+addons:
+  apt:
+    packages:
+      - libfreetype6-dev
+      - libgl1-mesa-dev
+      - libglew-dev
+      - libjpeg8-dev
+      - libopenal-dev
+      - libpthread-stubs0-dev
+      - libsndfile1-dev
+      - libx11-dev
+      - libxrandr-dev
+
+
+script: 
+- cmake .
+- make
 
