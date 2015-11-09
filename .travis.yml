@@ -15,7 +15,7 @@ addons:
       - libx11-dev
       - libx11-xcb-dev
       - libxcb-image0-dev
-      - llibxcb-randr0-dev
+      - libxcb-randr0-dev
       - libudev-dev
       - libgl1-mesa-dev
       - libjpeg8-dev
