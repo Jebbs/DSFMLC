@@ -14,6 +14,7 @@ addons:
       - libpthread-stubs0-dev
       - libx11-dev
       - libx11-xcb-dev
+      - libxcb-image0-dev
       - libxrandr-dev
       - libudev-dev
       - libgl1-mesa-dev
