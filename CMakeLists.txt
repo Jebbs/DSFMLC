@@ -113,7 +113,7 @@ endif()
 
 # define SFML_STATIC if the build type is not set to 'shared'
 if(NOT BUILD_SHARED_LIBS)
-    #add_definitions(-DSFML_STATIC)
+    add_definitions(-DSFML_STATIC)
 endif()
 
 # remove SL security warnings with Visual C++

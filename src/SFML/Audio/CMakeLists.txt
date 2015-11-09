@@ -97,6 +97,12 @@ if(SFML_OS_ANDROID)
 endif()
 list(APPEND AUDIO_EXT_LIBS ${VORBIS_LIBRARIES} ${FLAC_LIBRARY})
 
+#Because we have changed the name of the target library from sfml-audio to dsfmlc-audio,
+#we need to make sure the correct export gets defined.
+if(BUILD_SHARED_LIBS)
+    add_definitions(-DSFML_AUDIO_EXPORTS)
+endif()
+
 # define the dsfml-audio target
 sfml_add_library(dsfmlc-audio
                  SOURCES ${SRC} ${CODECS_SRC}

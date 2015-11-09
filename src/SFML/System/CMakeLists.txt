@@ -97,6 +97,12 @@ if(SFML_OS_ANDROID)
     list(APPEND SYSTEM_EXT_LIBS android log)
 endif()
 
+#Because we have changed the name of the target library from sfml-system to dsfmlc-system,
+#we need to make sure the correct export gets defined.
+if(BUILD_SHARED_LIBS)
+    add_definitions(-DSFML_SYSTEM_EXPORTS)
+endif()
+
 # define the dsfml-system target
 sfml_add_library(dsfmlc-system
                  SOURCES ${SRC} ${PLATFORM_SRC}

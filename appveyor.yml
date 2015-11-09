@@ -27,6 +27,6 @@ build_script:
  - cd %VS%
  - vcvarsall %config%
  - cd "C:\\projects\\dsfmlc"
- - cmake -G"NMake Makefiles" -DBUILD_SHARED_LIBS:BOOL=TRUE .
+ - cmake -G"NMake Makefiles" .
  - nmake
 

@@ -50,6 +50,12 @@ if(SFML_OS_WINDOWS)
     set(NETWORK_EXT_LIBS ${NETWORK_EXT_LIBS} ws2_32)
 endif()
 
+#Because we have changed the name of the target library from sfml-network to dsfmlc-network,
+#we need to make sure the correct export gets defined.
+if(BUILD_SHARED_LIBS)
+    add_definitions(-DSFML_NETWORK_EXPORTS)
+endif()
+
 # define the dsfml-network target
 sfml_add_library(dsfmlc-network
                  SOURCES ${SRC}

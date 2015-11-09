@@ -246,6 +246,12 @@ else()
     list(APPEND WINDOW_EXT_LIBS ${OPENGL_gl_LIBRARY})
 endif()
 
+#Because we have changed the name of the target library from sfml-window to dsfmlc-window,
+#we need to make sure the correct export gets defined.
+if(BUILD_SHARED_LIBS)
+    add_definitions(-DSFML_WINDOW_EXPORTS)
+endif()
+
 # define the dsfmlc-window target
 sfml_add_library(dsfmlc-window
                  SOURCES ${SRC} ${PLATFORM_SRC}

@@ -150,6 +150,12 @@ if(SFML_COMPILER_GCC)
     set_source_files_properties(${SRCROOT}/ImageLoader.cpp PROPERTIES COMPILE_FLAGS -fno-strict-aliasing)
 endif()
 
+#Because we have changed the name of the target library from sfml-graphics to dsfmlc-graphics,
+#we need to make sure the correct export gets defined.
+if(BUILD_SHARED_LIBS)
+    add_definitions(-DSFML_GRAPHICS_EXPORTS)
+endif()
+
 # define the dsfml-graphics target
 sfml_add_library(dsfmlc-graphics
                  SOURCES ${SRC} ${DRAWABLES_SRC} ${RENDER_TEXTURE_SRC} ${STB_SRC}
