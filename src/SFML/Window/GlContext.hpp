@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2013 Laurent Gomila (laurent.gom@gmail.com)
+// Copyright (C) 2007-2015 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -29,6 +29,7 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <SFML/Config.hpp>
+#include <SFML/Window/Context.hpp>
 #include <SFML/Window/ContextSettings.hpp>
 #include <SFML/System/NonCopyable.hpp>
 
@@ -45,7 +46,7 @@ class WindowImpl;
 ////////////////////////////////////////////////////////////
 class GlContext : NonCopyable
 {
-public :
+public:
 
     ////////////////////////////////////////////////////////////
     /// \brief Perform the global initialization
@@ -118,7 +119,16 @@ public :
     ////////////////////////////////////////////////////////////
     static GlContext* create(const ContextSettings& settings, unsigned int width, unsigned int height);
 
-public :
+public:
+    ////////////////////////////////////////////////////////////
+    /// \brief Get the address of an OpenGL function
+    ///
+    /// \param name Name of the function to get the address of
+    ///
+    /// \return Address of the OpenGL function, 0 on failure
+    ///
+    ////////////////////////////////////////////////////////////
+    static GlFunctionPointer getFunction(const char* name);
 
     ////////////////////////////////////////////////////////////
     /// \brief Destructor
@@ -173,7 +183,7 @@ public :
     ////////////////////////////////////////////////////////////
     virtual void setVerticalSyncEnabled(bool enabled) = 0;
 
-protected :
+protected:
 
     ////////////////////////////////////////////////////////////
     /// \brief Default constructor
@@ -201,16 +211,17 @@ protected :
     /// lower the score is, the better the configuration is.
     ///
     /// \param bitsPerPixel Requested pixel depth (bits per pixel)
-    /// \param settings     Requested additionnal settings
+    /// \param settings     Requested additional settings
     /// \param colorBits    Color bits of the configuration to evaluate
     /// \param depthBits    Depth bits of the configuration to evaluate
     /// \param stencilBits  Stencil bits of the configuration to evaluate
     /// \param antialiasing Antialiasing level of the configuration to evaluate
+    /// \param accelerated  Whether the pixel format is hardware accelerated
     ///
     /// \return Score of the configuration
     ///
     ////////////////////////////////////////////////////////////
-    static int evaluateFormat(unsigned int bitsPerPixel, const ContextSettings& settings, int colorBits, int depthBits, int stencilBits, int antialiasing);
+    static int evaluateFormat(unsigned int bitsPerPixel, const ContextSettings& settings, int colorBits, int depthBits, int stencilBits, int antialiasing, bool accelerated);
 
     ////////////////////////////////////////////////////////////
     // Member data
@@ -224,6 +235,13 @@ private:
     ///
     ////////////////////////////////////////////////////////////
     void initialize();
+
+    ////////////////////////////////////////////////////////////
+    /// \brief Check whether the context is compatible with the requested settings
+    /// \param requestedSettings Requested settings during context creation
+    ///
+    ////////////////////////////////////////////////////////////
+    void checkSettings(const ContextSettings& requestedSettings);
 };
 
 } // namespace priv

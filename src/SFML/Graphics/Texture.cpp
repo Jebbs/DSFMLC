@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2013 Laurent Gomila (laurent.gom@gmail.com)
+// Copyright (C) 2007-2015 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -29,6 +29,7 @@
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/GLCheck.hpp>
 #include <SFML/Graphics/TextureSaver.hpp>
+#include <SFML/Window/Context.hpp>
 #include <SFML/Window/Window.hpp>
 #include <SFML/System/Mutex.hpp>
 #include <SFML/System/Lock.hpp>
@@ -39,15 +40,30 @@
 
 namespace
 {
+    sf::Mutex mutex;
+
     // Thread-safe unique identifier generator,
     // is used for states cache (see RenderTarget)
     sf::Uint64 getUniqueId()
     {
-        static sf::Uint64 id = 1; // start at 1, zero is "no texture"
-        static sf::Mutex mutex;
-
         sf::Lock lock(mutex);
+
+        static sf::Uint64 id = 1; // start at 1, zero is "no texture"
+
         return id++;
+    }
+
+    unsigned int checkMaximumTextureSize()
+    {
+        // Create a temporary context in case the user queries
+        // the size before a GlResource is created, thus
+        // initializing the shared context
+        sf::Context context;
+
+        GLint size;
+        glCheck(glGetIntegerv(GL_MAX_TEXTURE_SIZE, &size));
+
+        return static_cast<unsigned int>(size);
     }
 }
 
@@ -62,9 +78,9 @@ m_texture      (0),
 m_isSmooth     (false),
 m_isRepeated   (false),
 m_pixelsFlipped(false),
+m_fboAttachment(false),
 m_cacheId      (getUniqueId())
 {
-
 }
 
 
@@ -76,6 +92,7 @@ m_texture      (0),
 m_isSmooth     (copy.m_isSmooth),
 m_isRepeated   (copy.m_isRepeated),
 m_pixelsFlipped(false),
+m_fboAttachment(false),
 m_cacheId      (getUniqueId())
 {
     if (copy.m_texture)
@@ -126,6 +143,7 @@ bool Texture::create(unsigned int width, unsigned int height)
     m_size.y        = height;
     m_actualSize    = actualSize;
     m_pixelsFlipped = false;
+    m_fboAttachment = false;
 
     ensureGlContext();
 
@@ -137,14 +155,33 @@ bool Texture::create(unsigned int width, unsigned int height)
         m_texture = static_cast<unsigned int>(texture);
     }
 
+    // Make sure that extensions are initialized
+    priv::ensureExtensionsInit();
+
     // Make sure that the current texture binding will be preserved
     priv::TextureSaver save;
 
+    static bool textureEdgeClamp = GLEXT_texture_edge_clamp || GLEXT_EXT_texture_edge_clamp;
+
+    if (!m_isRepeated && !textureEdgeClamp)
+    {
+        static bool warned = false;
+
+        if (!warned)
+        {
+            err() << "OpenGL extension SGIS_texture_edge_clamp unavailable" << std::endl;
+            err() << "Artifacts may occur along texture edges" << std::endl;
+            err() << "Ensure that hardware acceleration is enabled if available" << std::endl;
+
+            warned = true;
+        }
+    }
+
     // Initialize the texture
     glCheck(glBindTexture(GL_TEXTURE_2D, m_texture));
-    glCheck(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_actualSize.x, m_actualSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL));
-    glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_isRepeated ? GL_REPEAT : GL_CLAMP_TO_EDGE));
-    glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_isRepeated ? GL_REPEAT : GL_CLAMP_TO_EDGE));
+    glCheck(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_actualSize.x, m_actualSize.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL));
+    glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_isRepeated ? GL_REPEAT : (textureEdgeClamp ? GLEXT_GL_CLAMP_TO_EDGE : GLEXT_GL_CLAMP)));
+    glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_isRepeated ? GL_REPEAT : (textureEdgeClamp ? GLEXT_GL_CLAMP_TO_EDGE : GLEXT_GL_CLAMP)));
     glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, m_isSmooth ? GL_LINEAR : GL_NEAREST));
     glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, m_isSmooth ? GL_LINEAR : GL_NEAREST));
     m_cacheId = getUniqueId();
@@ -266,6 +303,27 @@ Image Texture::copyToImage() const
     // Create an array of pixels
     std::vector<Uint8> pixels(m_size.x * m_size.y * 4);
 
+#ifdef SFML_OPENGL_ES
+
+    // OpenGL ES doesn't have the glGetTexImage function, the only way to read
+    // from a texture is to bind it to a FBO and use glReadPixels
+    GLuint frameBuffer = 0;
+    glCheck(GLEXT_glGenFramebuffers(1, &frameBuffer));
+    if (frameBuffer)
+    {
+        GLint previousFrameBuffer;
+        glCheck(glGetIntegerv(GLEXT_GL_FRAMEBUFFER_BINDING, &previousFrameBuffer));
+
+        glCheck(GLEXT_glBindFramebuffer(GLEXT_GL_FRAMEBUFFER, frameBuffer));
+        glCheck(GLEXT_glFramebufferTexture2D(GLEXT_GL_FRAMEBUFFER, GLEXT_GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_texture, 0));
+        glCheck(glReadPixels(0, 0, m_size.x, m_size.y, GL_RGBA, GL_UNSIGNED_BYTE, &pixels[0]));
+        glCheck(GLEXT_glDeleteFramebuffers(1, &frameBuffer));
+
+        glCheck(GLEXT_glBindFramebuffer(GLEXT_GL_FRAMEBUFFER, previousFrameBuffer));
+    }
+
+#else
+
     if ((m_size == m_actualSize) && !m_pixelsFlipped)
     {
         // Texture is not padded nor flipped, we can use a direct copy
@@ -301,6 +359,8 @@ Image Texture::copyToImage() const
             dst += dstPitch;
         }
     }
+
+#endif // SFML_OPENGL_ES
 
     // Create the image
     Image image;
@@ -425,9 +485,25 @@ void Texture::setRepeated(bool repeated)
             // Make sure that the current texture binding will be preserved
             priv::TextureSaver save;
 
+            static bool textureEdgeClamp = GLEXT_texture_edge_clamp || GLEXT_EXT_texture_edge_clamp;
+
+            if (!m_isRepeated && !textureEdgeClamp)
+            {
+                static bool warned = false;
+
+                if (!warned)
+                {
+                    err() << "OpenGL extension SGIS_texture_edge_clamp unavailable" << std::endl;
+                    err() << "Artifacts may occur along texture edges" << std::endl;
+                    err() << "Ensure that hardware acceleration is enabled if available" << std::endl;
+
+                    warned = true;
+                }
+            }
+
             glCheck(glBindTexture(GL_TEXTURE_2D, m_texture));
-            glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_isRepeated ? GL_REPEAT : GL_CLAMP_TO_EDGE));
-            glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_isRepeated ? GL_REPEAT : GL_CLAMP_TO_EDGE));
+            glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, m_isRepeated ? GL_REPEAT : (textureEdgeClamp ? GLEXT_GL_CLAMP_TO_EDGE : GLEXT_GL_CLAMP)));
+            glCheck(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, m_isRepeated ? GL_REPEAT : (textureEdgeClamp ? GLEXT_GL_CLAMP_TO_EDGE : GLEXT_GL_CLAMP)));
         }
     }
 }
@@ -470,7 +546,7 @@ void Texture::bind(const Texture* texture, CoordinateType coordinateType)
             if (texture->m_pixelsFlipped)
             {
                 matrix[5] = -matrix[5];
-                matrix[13] = static_cast<float>(texture->m_size.y / texture->m_actualSize.y);
+                matrix[13] = static_cast<float>(texture->m_size.y) / texture->m_actualSize.y;
             }
 
             // Load the matrix
@@ -485,6 +561,13 @@ void Texture::bind(const Texture* texture, CoordinateType coordinateType)
     {
         // Bind no texture
         glCheck(glBindTexture(GL_TEXTURE_2D, 0));
+
+        // Reset the texture matrix
+        glCheck(glMatrixMode(GL_TEXTURE));
+        glCheck(glLoadIdentity());
+
+        // Go back to model-view mode (sf::RenderTarget relies on it)
+        glCheck(glMatrixMode(GL_MODELVIEW));
     }
 }
 
@@ -492,12 +575,12 @@ void Texture::bind(const Texture* texture, CoordinateType coordinateType)
 ////////////////////////////////////////////////////////////
 unsigned int Texture::getMaximumSize()
 {
-    ensureGlContext();
+    // TODO: Remove this lock when it becomes unnecessary in C++11
+    Lock lock(mutex);
 
-    GLint size;
-    glCheck(glGetIntegerv(GL_MAX_TEXTURE_SIZE, &size));
+    static unsigned int size = checkMaximumTextureSize();
 
-    return static_cast<unsigned int>(size);
+    return size;
 }
 
 
@@ -512,9 +595,17 @@ Texture& Texture::operator =(const Texture& right)
     std::swap(m_isSmooth,      temp.m_isSmooth);
     std::swap(m_isRepeated,    temp.m_isRepeated);
     std::swap(m_pixelsFlipped, temp.m_pixelsFlipped);
+    std::swap(m_fboAttachment, temp.m_fboAttachment);
     m_cacheId = getUniqueId();
 
     return *this;
+}
+
+
+////////////////////////////////////////////////////////////
+unsigned int Texture::getNativeHandle() const
+{
+    return m_texture;
 }
 
 
@@ -523,10 +614,10 @@ unsigned int Texture::getValidSize(unsigned int size)
 {
     ensureGlContext();
 
-    // Make sure that GLEW is initialized
-    priv::ensureGlewInit();
+    // Make sure that extensions are initialized
+    priv::ensureExtensionsInit();
 
-    if (GLEW_ARB_texture_non_power_of_two)
+    if (GLEXT_texture_non_power_of_two)
     {
         // If hardware supports NPOT textures, then just return the unmodified size
         return size;

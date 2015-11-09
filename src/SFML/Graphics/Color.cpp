@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2013 Laurent Gomila (laurent.gom@gmail.com)
+// Copyright (C) 2007-2015 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -68,6 +68,24 @@ a(alpha)
 
 
 ////////////////////////////////////////////////////////////
+Color::Color(Uint32 color) :
+r((color & 0xff000000) >> 24),
+g((color & 0x00ff0000) >> 16),
+b((color & 0x0000ff00) >> 8 ),
+a((color & 0x000000ff) >> 0 )
+{
+
+}
+
+
+////////////////////////////////////////////////////////////
+Uint32 Color::toInteger() const
+{
+    return (r << 24) | (g << 16) | (b << 8) | a;
+}
+
+
+////////////////////////////////////////////////////////////
 bool operator ==(const Color& left, const Color& right)
 {
     return (left.r == right.r) &&
@@ -87,20 +105,30 @@ bool operator !=(const Color& left, const Color& right)
 ////////////////////////////////////////////////////////////
 Color operator +(const Color& left, const Color& right)
 {
-    return Color(static_cast<Uint8>(std::min(left.r + right.r, 255)),
-                 static_cast<Uint8>(std::min(left.g + right.g, 255)),
-                 static_cast<Uint8>(std::min(left.b + right.b, 255)),
-                 static_cast<Uint8>(std::min(left.a + right.a, 255)));
+    return Color(Uint8(std::min(int(left.r) + right.r, 255)),
+                 Uint8(std::min(int(left.g) + right.g, 255)),
+                 Uint8(std::min(int(left.b) + right.b, 255)),
+                 Uint8(std::min(int(left.a) + right.a, 255)));
+}
+
+
+////////////////////////////////////////////////////////////
+Color operator -(const Color& left, const Color& right)
+{
+    return Color(Uint8(std::max(int(left.r) - right.r, 0)),
+                 Uint8(std::max(int(left.g) - right.g, 0)),
+                 Uint8(std::max(int(left.b) - right.b, 0)),
+                 Uint8(std::max(int(left.a) - right.a, 0)));
 }
 
 
 ////////////////////////////////////////////////////////////
 Color operator *(const Color& left, const Color& right)
 {
-    return Color(static_cast<Uint8>(left.r * right.r / 255),
-                 static_cast<Uint8>(left.g * right.g / 255),
-                 static_cast<Uint8>(left.b * right.b / 255),
-                 static_cast<Uint8>(left.a * right.a / 255));
+    return Color(Uint8(int(left.r) * right.r / 255),
+                 Uint8(int(left.g) * right.g / 255),
+                 Uint8(int(left.b) * right.b / 255),
+                 Uint8(int(left.a) * right.a / 255));
 }
 
 
@@ -108,6 +136,13 @@ Color operator *(const Color& left, const Color& right)
 Color& operator +=(Color& left, const Color& right)
 {
     return left = left + right;
+}
+
+
+////////////////////////////////////////////////////////////
+Color& operator -=(Color& left, const Color& right)
+{
+    return left = left - right;
 }
 
 

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2013 Laurent Gomila (laurent.gom@gmail.com)
+// Copyright (C) 2007-2015 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -28,9 +28,10 @@
 #include <SFML/Graphics/ImageLoader.hpp>
 #include <SFML/System/InputStream.hpp>
 #include <SFML/System/Err.hpp>
-#include <SFML/Graphics/stb_image/stb_image.h>
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb_image.h>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#include <SFML/Graphics/stb_image/stb_image_write.h>
+#include <stb_image_write.h>
 extern "C"
 {
     #include <jpeglib.h>
@@ -55,7 +56,7 @@ namespace
         sf::InputStream* stream = static_cast<sf::InputStream*>(user);
         return static_cast<int>(stream->read(data, size));
     }
-    void skip(void* user, unsigned int size)
+    void skip(void* user, int size)
     {
         sf::InputStream* stream = static_cast<sf::InputStream*>(user);
         stream->seek(stream->tell() + size);
@@ -123,7 +124,7 @@ bool ImageLoader::loadImageFromFile(const std::string& filename, std::vector<Uin
     else
     {
         // Error, failed to load the image
-        err() << "Failed to load image \"" << filename << "\". Reason : " << stbi_failure_reason() << std::endl;
+        err() << "Failed to load image \"" << filename << "\". Reason: " << stbi_failure_reason() << std::endl;
 
         return false;
     }
@@ -162,7 +163,7 @@ bool ImageLoader::loadImageFromMemory(const void* data, std::size_t dataSize, st
         else
         {
             // Error, failed to load the image
-            err() << "Failed to load image from memory. Reason : " << stbi_failure_reason() << std::endl;
+            err() << "Failed to load image from memory. Reason: " << stbi_failure_reason() << std::endl;
 
             return false;
         }
@@ -212,7 +213,7 @@ bool ImageLoader::loadImageFromStream(InputStream& stream, std::vector<Uint8>& p
     else
     {
         // Error, failed to load the image
-        err() << "Failed to load image from stream. Reason : " << stbi_failure_reason() << std::endl;
+        err() << "Failed to load image from stream. Reason: " << stbi_failure_reason() << std::endl;
 
         return false;
     }
@@ -226,35 +227,34 @@ bool ImageLoader::saveImageToFile(const std::string& filename, const std::vector
     if (!pixels.empty() && (size.x > 0) && (size.y > 0))
     {
         // Deduce the image type from its extension
-        if (filename.size() > 3)
-        {
-            // Extract the extension
-            std::string extension = filename.substr(filename.size() - 3);
 
-            if (toLower(extension) == "bmp")
-            {
-                // BMP format
-                if (stbi_write_bmp(filename.c_str(), size.x, size.y, 4, &pixels[0]))
-                    return true;
-            }
-            else if (toLower(extension) == "tga")
-            {
-                // TGA format
-                if (stbi_write_tga(filename.c_str(), size.x, size.y, 4, &pixels[0]))
-                    return true;
-            }
-            else if(toLower(extension) == "png")
-            {
-                // PNG format
-                if (stbi_write_png(filename.c_str(), size.x, size.y, 4, &pixels[0], 0))
-                    return true;
-            }
-            else if (toLower(extension) == "jpg")
-            {
-                // JPG format
-                if (writeJpg(filename, pixels, size.x, size.y))
-                    return true;
-            }
+        // Extract the extension
+        const std::size_t dot = filename.find_last_of('.');
+        const std::string extension = dot != std::string::npos ? toLower(filename.substr(dot + 1)) : "";
+
+        if (extension == "bmp")
+        {
+            // BMP format
+            if (stbi_write_bmp(filename.c_str(), size.x, size.y, 4, &pixels[0]))
+                return true;
+        }
+        else if (extension == "tga")
+        {
+            // TGA format
+            if (stbi_write_tga(filename.c_str(), size.x, size.y, 4, &pixels[0]))
+                return true;
+        }
+        else if (extension == "png")
+        {
+            // PNG format
+            if (stbi_write_png(filename.c_str(), size.x, size.y, 4, &pixels[0], 0))
+                return true;
+        }
+        else if (extension == "jpg" || extension == "jpeg")
+        {
+            // JPG format
+            if (writeJpg(filename, pixels, size.x, size.y))
+                return true;
         }
     }
 
@@ -286,7 +286,7 @@ bool ImageLoader::writeJpg(const std::string& filename, const std::vector<Uint8>
     jpeg_set_defaults(&compressInfos);
     jpeg_set_quality(&compressInfos, 90, TRUE);
 
-    // Get rid of the aplha channel
+    // Get rid of the alpha channel
     std::vector<Uint8> buffer(width * height * 3);
     for (std::size_t i = 0; i < width * height; ++i)
     {

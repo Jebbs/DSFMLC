@@ -2,13 +2,12 @@
 set(INCROOT ${PROJECT_SOURCE_DIR}/include/SFML/Audio)
 set(SRCROOT ${PROJECT_SOURCE_DIR}/src/SFML/Audio)
 
-set(DINCROOT ${PROJECT_SOURCE_DIR}/include/DSFML/Audio)
-set(DSRCROOT ${PROJECT_SOURCE_DIR}/src/DSFML/Audio)
-
 # all source files
 set(SRC
     ${SRCROOT}/ALCheck.cpp
     ${SRCROOT}/ALCheck.hpp
+    ${SRCROOT}/AlResource.cpp
+    ${INCROOT}/AlResource.hpp
     ${SRCROOT}/AudioDevice.cpp
     ${SRCROOT}/AudioDevice.hpp
     ${INCROOT}/Export.hpp
@@ -22,56 +21,84 @@ set(SRC
     ${INCROOT}/SoundBuffer.hpp
     ${SRCROOT}/SoundBufferRecorder.cpp
     ${INCROOT}/SoundBufferRecorder.hpp
-    ${SRCROOT}/SoundFile.cpp
-    ${SRCROOT}/SoundFile.hpp
+    ${SRCROOT}/InputSoundFile.cpp
+    ${INCROOT}/InputSoundFile.hpp
+    ${SRCROOT}/OutputSoundFile.cpp
+    ${INCROOT}/OutputSoundFile.hpp
     ${SRCROOT}/SoundRecorder.cpp
     ${INCROOT}/SoundRecorder.hpp
     ${SRCROOT}/SoundSource.cpp
     ${INCROOT}/SoundSource.hpp
     ${SRCROOT}/SoundStream.cpp
     ${INCROOT}/SoundStream.hpp
-
-     ${DINCROOT}/Export.h
-     ${DSRCROOT}/Listener.cpp
-     ${DINCROOT}/Listener.h
-     ${DSRCROOT}/Sound.cpp
-     ${DINCROOT}/Sound.h
-     ${DSRCROOT}/SoundBuffer.cpp
-     ${DINCROOT}/SoundBuffer.h
-     ${DSRCROOT}/SoundFile.cpp
-     ${DINCROOT}/SoundFile.h
-     ${DSRCROOT}/SoundFileStruct.h
-     ${DSRCROOT}/SoundRecorder.cpp
-     ${DINCROOT}/SoundRecorder.h
-     ${DSRCROOT}/SoundRecorderStruct.h
-     ${DSRCROOT}/SoundStreamStruct.h
-     ${DSRCROOT}/SoundStream.cpp
-     ${DINCROOT}/SoundStream.h
 )
 source_group("" FILES ${SRC})
 
+set(CODECS_SRC
+    ${SRCROOT}/SoundFileFactory.cpp
+    ${INCROOT}/SoundFileFactory.hpp
+    ${INCROOT}/SoundFileFactory.inl
+    ${INCROOT}/SoundFileReader.hpp
+    ${SRCROOT}/SoundFileReaderFlac.hpp
+    ${SRCROOT}/SoundFileReaderFlac.cpp
+    ${SRCROOT}/SoundFileReaderOgg.hpp
+    ${SRCROOT}/SoundFileReaderOgg.cpp
+    ${SRCROOT}/SoundFileReaderWav.hpp
+    ${SRCROOT}/SoundFileReaderWav.cpp
+    ${INCROOT}/SoundFileWriter.hpp
+    ${SRCROOT}/SoundFileWriterFlac.hpp
+    ${SRCROOT}/SoundFileWriterFlac.cpp
+    ${SRCROOT}/SoundFileWriterOgg.hpp
+    ${SRCROOT}/SoundFileWriterOgg.cpp
+    ${SRCROOT}/SoundFileWriterWav.hpp
+    ${SRCROOT}/SoundFileWriterWav.cpp
+)
+source_group("codecs" FILES ${CODECS_SRC})
+
 # let CMake know about our additional audio libraries paths (on Windows and OSX)
-if(WINDOWS)
+if(SFML_OS_WINDOWS)
     set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "${PROJECT_SOURCE_DIR}/extlibs/headers/AL")
-    set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "${PROJECT_SOURCE_DIR}/extlibs/headers/libsndfile/windows")
-elseif (MACOSX)
-    set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "${PROJECT_SOURCE_DIR}/extlibs/headers/libsndfile/osx")
+elseif(SFML_OS_MACOSX)
     set(CMAKE_LIBRARY_PATH ${CMAKE_LIBRARY_PATH} "${PROJECT_SOURCE_DIR}/extlibs/libs-osx/Frameworks")
+elseif(SFML_OS_ANDROID)
+    set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "${PROJECT_SOURCE_DIR}/extlibs/headers/AL")
+    set(CMAKE_INCLUDE_PATH ${CMAKE_INCLUDE_PATH} "${PROJECT_SOURCE_DIR}/extlibs/android")
 endif()
 
 # find external libraries
-find_package(OpenAL REQUIRED)
-find_package(Sndfile REQUIRED)
-
-# add include paths of external libraries
-include_directories(${OPENAL_INCLUDE_DIR} ${SNDFILE_INCLUDE_DIR})
-
-if(BUILD_SHARED_LIBS)
-    add_definitions(-DSFML_AUDIO_EXPORTS)
+if(NOT SFML_OS_ANDROID)
+    if(NOT SFML_OS_IOS)
+        find_package(OpenAL REQUIRED)
+    endif()
+    find_package(Vorbis REQUIRED)
+    find_package(FLAC REQUIRED)
+else()
+    find_host_package(OpenAL REQUIRED)
+    find_host_package(Vorbis REQUIRED)
+    find_host_package(FLAC REQUIRED)
 endif()
 
-# define the sfml-audio target
+if(NOT SFML_OS_IOS)
+    include_directories(${OPENAL_INCLUDE_DIR})
+endif()
+include_directories(${VORBIS_INCLUDE_DIRS})
+include_directories(${FLAC_INCLUDE_DIR})
+add_definitions(-DOV_EXCLUDE_STATIC_CALLBACKS) # avoids warnings in vorbisfile.h
+add_definitions(-DFLAC__NO_DLL)
+
+# build the list of external libraries to link
+if(SFML_OS_IOS)
+    list(APPEND AUDIO_EXT_LIBS "-framework OpenAL")
+else()
+    list(APPEND AUDIO_EXT_LIBS ${OPENAL_LIBRARY})
+endif()
+if(SFML_OS_ANDROID)
+    list(APPEND AUDIO_EXT_LIBS android OpenSLES)
+endif()
+list(APPEND AUDIO_EXT_LIBS ${VORBIS_LIBRARIES} ${FLAC_LIBRARY})
+
+# define the dsfml-audio target
 sfml_add_library(dsfmlc-audio
-                 SOURCES ${SRC}
+                 SOURCES ${SRC} ${CODECS_SRC}
                  DEPENDS dsfmlc-system
-                 EXTERNAL_LIBS ${OPENAL_LIBRARY} ${SNDFILE_LIBRARY})
+                 EXTERNAL_LIBS ${AUDIO_EXT_LIBS})

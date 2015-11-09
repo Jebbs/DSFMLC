@@ -14,20 +14,34 @@
 ////////////////////////////////////////////////////////////
 int main()
 {
-    // Create the main window
-    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML OpenGL", sf::Style::Default, sf::ContextSettings(32));
-    window.setVerticalSyncEnabled(true);
+    // Request a 24-bits depth buffer when creating the window
+    sf::ContextSettings contextSettings;
+    contextSettings.depthBits = 24;
 
-    // Load a font for drawing some text
-    sf::Font font;
-    if (!font.loadFromFile("resources/sansation.ttf"))
-        return EXIT_FAILURE;
+    // Create the main window
+    sf::RenderWindow window(sf::VideoMode(800, 600), "SFML graphics with OpenGL", sf::Style::Default, contextSettings);
+    window.setVerticalSyncEnabled(true);
 
     // Create a sprite for the background
     sf::Texture backgroundTexture;
     if (!backgroundTexture.loadFromFile("resources/background.jpg"))
         return EXIT_FAILURE;
     sf::Sprite background(backgroundTexture);
+
+    // Create some text to draw on top of our OpenGL object
+    sf::Font font;
+    if (!font.loadFromFile("resources/sansation.ttf"))
+        return EXIT_FAILURE;
+    sf::Text text("SFML / OpenGL demo", font);
+    text.setColor(sf::Color(255, 255, 255, 170));
+    text.setPosition(250.f, 450.f);
+
+    // Make the window the active target for OpenGL calls
+    // Note: If using sf::Texture or sf::Shader with OpenGL,
+    // be sure to call sf::Texture::getMaximumSize() and/or
+    // sf::Shader::isAvailable() at least once before calling
+    // setActive(), as those functions will cause a context switch
+    window.setActive();
 
     // Load an OpenGL texture.
     // We could directly use a sf::Texture as an OpenGL texture (with its Bind() member function),
@@ -39,9 +53,9 @@ int main()
             return EXIT_FAILURE;
         glGenTextures(1, &texture);
         glBindTexture(GL_TEXTURE_2D, texture);
-        gluBuild2DMipmaps(GL_TEXTURE_2D, GL_RGBA, image.getSize().x, image.getSize().y, GL_RGBA, GL_UNSIGNED_BYTE, image.getPixelsPtr());
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, image.getSize().x, image.getSize().y, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.getPixelsPtr());
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     }
 
     // Enable Z-buffer read and write
@@ -49,15 +63,78 @@ int main()
     glDepthMask(GL_TRUE);
     glClearDepth(1.f);
 
+    // Disable lighting
+    glDisable(GL_LIGHTING);
+
+    // Configure the viewport (the same size as the window)
+    glViewport(0, 0, window.getSize().x, window.getSize().y);
+
     // Setup a perspective projection
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(90.f, 1.f, 1.f, 500.f);
+    GLfloat ratio = static_cast<float>(window.getSize().x) / window.getSize().y;
+    glFrustum(-ratio, ratio, -1.f, 1.f, 1.f, 500.f);
 
-    // Bind our texture
+    // Bind the texture
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texture);
-    glColor4f(1.f, 1.f, 1.f, 1.f);
+
+    // Define a 3D cube (6 faces made of 2 triangles composed by 3 vertices)
+    static const GLfloat cube[] =
+    {
+        // positions    // texture coordinates
+        -20, -20, -20,  0, 0,
+        -20,  20, -20,  1, 0,
+        -20, -20,  20,  0, 1,
+        -20, -20,  20,  0, 1,
+        -20,  20, -20,  1, 0,
+        -20,  20,  20,  1, 1,
+
+         20, -20, -20,  0, 0,
+         20,  20, -20,  1, 0,
+         20, -20,  20,  0, 1,
+         20, -20,  20,  0, 1,
+         20,  20, -20,  1, 0,
+         20,  20,  20,  1, 1,
+
+        -20, -20, -20,  0, 0,
+         20, -20, -20,  1, 0,
+        -20, -20,  20,  0, 1,
+        -20, -20,  20,  0, 1,
+         20, -20, -20,  1, 0,
+         20, -20,  20,  1, 1,
+
+        -20,  20, -20,  0, 0,
+         20,  20, -20,  1, 0,
+        -20,  20,  20,  0, 1,
+        -20,  20,  20,  0, 1,
+         20,  20, -20,  1, 0,
+         20,  20,  20,  1, 1,
+
+        -20, -20, -20,  0, 0,
+         20, -20, -20,  1, 0,
+        -20,  20, -20,  0, 1,
+        -20,  20, -20,  0, 1,
+         20, -20, -20,  1, 0,
+         20,  20, -20,  1, 1,
+
+        -20, -20,  20,  0, 0,
+         20, -20,  20,  1, 0,
+        -20,  20,  20,  0, 1,
+        -20,  20,  20,  0, 1,
+         20, -20,  20,  1, 0,
+         20,  20,  20,  1, 1
+    };
+
+    // Enable position and texture coordinates vertex components
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+    glVertexPointer(3, GL_FLOAT, 5 * sizeof(GLfloat), cube);
+    glTexCoordPointer(2, GL_FLOAT, 5 * sizeof(GLfloat), cube + 3);
+
+    // Disable normal and color vertex components
+    glDisableClientState(GL_NORMAL_ARRAY);
+    glDisableClientState(GL_COLOR_ARRAY);
 
     // Create a clock for measuring the time elapsed
     sf::Clock clock;
@@ -69,11 +146,11 @@ int main()
         sf::Event event;
         while (window.pollEvent(event))
         {
-            // Close window : exit
+            // Close window: exit
             if (event.type == sf::Event::Closed)
                 window.close();
 
-            // Escape key : exit
+            // Escape key: exit
             if ((event.type == sf::Event::KeyPressed) && (event.key.code == sf::Keyboard::Escape))
                 window.close();
 
@@ -86,11 +163,6 @@ int main()
         window.pushGLStates();
         window.draw(background);
         window.popGLStates();
-
-        // Activate the window before using OpenGL commands.
-        // This is useless here because we have only one window which is
-        // always the active one, but don't forget it if you use multiple windows
-        window.setActive();
 
         // Clear the depth buffer
         glClear(GL_DEPTH_BUFFER_BIT);
@@ -107,47 +179,11 @@ int main()
         glRotatef(clock.getElapsedTime().asSeconds() * 30.f, 0.f, 1.f, 0.f);
         glRotatef(clock.getElapsedTime().asSeconds() * 90.f, 0.f, 0.f, 1.f);
 
-        // Draw a cube
-        float size = 20.f;
-        glBegin(GL_QUADS);
-
-            glTexCoord2f(0, 0); glVertex3f(-size, -size, -size);
-            glTexCoord2f(0, 1); glVertex3f(-size,  size, -size);
-            glTexCoord2f(1, 1); glVertex3f( size,  size, -size);
-            glTexCoord2f(1, 0); glVertex3f( size, -size, -size);
-
-            glTexCoord2f(0, 0); glVertex3f(-size, -size, size);
-            glTexCoord2f(0, 1); glVertex3f(-size,  size, size);
-            glTexCoord2f(1, 1); glVertex3f( size,  size, size);
-            glTexCoord2f(1, 0); glVertex3f( size, -size, size);
-
-            glTexCoord2f(0, 0); glVertex3f(-size, -size, -size);
-            glTexCoord2f(0, 1); glVertex3f(-size,  size, -size);
-            glTexCoord2f(1, 1); glVertex3f(-size,  size,  size);
-            glTexCoord2f(1, 0); glVertex3f(-size, -size,  size);
-
-            glTexCoord2f(0, 0); glVertex3f(size, -size, -size);
-            glTexCoord2f(0, 1); glVertex3f(size,  size, -size);
-            glTexCoord2f(1, 1); glVertex3f(size,  size,  size);
-            glTexCoord2f(1, 0); glVertex3f(size, -size,  size);
-
-            glTexCoord2f(0, 1); glVertex3f(-size, -size,  size);
-            glTexCoord2f(0, 0); glVertex3f(-size, -size, -size);
-            glTexCoord2f(1, 0); glVertex3f( size, -size, -size);
-            glTexCoord2f(1, 1); glVertex3f( size, -size,  size);
-
-            glTexCoord2f(0, 1); glVertex3f(-size, size,  size);
-            glTexCoord2f(0, 0); glVertex3f(-size, size, -size);
-            glTexCoord2f(1, 0); glVertex3f( size, size, -size);
-            glTexCoord2f(1, 1); glVertex3f( size, size,  size);
-
-        glEnd();
+        // Draw the cube
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
         // Draw some text on top of our OpenGL object
         window.pushGLStates();
-        sf::Text text("SFML / OpenGL demo", font);
-        text.setColor(sf::Color(255, 255, 255, 170));
-        text.setPosition(250.f, 450.f);
         window.draw(text);
         window.popGLStates();
 

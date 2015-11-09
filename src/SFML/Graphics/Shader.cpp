@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2013 Laurent Gomila (laurent.gom@gmail.com)
+// Copyright (C) 2007-2015 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -29,19 +29,49 @@
 #include <SFML/Graphics/Shader.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/GLCheck.hpp>
+#include <SFML/Window/Context.hpp>
 #include <SFML/System/InputStream.hpp>
+#include <SFML/System/Mutex.hpp>
+#include <SFML/System/Lock.hpp>
 #include <SFML/System/Err.hpp>
 #include <fstream>
 #include <vector>
 
 
+#ifndef SFML_OPENGL_ES
+
+#if defined(SFML_SYSTEM_MACOS) || defined(SFML_SYSTEM_IOS)
+
+    #define castToGlHandle(x) reinterpret_cast<GLEXT_GLhandle>(static_cast<ptrdiff_t>(x))
+    #define castFromGlHandle(x) static_cast<unsigned int>(reinterpret_cast<ptrdiff_t>(x))
+
+#else
+
+    #define castToGlHandle(x) (x)
+    #define castFromGlHandle(x) (x)
+
+#endif
+
 namespace
 {
+    sf::Mutex mutex;
+
+    GLint checkMaxTextureUnits()
+    {
+        GLint maxUnits = 0;
+        glCheck(glGetIntegerv(GLEXT_GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS, &maxUnits));
+
+        return maxUnits;
+    }
+
     // Retrieve the maximum number of texture units available
     GLint getMaxTextureUnits()
     {
-        GLint maxUnits;
-        glCheck(glGetIntegerv(GL_MAX_TEXTURE_COORDS_ARB, &maxUnits));
+        // TODO: Remove this lock when it becomes unnecessary in C++11
+        sf::Lock lock(mutex);
+
+        static GLint maxUnits = checkMaxTextureUnits();
+
         return maxUnits;
     }
 
@@ -83,6 +113,25 @@ namespace
         buffer.push_back('\0');
         return success;
     }
+
+    bool checkShadersAvailable()
+    {
+        // Create a temporary context in case the user checks
+        // before a GlResource is created, thus initializing
+        // the shared context
+        sf::Context context;
+
+        // Make sure that extensions are initialized
+        sf::priv::ensureExtensionsInit();
+
+        bool available = GLEXT_multitexture         &&
+                         GLEXT_shading_language_100 &&
+                         GLEXT_shader_objects       &&
+                         GLEXT_vertex_shader        &&
+                         GLEXT_fragment_shader;
+
+        return available;
+    }
 }
 
 
@@ -109,7 +158,7 @@ Shader::~Shader()
 
     // Destroy effect program
     if (m_shaderProgram)
-        glCheck(glDeleteObjectARB(m_shaderProgram));
+        glCheck(GLEXT_glDeleteObject(castToGlHandle(m_shaderProgram)));
 }
 
 
@@ -226,16 +275,19 @@ void Shader::setParameter(const std::string& name, float x)
         ensureGlContext();
 
         // Enable program
-        GLhandleARB program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
-        glCheck(glUseProgramObjectARB(m_shaderProgram));
+        GLEXT_GLhandle program;
+        glCheck(program = GLEXT_glGetHandle(GLEXT_GL_PROGRAM_OBJECT));
+        glCheck(GLEXT_glUseProgramObject(castToGlHandle(m_shaderProgram)));
 
         // Get parameter location and assign it new values
         GLint location = getParamLocation(name);
         if (location != -1)
-            glCheck(glUniform1fARB(location, x));
+        {
+            glCheck(GLEXT_glUniform1f(location, x));
+        }
 
         // Disable program
-        glCheck(glUseProgramObjectARB(program));
+        glCheck(GLEXT_glUseProgramObject(program));
     }
 }
 
@@ -248,16 +300,19 @@ void Shader::setParameter(const std::string& name, float x, float y)
         ensureGlContext();
 
         // Enable program
-        GLhandleARB program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
-        glCheck(glUseProgramObjectARB(m_shaderProgram));
+        GLEXT_GLhandle program;
+        glCheck(program = GLEXT_glGetHandle(GLEXT_GL_PROGRAM_OBJECT));
+        glCheck(GLEXT_glUseProgramObject(castToGlHandle(m_shaderProgram)));
 
         // Get parameter location and assign it new values
         GLint location = getParamLocation(name);
         if (location != -1)
-            glCheck(glUniform2fARB(location, x, y));
+        {
+            glCheck(GLEXT_glUniform2f(location, x, y));
+        }
 
         // Disable program
-        glCheck(glUseProgramObjectARB(program));
+        glCheck(GLEXT_glUseProgramObject(program));
     }
 }
 
@@ -270,16 +325,19 @@ void Shader::setParameter(const std::string& name, float x, float y, float z)
         ensureGlContext();
 
         // Enable program
-        GLhandleARB program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
-        glCheck(glUseProgramObjectARB(m_shaderProgram));
+        GLEXT_GLhandle program;
+        glCheck(program = GLEXT_glGetHandle(GLEXT_GL_PROGRAM_OBJECT));
+        glCheck(GLEXT_glUseProgramObject(castToGlHandle(m_shaderProgram)));
 
         // Get parameter location and assign it new values
         GLint location = getParamLocation(name);
         if (location != -1)
-            glCheck(glUniform3fARB(location, x, y, z));
+        {
+            glCheck(GLEXT_glUniform3f(location, x, y, z));
+        }
 
         // Disable program
-        glCheck(glUseProgramObjectARB(program));
+        glCheck(GLEXT_glUseProgramObject(program));
     }
 }
 
@@ -292,16 +350,19 @@ void Shader::setParameter(const std::string& name, float x, float y, float z, fl
         ensureGlContext();
 
         // Enable program
-        GLhandleARB program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
-        glCheck(glUseProgramObjectARB(m_shaderProgram));
+        GLEXT_GLhandle program;
+        glCheck(program = GLEXT_glGetHandle(GLEXT_GL_PROGRAM_OBJECT));
+        glCheck(GLEXT_glUseProgramObject(castToGlHandle(m_shaderProgram)));
 
         // Get parameter location and assign it new values
         GLint location = getParamLocation(name);
         if (location != -1)
-            glCheck(glUniform4fARB(location, x, y, z, w));
+        {
+            glCheck(GLEXT_glUniform4f(location, x, y, z, w));
+        }
 
         // Disable program
-        glCheck(glUseProgramObjectARB(program));
+        glCheck(GLEXT_glUseProgramObject(program));
     }
 }
 
@@ -328,23 +389,26 @@ void Shader::setParameter(const std::string& name, const Color& color)
 
 
 ////////////////////////////////////////////////////////////
-void Shader::setParameter(const std::string& name, const sf::Transform& transform)
+void Shader::setParameter(const std::string& name, const Transform& transform)
 {
     if (m_shaderProgram)
     {
         ensureGlContext();
 
         // Enable program
-        GLhandleARB program = glGetHandleARB(GL_PROGRAM_OBJECT_ARB);
-        glCheck(glUseProgramObjectARB(m_shaderProgram));
+        GLEXT_GLhandle program;
+        glCheck(program = GLEXT_glGetHandle(GLEXT_GL_PROGRAM_OBJECT));
+        glCheck(GLEXT_glUseProgramObject(castToGlHandle(m_shaderProgram)));
 
         // Get parameter location and assign it new values
         GLint location = getParamLocation(name);
         if (location != -1)
-            glCheck(glUniformMatrix4fvARB(location, 1, GL_FALSE, transform.getMatrix()));
+        {
+            glCheck(GLEXT_glUniformMatrix4fv(location, 1, GL_FALSE, transform.getMatrix()));
+        }
 
         // Disable program
-        glCheck(glUseProgramObjectARB(program));
+        glCheck(GLEXT_glUseProgramObject(program));
     }
 }
 
@@ -365,7 +429,7 @@ void Shader::setParameter(const std::string& name, const Texture& texture)
             if (it == m_textures.end())
             {
                 // New entry, make sure there are enough texture units
-                static const GLint maxUnits = getMaxTextureUnits();
+                GLint maxUnits = getMaxTextureUnits();
                 if (m_textures.size() + 1 >= static_cast<std::size_t>(maxUnits))
                 {
                     err() << "Impossible to use texture \"" << name << "\" for shader: all available texture units are used" << std::endl;
@@ -398,26 +462,41 @@ void Shader::setParameter(const std::string& name, CurrentTextureType)
 
 
 ////////////////////////////////////////////////////////////
+unsigned int Shader::getNativeHandle() const
+{
+    return m_shaderProgram;
+}
+
+
+////////////////////////////////////////////////////////////
 void Shader::bind(const Shader* shader)
 {
     ensureGlContext();
 
+    // Make sure that we can use shaders
+    if (!isAvailable())
+    {
+        err() << "Failed to bind or unbind shader: your system doesn't support shaders "
+              << "(you should test Shader::isAvailable() before trying to use the Shader class)" << std::endl;
+        return;
+    }
+
     if (shader && shader->m_shaderProgram)
     {
         // Enable the program
-        glCheck(glUseProgramObjectARB(shader->m_shaderProgram));
+        glCheck(GLEXT_glUseProgramObject(castToGlHandle(shader->m_shaderProgram)));
 
         // Bind the textures
         shader->bindTextures();
 
         // Bind the current texture
         if (shader->m_currentTexture != -1)
-            glCheck(glUniform1iARB(shader->m_currentTexture, 0));
+            glCheck(GLEXT_glUniform1i(shader->m_currentTexture, 0));
     }
     else
     {
         // Bind no shader
-        glCheck(glUseProgramObjectARB(0));
+        glCheck(GLEXT_glUseProgramObject(0));
     }
 }
 
@@ -425,15 +504,12 @@ void Shader::bind(const Shader* shader)
 ////////////////////////////////////////////////////////////
 bool Shader::isAvailable()
 {
-    ensureGlContext();
+    // TODO: Remove this lock when it becomes unnecessary in C++11
+    Lock lock(mutex);
 
-    // Make sure that GLEW is initialized
-    priv::ensureGlewInit();
+    static bool available = checkShadersAvailable();
 
-    return GLEW_ARB_shading_language_100 &&
-           GLEW_ARB_shader_objects       &&
-           GLEW_ARB_vertex_shader        &&
-           GLEW_ARB_fragment_shader;
+    return available;
 }
 
 
@@ -452,7 +528,10 @@ bool Shader::compile(const char* vertexShaderCode, const char* fragmentShaderCod
 
     // Destroy the shader if it was already created
     if (m_shaderProgram)
-        glCheck(glDeleteObjectARB(m_shaderProgram));
+    {
+        glCheck(GLEXT_glDeleteObject(castToGlHandle(m_shaderProgram)));
+        m_shaderProgram = 0;
+    }
 
     // Reset the internal state
     m_currentTexture = -1;
@@ -460,80 +539,82 @@ bool Shader::compile(const char* vertexShaderCode, const char* fragmentShaderCod
     m_params.clear();
 
     // Create the program
-    m_shaderProgram = glCreateProgramObjectARB();
+    GLEXT_GLhandle shaderProgram;
+    glCheck(shaderProgram = GLEXT_glCreateProgramObject());
 
     // Create the vertex shader if needed
     if (vertexShaderCode)
     {
         // Create and compile the shader
-        GLhandleARB vertexShader = glCreateShaderObjectARB(GL_VERTEX_SHADER_ARB);
-        glCheck(glShaderSourceARB(vertexShader, 1, &vertexShaderCode, NULL));
-        glCheck(glCompileShaderARB(vertexShader));
+        GLEXT_GLhandle vertexShader;
+        glCheck(vertexShader = GLEXT_glCreateShaderObject(GLEXT_GL_VERTEX_SHADER));
+        glCheck(GLEXT_glShaderSource(vertexShader, 1, &vertexShaderCode, NULL));
+        glCheck(GLEXT_glCompileShader(vertexShader));
 
         // Check the compile log
         GLint success;
-        glCheck(glGetObjectParameterivARB(vertexShader, GL_OBJECT_COMPILE_STATUS_ARB, &success));
+        glCheck(GLEXT_glGetObjectParameteriv(vertexShader, GLEXT_GL_OBJECT_COMPILE_STATUS, &success));
         if (success == GL_FALSE)
         {
             char log[1024];
-            glCheck(glGetInfoLogARB(vertexShader, sizeof(log), 0, log));
+            glCheck(GLEXT_glGetInfoLog(vertexShader, sizeof(log), 0, log));
             err() << "Failed to compile vertex shader:" << std::endl
                   << log << std::endl;
-            glCheck(glDeleteObjectARB(vertexShader));
-            glCheck(glDeleteObjectARB(m_shaderProgram));
-            m_shaderProgram = 0;
+            glCheck(GLEXT_glDeleteObject(vertexShader));
+            glCheck(GLEXT_glDeleteObject(shaderProgram));
             return false;
         }
 
         // Attach the shader to the program, and delete it (not needed anymore)
-        glCheck(glAttachObjectARB(m_shaderProgram, vertexShader));
-        glCheck(glDeleteObjectARB(vertexShader));
+        glCheck(GLEXT_glAttachObject(shaderProgram, vertexShader));
+        glCheck(GLEXT_glDeleteObject(vertexShader));
     }
 
     // Create the fragment shader if needed
     if (fragmentShaderCode)
     {
         // Create and compile the shader
-        GLhandleARB fragmentShader = glCreateShaderObjectARB(GL_FRAGMENT_SHADER_ARB);
-        glCheck(glShaderSourceARB(fragmentShader, 1, &fragmentShaderCode, NULL));
-        glCheck(glCompileShaderARB(fragmentShader));
+        GLEXT_GLhandle fragmentShader;
+        glCheck(fragmentShader = GLEXT_glCreateShaderObject(GLEXT_GL_FRAGMENT_SHADER));
+        glCheck(GLEXT_glShaderSource(fragmentShader, 1, &fragmentShaderCode, NULL));
+        glCheck(GLEXT_glCompileShader(fragmentShader));
 
         // Check the compile log
         GLint success;
-        glCheck(glGetObjectParameterivARB(fragmentShader, GL_OBJECT_COMPILE_STATUS_ARB, &success));
+        glCheck(GLEXT_glGetObjectParameteriv(fragmentShader, GLEXT_GL_OBJECT_COMPILE_STATUS, &success));
         if (success == GL_FALSE)
         {
             char log[1024];
-            glCheck(glGetInfoLogARB(fragmentShader, sizeof(log), 0, log));
+            glCheck(GLEXT_glGetInfoLog(fragmentShader, sizeof(log), 0, log));
             err() << "Failed to compile fragment shader:" << std::endl
                   << log << std::endl;
-            glCheck(glDeleteObjectARB(fragmentShader));
-            glCheck(glDeleteObjectARB(m_shaderProgram));
-            m_shaderProgram = 0;
+            glCheck(GLEXT_glDeleteObject(fragmentShader));
+            glCheck(GLEXT_glDeleteObject(shaderProgram));
             return false;
         }
 
         // Attach the shader to the program, and delete it (not needed anymore)
-        glCheck(glAttachObjectARB(m_shaderProgram, fragmentShader));
-        glCheck(glDeleteObjectARB(fragmentShader));
+        glCheck(GLEXT_glAttachObject(shaderProgram, fragmentShader));
+        glCheck(GLEXT_glDeleteObject(fragmentShader));
     }
 
     // Link the program
-    glCheck(glLinkProgramARB(m_shaderProgram));
+    glCheck(GLEXT_glLinkProgram(shaderProgram));
 
     // Check the link log
     GLint success;
-    glCheck(glGetObjectParameterivARB(m_shaderProgram, GL_OBJECT_LINK_STATUS_ARB, &success));
+    glCheck(GLEXT_glGetObjectParameteriv(shaderProgram, GLEXT_GL_OBJECT_LINK_STATUS, &success));
     if (success == GL_FALSE)
     {
         char log[1024];
-        glCheck(glGetInfoLogARB(m_shaderProgram, sizeof(log), 0, log));
+        glCheck(GLEXT_glGetInfoLog(shaderProgram, sizeof(log), 0, log));
         err() << "Failed to link shader:" << std::endl
               << log << std::endl;
-        glCheck(glDeleteObjectARB(m_shaderProgram));
-        m_shaderProgram = 0;
+        glCheck(GLEXT_glDeleteObject(shaderProgram));
         return false;
     }
+
+    m_shaderProgram = castFromGlHandle(shaderProgram);
 
     // Force an OpenGL flush, so that the shader will appear updated
     // in all contexts immediately (solves problems in multi-threaded apps)
@@ -550,14 +631,14 @@ void Shader::bindTextures() const
     for (std::size_t i = 0; i < m_textures.size(); ++i)
     {
         GLint index = static_cast<GLsizei>(i + 1);
-        glCheck(glUniform1iARB(it->first, index));
-        glCheck(glActiveTextureARB(GL_TEXTURE0_ARB + index));
+        glCheck(GLEXT_glUniform1i(it->first, index));
+        glCheck(GLEXT_glActiveTexture(GLEXT_GL_TEXTURE0 + index));
         Texture::bind(it->second);
         ++it;
     }
 
     // Make sure that the texture unit which is left active is the number 0
-    glCheck(glActiveTextureARB(GL_TEXTURE0_ARB));
+    glCheck(GLEXT_glActiveTexture(GLEXT_GL_TEXTURE0));
 }
 
 
@@ -574,20 +655,176 @@ int Shader::getParamLocation(const std::string& name)
     else
     {
         // Not in cache, request the location from OpenGL
-        int location = glGetUniformLocationARB(m_shaderProgram, name.c_str());
-        if (location != -1)
-        {
-            // Location found: add it to the cache
-            m_params.insert(std::make_pair(name, location));
-        }
-        else
-        {
-            // Error: location not found
+        int location = GLEXT_glGetUniformLocation(castToGlHandle(m_shaderProgram), name.c_str());
+        m_params.insert(std::make_pair(name, location));
+
+        if (location == -1)
             err() << "Parameter \"" << name << "\" not found in shader" << std::endl;
-        }
 
         return location;
     }
 }
 
 } // namespace sf
+
+#else // SFML_OPENGL_ES
+
+// OpenGL ES 1 doesn't support GLSL shaders at all, we have to provide an empty implementation
+
+namespace sf
+{
+////////////////////////////////////////////////////////////
+Shader::CurrentTextureType Shader::CurrentTexture;
+
+
+////////////////////////////////////////////////////////////
+Shader::Shader() :
+m_shaderProgram (0),
+m_currentTexture(-1)
+{
+}
+
+
+////////////////////////////////////////////////////////////
+Shader::~Shader()
+{
+}
+
+
+////////////////////////////////////////////////////////////
+bool Shader::loadFromFile(const std::string& filename, Type type)
+{
+    return false;
+}
+
+
+////////////////////////////////////////////////////////////
+bool Shader::loadFromFile(const std::string& vertexShaderFilename, const std::string& fragmentShaderFilename)
+{
+    return false;
+}
+
+
+////////////////////////////////////////////////////////////
+bool Shader::loadFromMemory(const std::string& shader, Type type)
+{
+    return false;
+}
+
+
+////////////////////////////////////////////////////////////
+bool Shader::loadFromMemory(const std::string& vertexShader, const std::string& fragmentShader)
+{
+    return false;
+}
+
+
+////////////////////////////////////////////////////////////
+bool Shader::loadFromStream(InputStream& stream, Type type)
+{
+    return false;
+}
+
+
+////////////////////////////////////////////////////////////
+bool Shader::loadFromStream(InputStream& vertexShaderStream, InputStream& fragmentShaderStream)
+{
+    return false;
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameter(const std::string& name, float x)
+{
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameter(const std::string& name, float x, float y)
+{
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameter(const std::string& name, float x, float y, float z)
+{
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameter(const std::string& name, float x, float y, float z, float w)
+{
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameter(const std::string& name, const Vector2f& v)
+{
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameter(const std::string& name, const Vector3f& v)
+{
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameter(const std::string& name, const Color& color)
+{
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameter(const std::string& name, const Transform& transform)
+{
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameter(const std::string& name, const Texture& texture)
+{
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::setParameter(const std::string& name, CurrentTextureType)
+{
+}
+
+
+////////////////////////////////////////////////////////////
+unsigned int Shader::getNativeHandle() const
+{
+    return 0;
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::bind(const Shader* shader)
+{
+}
+
+
+////////////////////////////////////////////////////////////
+bool Shader::isAvailable()
+{
+    return false;
+}
+
+
+////////////////////////////////////////////////////////////
+bool Shader::compile(const char* vertexShaderCode, const char* fragmentShaderCode)
+{
+    return false;
+}
+
+
+////////////////////////////////////////////////////////////
+void Shader::bindTextures() const
+{
+}
+
+} // namespace sf
+
+#endif // SFML_OPENGL_ES

@@ -1,7 +1,7 @@
 ////////////////////////////////////////////////////////////
 //
 // SFML - Simple and Fast Multimedia Library
-// Copyright (C) 2007-2013 Laurent Gomila (laurent.gom@gmail.com)
+// Copyright (C) 2007-2015 Laurent Gomila (laurent@sfml-dev.org)
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the use of this software.
@@ -33,12 +33,12 @@
 namespace
 {
 // This class will be used as the default streambuf of sf::Err,
-// it outputs to stderr by default (to keep the default behaviour)
+// it outputs to stderr by default (to keep the default behavior)
 class DefaultErrStreamBuf : public std::streambuf
 {
-public :
+public:
 
-    DefaultErrStreamBuf() 
+    DefaultErrStreamBuf()
     {
         // Allocate the write buffer
         static const int size = 64;
@@ -46,7 +46,7 @@ public :
         setp(buffer, buffer + size);
     }
 
-    ~DefaultErrStreamBuf() 
+    ~DefaultErrStreamBuf()
     {
         // Synchronize
         sync();
@@ -55,7 +55,7 @@ public :
         delete[] pbase();
     }
 
-private :
+private:
 
     virtual int overflow(int character)
     {
