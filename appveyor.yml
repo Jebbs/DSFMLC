@@ -32,17 +32,17 @@ branches:
 install:
   - ps: if($env:toolchain -eq "msvc12" -or $env:toolchain -eq "msvc14"){
           if($env:arch -eq "x86"){
-            $env:vcarg = "x86"
+            $env:vcarg = "x86";
           }
           elseif($env:arch -eq "x64"){
-            $env:vcarg = "amd64"
+            $env:vcarg = "amd64";
           }
-          $env:maketype = "NMake Makefiles"
-          $env:makecommand = "nmake"
+          $env:maketype = "NMake Makefiles";
+          $env:makecommand = "nmake";
         }
         elseif($env:toolchain -eq "mingw"){
-          $env:maketype = "MinGW Makefiles"
-          $env:makecommand = "mingw32-make"
+          $env:maketype = "MinGW Makefiles";
+          $env:makecommand = "mingw32-make";
         }
 
 
