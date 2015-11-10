@@ -76,9 +76,11 @@ before_build:
         elseif($env:toolchain -eq "mingw"){
           if($env:arch -eq "x86"){
             $env:compilersetup = "SET PATH=C:\\mingw32\\bin;%PATH%";
+            $env:compilersetupargs = "";
           }
           elseif($env:arch -eq "x64"){
             $env:compilersetup = "SET PATH=C:\\mingw64\\bin;%PATH%";
+            $env:compilersetupargs = "";
           }
 
           $env:maketype = "MinGW Makefiles";
@@ -87,6 +89,9 @@ before_build:
 
 
 build_script:
+ - echo %compilersetup%
+ - echo %compilersetupargs%
+ - echo '"%compilersetup%" %compilersetupargs%'
  - '"%compilersetup%" %compilersetupargs%'
 
 
