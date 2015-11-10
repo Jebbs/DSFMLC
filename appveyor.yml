@@ -1,32 +1,60 @@
 # Build version format
-version: 2.1.{build}
+version: 2.3.{build}
 
 os: Visual Studio 2015
 
 environment:
  matrix:
-  - VS: "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC"
-    config: x86
-  - VS: "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC"
-    config: amd64
-  - VS: "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC"
-    config: x86
-  - VS: "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC"
-    config: amd64
+  - toolchain: msvc12
+    arch: x86
+  - toolchain: msvc12
+    arch: x64
+  - toolchain: msvc14
+    arch: x86
+  - toolchain: msvc14
+    arch: x64
+  - toolchain: mingw
+    arch: x86
+  - toolchain: mingw
+    arch: x64
+
 
 matrix:
   allow_failures:
-    - VS: "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC"
+    - toolchain: mingw
 
 #Let's blacklist gh-pages
 branches:
   except:
     - gh-pages
 
+
+install:
+  - ps: if($env:toolchain -eq "msvc12" -or $env:toolchain -eq "msvc14"){
+          if($env:arch -eq "x86"){
+            $env:vcarg = "x86"
+          }
+          elseif($env:arch -eq "x64"){
+            $env:vcarg = "amd64"
+          }
+          $env:maketype = "NMake Makefiles"
+          $env:makecommand = "nmake"
+        }
+        elseif($env:toolchain -eq "mingw"){
+          $env:maketype = "MinGW Makefiles"
+          $env:makecommand = "mingw32-make"
+        }
+
+
+
 build_script:
- - cd %VS%
- - vcvarsall %config%
- - cd "C:\\projects\\dsfmlc"
- - cmake -G"NMake Makefiles" .
- - nmake
+#let's set up the compiler
+ - if [%toolchain%]==[msvc12] "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat" %vcarg%
+ - if [%toolchain%]==[msvc12] "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat" %vcarg%
+ - if [%toolchain%]==[mingw] if [%arch%]==[x86] SET PATH=C:\MinGW\bin;%PATH%
+ - if [%toolchain%]==[mingw] if [%arch%]==[x64] SET PATH=C:\MinGW64\bin;%PATH%
+
+
+ - cmake -G%maketype% .
+ - %makecommand%
 
