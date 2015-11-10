@@ -49,7 +49,7 @@ install:
 
 build_script:
 #let's set up the compiler
- - if [%toolchain%]==[msvc12] '"C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat" %vcarg%'
+ - if [%toolchain%]==[msvc12] "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat" %vcarg%
  - if [%toolchain%]==[msvc14] '"C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat" %vcarg%'
  - if [%toolchain%]==[mingw] if [%arch%]==[x86] SET PATH=C:\MinGW\bin;%PATH%
  - if [%toolchain%]==[mingw] if [%arch%]==[x64] SET PATH=C:\MinGW64\bin;%PATH%
