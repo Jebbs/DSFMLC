@@ -55,6 +55,6 @@ build_script:
  - if [%toolchain%]==[mingw] if [%arch%]==[x64] SET PATH=C:\MinGW64\bin;%PATH%
 
 
- - cmake -G%maketype% .
+ - cmake -G"%maketype%" .
  - '%makecommand%'
 
