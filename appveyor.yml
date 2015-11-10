@@ -32,20 +32,24 @@ branches:
 install:
   - ps: if($env:toolchain -eq "msvc12"){
           if($env:arch -eq "x86"){
-            $env:compilersetup = "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall" " x86"
+            $env:compilersetup = "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall";
+            $env:compilersetupargs = "x86";
           }
           elseif($env:arch -eq "x64"){
-            $env:compilersetup = "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall" " amd64"
+            $env:compilersetup = "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall";
+            $env:compilersetupargs = "amd64";
           }
           $env:maketype = "NMake Makefiles";
           $env:makecommand = "nmake";
         }
         elseif($env:toolchain -eq "msvc14"){
           if($env:arch -eq "x86"){
-            $env:compilersetup = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall" " x86"
+            $env:compilersetup = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall";
+            $env:compilersetupargs = "x86";
           }
           elseif($env:arch -eq "x64"){
-            $env:compilersetup = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall" " amd64"
+            $env:compilersetup = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall";
+            $env:compilersetupargs = "amd64";
           }
           $env:maketype = "NMake Makefiles";
           $env:makecommand = "nmake";
@@ -57,7 +61,7 @@ install:
 
 
 build_script:
- - '%compilersetup%'
+ - '%compilersetup%' %compilersetupargs%
 
 
  - cmake -G"%maketype%" .
