@@ -56,5 +56,5 @@ build_script:
 
 
  - cmake -G%maketype% .
- - cmd: %makecommand%
+ - '%makecommand%'
 
