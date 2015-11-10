@@ -28,6 +28,9 @@ branches:
   except:
     - gh-pages
 
+#because we have to request parallel builds, I guess.
+build:
+  parallel: true
 
 install:
   - ps: if($env:toolchain -eq "msvc12"){
