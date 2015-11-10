@@ -61,7 +61,7 @@ install:
 
 
 build_script:
- - '%compilersetup%' %compilersetupargs%
+ - '"%compilersetup%" %compilersetupargs%'
 
 
  - cmake -G"%maketype%" .
