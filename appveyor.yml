@@ -5,14 +5,14 @@ os: Visual Studio 2015
 
 environment:
  matrix:
-  - toolchain: msvc12
-    arch: x86
-  - toolchain: msvc12
-    arch: x64
-  - toolchain: msvc14
-    arch: x86
-  - toolchain: msvc14
-    arch: x64
+#  - toolchain: msvc12
+#    arch: x86
+#  - toolchain: msvc12
+#    arch: x64
+#  - toolchain: msvc14
+#    arch: x86
+#  - toolchain: msvc14
+#    arch: x64
   - toolchain: mingw
     arch: x86
   - toolchain: mingw
@@ -33,6 +33,22 @@ build:
   parallel: true
 
 install:
+ - ps: if($env:toolchain -eq "mingw"){
+          if($env:arch -eq "x86"){
+            $WebLocation = "http://dsfml.com/bins/mingw/i686-5.2.0-release-posix-dwarf-rt_v4-rev0.7z";
+          }
+          elseif($env:arch -eq "x64"){
+            $WebLocation = "http://dsfml.com/bins/mingw/i686-5.2.0-release-posix-dwarf-rt_v4-rev0.7z";
+          }
+          $DownloadLocation = "c:\\mingw.7z"
+          (new-object net.webclient).DownloadFile($WebLocation, $DownloadLocation)
+          pushd c:\\
+          7z x mingw.7z
+          popd
+      }
+
+
+before_build:
   - ps: if($env:toolchain -eq "msvc12"){
           if($env:arch -eq "x86"){
             $env:compilersetup = "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall";
@@ -58,6 +74,13 @@ install:
           $env:makecommand = "nmake";
         }
         elseif($env:toolchain -eq "mingw"){
+          if($env:arch -eq "x86"){
+            $env:compilersetup = "SET PATH=C:\\mingw32\\bin;%PATH%";
+          }
+          elseif($env:arch -eq "x64"){
+            $env:compilersetup = "SET PATH=C:\\mingw64\\bin;%PATH%";
+          }
+
           $env:maketype = "MinGW Makefiles";
           $env:makecommand = "mingw32-make";
         }
