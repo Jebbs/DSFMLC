@@ -88,8 +88,9 @@ before_build:
 build_script:
 
  - ps: if($env:toolchain -eq "msvc12" -or $env:toolchain -eq "msvc14"){
-        Write-Host $env:compilersetup;
-        Invoke-Expression $env:compilersetup;
+        $compilersetup = $env:compilersetup
+        Write-Host $ecompilersetup;
+        Invoke-Expression $compilersetup;
         }
        elseif($env:toolchain -eq "mingw"){
         $env:Path = $env:compilerpath + $env:cmakepath;
