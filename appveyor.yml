@@ -13,8 +13,8 @@ environment:
 #    arch: x86
 #  - toolchain: msvc14
 #    arch: x64
-#  - toolchain: mingw
-#    arch: x86
+  - toolchain: mingw
+    arch: x86
 #  - toolchain: mingw
 #    arch: x64
 
@@ -56,7 +56,7 @@ before_build:
             $env:compilersetupargs = "x86";
           }
           elseif($env:arch -eq "x64"){
-            $env:compilersetup = "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat";
+            $env:compilersetup = "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall";
             $env:compilersetupargs = "amd64";
           }
           $env:maketype = "NMake Makefiles";
@@ -64,10 +64,12 @@ before_build:
         }
         elseif($env:toolchain -eq "msvc14"){
           if($env:arch -eq "x86"){
-            $env:compilersetup = '& "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86';
+            $env:compilersetup = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall";
+            $env:compilersetupargs = "x86";
           }
           elseif($env:arch -eq "x64"){
-            $env:compilersetup = '& "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" amd64';
+            $env:compilersetup = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall";
+            $env:compilersetupargs = "amd64";
           }
           $env:maketype = "NMake Makefiles";
           $env:makecommand = "nmake";
