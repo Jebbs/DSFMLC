@@ -52,11 +52,11 @@ install:
 before_build:
   - ps: if($env:toolchain -eq "msvc12"){
           if($env:arch -eq "x86"){
-            $env:compilersetup = "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall";
+            $env:compilersetup = "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat";
             $env:compilersetupargs = "x86";
           }
           elseif($env:arch -eq "x64"){
-            $env:compilersetup = "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall";
+            $env:compilersetup = "C:\\Program Files (x86)\\Microsoft Visual Studio 12.0\\VC\\vcvarsall.bat";
             $env:compilersetupargs = "amd64";
           }
           $env:maketype = "NMake Makefiles";
@@ -64,11 +64,11 @@ before_build:
         }
         elseif($env:toolchain -eq "msvc14"){
           if($env:arch -eq "x86"){
-            $env:compilersetup = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall";
+            $env:compilersetup = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat";
             $env:compilersetupargs = "x86";
           }
           elseif($env:arch -eq "x64"){
-            $env:compilersetup = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall";
+            $env:compilersetup = "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\vcvarsall.bat";
             $env:compilersetupargs = "amd64";
           }
           $env:maketype = "NMake Makefiles";
@@ -91,7 +91,7 @@ before_build:
 
 build_script:
 
- - ps: if($env:toolchain -eq "msvc12" -or $env:toolchain -eq "msvc12"){
+ - ps: if($env:toolchain -eq "msvc12" -or $env:toolchain -eq "msvc14"){
         & $env:compilersetup $env:compilersetupargs;
         }
        elseif($env:toolchain -eq "mingw"){
