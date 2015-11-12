@@ -92,9 +92,8 @@ build_script:
         $env:Path = $env:compilerpath + $env:cmakepath;
        }
 
-- if [%toolchain%]==[msvc12] %compilersetup% %compilersetupargs%
+ - if [%toolchain%]==[msvc12] %compilersetup% %compilersetupargs%
 
 
  - cmake -G"%maketype%" .
  - '%makecommand%'
-
