@@ -93,7 +93,5 @@ build_script:
        }
 
  - if [%toolchain%]==[msvc12] "%compilersetup%" %compilersetupargs%
-
-
  - cmake -G"%maketype%" .
  - '%makecommand%'
