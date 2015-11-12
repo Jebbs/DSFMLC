@@ -49,6 +49,7 @@ install:
 
 #Set's up MSVC and MinGW
 #We can't use the full path when using MinGW because another MinGW is on the path and it messes things up.
+#We also have to set up MSVC because I couldn't get the script to run otherwise :(
 before_build:
   - ps: if($env:toolchain -eq "msvc12"){
           if($env:arch -eq "x86"){
@@ -78,6 +79,8 @@ before_build:
           if($env:arch -eq "x86"){
             $env:compilerpath = "C:\mingw32\bin;";
             $env:cmakepath = "C:\Program Files (x86)\CMake\bin";
+            $env:compilersetup = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall";
+            $env:compilersetupargs = "x86";
           }
           elseif($env:arch -eq "x64"){
             $env:compilerpath = "C:\mingw64\bin;";
@@ -88,9 +91,10 @@ before_build:
           $env:makecommand = "mingw32-make";
         }
 
-#I had 0 luck trying to get this part in all 
+#I hate windows sometimes
+#"%compilersetup%" %compilersetupargs% wouldn't run from pw and it wouldn't run in a cmd IF, so it has to run all the time.
 build_script:
- - if ["%toolchain%"]==["msvc12"] ("%compilersetup%" %compilersetupargs%)
+ - '"%compilersetup%" %compilersetupargs%'
  - ps: if($env:toolchain -eq "mingw"){
         $env:Path = $env:compilerpath + $env:cmakepath;
        }
