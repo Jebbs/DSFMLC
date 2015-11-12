@@ -88,10 +88,9 @@ before_build:
 
 #I had 0 luck trying to get this part in all 
 build_script:
+ - "%compilersetup%" %compilersetupargs%
  - ps: if($env:toolchain -eq "mingw"){
         $env:Path = $env:compilerpath + $env:cmakepath;
        }
-
- - if [%toolchain%]==[msvc12] "%compilersetup%" %compilersetupargs%
  - cmake -G"%maketype%" .
  - '%makecommand%'
