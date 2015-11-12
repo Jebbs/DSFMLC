@@ -89,7 +89,7 @@ build_script:
 
  - ps: if($env:toolchain -eq "msvc12" -or $env:toolchain -eq "msvc14"){
         $compilersetup = $env:compilersetup;
-        Write-Host $ecompilersetup;
+        Write-Host $compilersetup;
         Invoke-Expression $compilersetup;
         }
        elseif($env:toolchain -eq "mingw"){
