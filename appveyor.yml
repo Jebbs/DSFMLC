@@ -90,7 +90,7 @@ build_script:
 
  - ps: if($env:toolchain -eq "msvc12" -or $env:toolchain -eq "msvc14"){
         pushd "$env:compilersetup";
-        dir
+        dir;
         & vcvarsall.bat $env:compilersetupargs;
         popd;
         }
