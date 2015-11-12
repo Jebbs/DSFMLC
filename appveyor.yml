@@ -88,7 +88,7 @@ before_build:
 build_script:
 
  - ps: if($env:toolchain -eq "msvc12" -or $env:toolchain -eq "msvc14"){
-        $compilersetup = $env:compilersetup
+        $compilersetup = $env:compilersetup;
         Write-Host $ecompilersetup;
         Invoke-Expression $compilersetup;
         }
