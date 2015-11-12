@@ -52,11 +52,12 @@ install:
 before_build:
   - ps: if($env:toolchain -eq "msvc12"){
           if($env:arch -eq "x86"){
-            $env:compilersetup = "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC";
+            $env:compilersetup = "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall";
             $env:compilersetupargs = "x86";
           }
           elseif($env:arch -eq "x64"){
-            $env:compilersetup = '& "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat" amd64';
+            $env:compilersetup = "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\vcvarsall.bat";
+            $env:compilersetupargs = "amd64";
           }
           $env:maketype = "NMake Makefiles";
           $env:makecommand = "nmake";
@@ -85,20 +86,13 @@ before_build:
           $env:makecommand = "mingw32-make";
         }
 
-
+#I had 0 luck trying to get this part in all 
 build_script:
-
- - ps: if($env:toolchain -eq "msvc12" -or $env:toolchain -eq "msvc14"){
-        pushd "$env:compilersetup";
-        dir;
-        & .\vcvarsall.bat $env:compilersetupargs;
-        popd;
-        }
-       elseif($env:toolchain -eq "mingw"){
+ - ps: if($env:toolchain -eq "mingw"){
         $env:Path = $env:compilerpath + $env:cmakepath;
        }
 
-
+- if [%toolchain%]==[msvc12] %compilersetup% %compilersetupargs%
 
 
  - cmake -G"%maketype%" .
