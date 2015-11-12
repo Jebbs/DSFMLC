@@ -47,7 +47,8 @@ install:
           popd;
       }
 
-
+#Set's up MSVC and MinGW
+#We can't use the full path when using MinGW because another MinGW is on the path and it messes things up.
 before_build:
   - ps: if($env:toolchain -eq "msvc12"){
           if($env:arch -eq "x86"){
@@ -73,7 +74,6 @@ before_build:
           $env:maketype = "NMake Makefiles";
           $env:makecommand = "nmake";
         }
-        #we can't use the full path because another mingw is on the path and it messes things up
         elseif($env:toolchain -eq "mingw"){
           if($env:arch -eq "x86"){
             $env:compilerpath = "C:\mingw32\bin;";
