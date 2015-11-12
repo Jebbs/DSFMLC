@@ -7,21 +7,21 @@ environment:
  matrix:
   - toolchain: msvc12
     arch: x86
-#  - toolchain: msvc12
-#    arch: x64
-#  - toolchain: msvc14
-#    arch: x86
-#  - toolchain: msvc14
-#    arch: x64
+  - toolchain: msvc12
+    arch: x64
+  - toolchain: msvc14
+    arch: x86
+  - toolchain: msvc14
+    arch: x64
   - toolchain: mingw
     arch: x86
-#  - toolchain: mingw
-#    arch: x64
+  - toolchain: mingw
+    arch: x64
 
-
-matrix:
-  allow_failures:
-    - toolchain: mingw
+#Everything should build!
+#matrix:
+#  allow_failures:
+#    - toolchain: mingw
 
 #Let's blacklist gh-pages
 branches:
@@ -79,20 +79,19 @@ before_build:
           if($env:arch -eq "x86"){
             $env:compilerpath = "C:\mingw32\bin;";
             $env:cmakepath = "C:\Program Files (x86)\CMake\bin";
-            $env:compilersetup = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall";
-            $env:compilersetupargs = "x86";
           }
           elseif($env:arch -eq "x64"){
             $env:compilerpath = "C:\mingw64\bin;";
             $env:cmakepath = "C:\Program Files (x86)\CMake\bin";
           }
-
+          $env:compilersetup = "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall";
+          $env:compilersetupargs = "x86";
           $env:maketype = "MinGW Makefiles";
           $env:makecommand = "mingw32-make";
         }
 
 #I hate windows sometimes
-#"%compilersetup%" %compilersetupargs% wouldn't run from pw and it wouldn't run in a cmd IF, so it has to run all the time.
+#"%compilersetup%" %compilersetupargs% wouldn't run from ps and it wouldn't run in a cmd IF, so it has to run all the time.
 build_script:
  - '"%compilersetup%" %compilersetupargs%'
  - ps: if($env:toolchain -eq "mingw"){
