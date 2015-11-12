@@ -90,10 +90,15 @@ before_build:
 
 
 build_script:
- - echo %compilersetup%
- - echo %compilersetupargs%
- - echo '"%compilersetup%"%compilersetupargs%'
- - '"%compilersetup%"%compilersetupargs%'
+
+ - ps: if($env:toolchain -eq "msvc12" -or $env:toolchain -eq "msvc12"){
+        & $env:compilersetup $env:compilersetupargs;
+        }
+       elseif($env:toolchain -eq "mingw"){
+        & $env:compilersetup;
+       }
+
+
 
 
  - cmake -G"%maketype%" .
