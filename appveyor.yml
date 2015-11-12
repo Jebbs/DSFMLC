@@ -95,7 +95,7 @@ build_script:
         Write-Host $env:compilersetup $env:compilersetupargs;
         $msvccommand = $env:compilersetup;
         $msvccommandargs = $env:compilersetupargs;
-        & "$msvccommandargs" $msvccommandargs
+        & '"$msvccommandargs" $msvccommandargs'
         }
        elseif($env:toolchain -eq "mingw"){
         $env:Path = $env:compilerpath + $env:cmakepath;
