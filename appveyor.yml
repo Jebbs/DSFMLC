@@ -95,7 +95,7 @@ build_script:
         & $env:compilersetup $env:compilersetupargs;
         }
        elseif($env:toolchain -eq "mingw"){
-        & $env:compilersetup;
+        $env:Path = $env:compilersetup;
        }
 
 
