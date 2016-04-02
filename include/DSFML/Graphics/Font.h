@@ -66,12 +66,17 @@ DSFML_GRAPHICS_API void sfFont_getGlyph(const sfFont* font, DUint codePoint, DIn
 
 
 //Get the kerning value corresponding to a given pair of characters in a font
-DSFML_GRAPHICS_API DInt sfFont_getKerning(const sfFont* font, DUint first, DUint second, DUint characterSize);
+DSFML_GRAPHICS_API float sfFont_getKerning(const sfFont* font, DUint first, DUint second, DUint characterSize);
 
 
 //Get the line spacing value
-DSFML_GRAPHICS_API DInt sfFont_getLineSpacing(const sfFont* font, DUint characterSize);
+DSFML_GRAPHICS_API float sfFont_getLineSpacing(const sfFont* font, DUint characterSize);
 
+//Get the position of the underline
+DSFML_GRAPHICS_API float sfFont_getUnderlinePosition (DUint characterSize);
+
+//Get the thickness of the underline
+DSFML_GRAPHICS_API float sfFont_getUnderlineThickness (DUint charactersize);
 
 //Get the texture pointer for a particular font
 DSFML_GRAPHICS_API sfTexture* sfFont_getTexturePtr(const sfFont* font);

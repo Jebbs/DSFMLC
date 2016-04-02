@@ -106,18 +106,28 @@ void sfFont_getGlyph(const sfFont* font, DUint codePoint, DInt characterSize, DB
 
 
 
-DInt sfFont_getKerning(const sfFont* font, DUint first, DUint second, DUint characterSize)
+float sfFont_getKerning(const sfFont* font, DUint first, DUint second, DUint characterSize)
 {
     return font->This.getKerning(first, second, characterSize);
 }
 
 
 
-DInt sfFont_getLineSpacing(const sfFont* font, DUint characterSize)
+float sfFont_getLineSpacing(const sfFont* font, DUint characterSize)
 {
     return font->This.getLineSpacing(characterSize);
 }
 
+
+float sfFont_getUnderlinePosition(const sfFont* font, DUint characterSize)
+{
+    return font->This.getUnderlinePosition(characterSize);
+}
+
+float sfFont_getUnderlineThickness(const sfFont* font, DUint characterSize)
+{
+    return font->This.getUnderlineThickness(characterSize);
+}
 
 
 sfTexture* sfFont_getTexturePtr(const sfFont* font)

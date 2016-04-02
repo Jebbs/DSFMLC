@@ -68,6 +68,17 @@ float sfJoystick_getAxisPosition(DUint joystick, DInt axis)
     return sf::Joystick::getAxisPosition(joystick, static_cast<sf::Joystick::Axis>(axis));
 }
 
+void sfJoystick_getIdentification(DUint joystick, const DUint ** name, DUint * vendorId, DUint* productId)
+{
+	sf::Joystick::Identification sfmlIdentification = sf::Joystick::getIdentification(joystick);
+
+	//XXX Is this the right way to pass a sf::String to D?
+	//*name = sfmlIdentification.name.toUtf32().c_str();
+	//XXX Or is this?
+	*name = sfmlIdentification.name.getData();
+	*vendorId = sfmlIdentification.vendorId;
+	*productId = sfmlIdentification.productId;
+}
 
 
 void sfJoystick_update(void)

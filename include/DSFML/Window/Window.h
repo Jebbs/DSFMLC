@@ -125,6 +125,11 @@ DSFML_WINDOW_API DBool sfWindow_setActive(sfWindow* window, DBool active);
 //Display on screen what has been rendered to the window so far
 DSFML_WINDOW_API void sfWindow_display(sfWindow* window);
 
+//Request the current window to be made the active foreground window
+DSFML_WINDOW_API void sfWindow_requestFocus(sfWindow* window);
+
+//Check whether the window has the input focus
+DSFML_WINDOW_API DBool sfWindow_hasFocus(sfWindow*);
 
 //Limit the framerate to a maximum fixed frequency
 DSFML_WINDOW_API void sfWindow_setFramerateLimit(sfWindow* window, DUint limit);

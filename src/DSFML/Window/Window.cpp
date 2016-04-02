@@ -223,6 +223,15 @@ void sfWindow_display(sfWindow* window)
     window->This.display();
 }
 
+void sfWindow_requestFocus(sfWindow* window)
+{
+	window->This.requestFocus();
+}
+
+DBool sfWindow_hasFocus(sfWindow* window) {
+	return (window->This.hasFocus())?DTrue: DFalse;
+}
+
 
 void sfWindow_setFramerateLimit(sfWindow* window, DUint limit)
 {
