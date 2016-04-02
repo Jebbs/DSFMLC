@@ -129,7 +129,7 @@ DSFML_WINDOW_API void sfWindow_display(sfWindow* window);
 DSFML_WINDOW_API void sfWindow_requestFocus(sfWindow* window);
 
 //Check whether the window has the input focus
-DSFML_WINDOW_API DBool sfWindow_hasFocus(sfWindow*);
+DSFML_WINDOW_API DBool sfWindow_hasFocus(const sfWindow *);
 
 //Limit the framerate to a maximum fixed frequency
 DSFML_WINDOW_API void sfWindow_setFramerateLimit(sfWindow* window, DUint limit);

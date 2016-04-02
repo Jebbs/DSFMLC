@@ -228,7 +228,7 @@ void sfWindow_requestFocus(sfWindow* window)
 	window->This.requestFocus();
 }
 
-DBool sfWindow_hasFocus(sfWindow* window) {
+DBool sfWindow_hasFocus(const sfWindow * window) {
 	return (window->This.hasFocus())?DTrue: DFalse;
 }
 

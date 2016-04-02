@@ -73,10 +73,10 @@ DSFML_GRAPHICS_API float sfFont_getKerning(const sfFont* font, DUint first, DUin
 DSFML_GRAPHICS_API float sfFont_getLineSpacing(const sfFont* font, DUint characterSize);
 
 //Get the position of the underline
-DSFML_GRAPHICS_API float sfFont_getUnderlinePosition (DUint characterSize);
+DSFML_GRAPHICS_API float sfFont_getUnderlinePosition (const sfFont * font, DUint characterSize);
 
 //Get the thickness of the underline
-DSFML_GRAPHICS_API float sfFont_getUnderlineThickness (DUint charactersize);
+DSFML_GRAPHICS_API float sfFont_getUnderlineThickness (const sfFont * font, DUint charactersize);
 
 //Get the texture pointer for a particular font
 DSFML_GRAPHICS_API sfTexture* sfFont_getTexturePtr(const sfFont* font);

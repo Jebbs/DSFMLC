@@ -56,6 +56,10 @@ set(SRC
     ${DINCROOT}/Keyboard.h
     ${DSRCROOT}/Mouse.cpp
     ${DINCROOT}/Mouse.h
+    ${DSRCROOT}/Sensor.cpp
+    ${DINCROOT}/Sensor.h
+    ${DSRCROOT}/Touch.cpp
+    ${DINCROOT}/Touch.h
     ${DINCROOT}/Types.h
     ${DSRCROOT}/VideoMode.cpp
     ${DINCROOT}/VideoMode.h
