@@ -45,6 +45,9 @@ set(SRC
      ${DSRCROOT}/InputSoundFile.cpp
      ${DINCROOT}/InputSoundFile.h
      ${DSRCROOT}/InputSoundFileStruct.h
+     ${DSRCROOT}/OutputSoundFile.cpp
+     ${DINCROOT}/OutputSoundFile.h
+     ${DSRCROOT}/OutputSoundFileStruct.h
      ${DSRCROOT}/SoundRecorder.cpp
      ${DINCROOT}/SoundRecorder.h
      ${DSRCROOT}/SoundRecorderStruct.h

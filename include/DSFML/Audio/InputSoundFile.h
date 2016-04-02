@@ -28,8 +28,8 @@ Copyright (C) 2007-2013 Laurent Gomila (laurent.gom@gmail.com)
 All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license.php
 */
 
-#ifndef DSFML_SOUNDFILE_H
-#define DSFML_SOUNDFILE_H
+#ifndef DSFML_INPUTSOUNDFILE_H
+#define DSFML_INPUTSOUNDFILE_H
 
 //Headers
 #include <DSFML/Audio/Export.h>
@@ -60,17 +60,11 @@ DSFML_AUDIO_API DBool sfInputSoundFile_openFromMemory(sfInputSoundFile* file,voi
 //Open a sound file from a custom stream for reading
 DSFML_AUDIO_API DBool sfInputSoundFile_openFromStream(sfInputSoundFile* file, DStream* stream);
 
-//Open a sound file for writting
-DSFML_AUDIO_API DBool sfInputSoundFile_openForWriting(sfInputSoundFile* file, const char* filename,DUint channelCount,DUint sampleRate);
-
 //Read samples from a sound file
 DSFML_AUDIO_API DLong sfInputSoundFile_read(sfInputSoundFile* file, DShort* data, DLong sampleCount);
-
-//Write samples to a sound file
-DSFML_AUDIO_API void sfInputSoundFile_write(sfInputSoundFile* file, const DShort* data, DLong sampleCount);
 
 //Change the current read position in the sound file
 DSFML_AUDIO_API void sfInputSoundFile_seek(sfInputSoundFile* file, DLong timeOffset);
 
 
-#endif // DSFML_SOUNDFILE_H
+#endif // DSFML_INPUTSOUNDFILE_H

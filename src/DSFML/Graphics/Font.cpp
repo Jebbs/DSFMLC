@@ -86,7 +86,7 @@ void sfFont_destroy(sfFont* font)
 
 
 
-void sfFont_getGlyph(const sfFont* font, DUint codePoint, DInt characterSize, DBool bold, DInt* glyphAdvance, DInt* glyphBoundsLeft, DInt* glyphBoundsTop, DInt* glyphBoundsWidth, DInt* glyphBoundsHeight, DInt* glyphTextRectLeft, DInt* glyphTextRectTop, DInt* glyphTextRectWidth, DInt* glyphTextRectHeight)
+void sfFont_getGlyph(const sfFont* font, DUint codePoint, DInt characterSize, DBool bold, float* glyphAdvance, float* glyphBoundsLeft, float* glyphBoundsTop, float* glyphBoundsWidth, float* glyphBoundsHeight, DInt* glyphTextRectLeft, DInt* glyphTextRectTop, DInt* glyphTextRectWidth, DInt* glyphTextRectHeight)
 {
 
     sf::Glyph SFMLGlyph = font->This.getGlyph(codePoint, characterSize, bold == DTrue);

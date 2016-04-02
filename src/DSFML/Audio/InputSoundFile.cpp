@@ -85,24 +85,10 @@ DBool sfInputSoundFile_openFromStream(sfInputSoundFile* file, DStream* stream)
     return toReturn?DTrue:DFalse;
 }
 
-//XXX: SFML 2.3 documentation says this should exist but it's not there in the code. Weeeeird.
-/*DBool sfInputSoundFile_openForWriting(sfInputSoundFile* file, const char* filename,DUint channelCount,DUint sampleRate)
-{
-    bool toReturn = file->This.openForWriting(filename,channelCount,sampleRate);
-
-    return toReturn?DTrue:DFalse;
-}*/
-
 DLong sfInputSoundFile_read(sfInputSoundFile* file, DShort* data, DLong sampleCount)
 {
     return file->This.read(data, (size_t)sampleCount);
 }
-
-/*void sfInputSoundFile_write(sfInputSoundFile* file, const DShort* data, DLong sampleCount)
-{
-	//XXX FIXME: Not implemented here, but not needed for dsfml.audio.Music
-    //file->This.write(data,(size_t)sampleCount);
-}*/
 
 void sfInputSoundFile_seek(sfInputSoundFile* file, DLong timeOffset)
 {
