@@ -136,6 +136,21 @@ DUint sfPacket_readUint32(sfPacket* packet)
     packet->This >> value;
     return value;
 }
+
+DLong sfPacket_readInt64(sfPacket* packet)
+{
+	DLong value;
+	packet->This >> value;
+	return value;
+}
+
+DUlong sfPacket_readUint64(sfPacket* packet)
+{
+	DUlong value;
+	packet->This >> value;
+	return value;
+}
+
 float sfPacket_readFloat(sfPacket* packet)
 {
     float value;
@@ -177,7 +192,15 @@ void sfPacket_writeInt32(sfPacket* packet, DInt value)
 {
     packet->This << value;
 }
-void sfPacket_writeUint32(sfPacket* packet, DUint value)
+void sfPacket_writeUint64(sfPacket* packet, DUint value)
+{
+    packet->This << value;
+}
+void sfPacket_writeInt64(sfPacket* packet, DLong value)
+{
+    packet->This << value;
+}
+void sfPacket_writeUint32(sfPacket* packet, DUlong value)
 {
     packet->This << value;
 }

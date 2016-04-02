@@ -34,7 +34,7 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 
 // Headers
 #include <DSFML/Window/Export.h>
-
+#include <stddef.h>
 
 
 //Global joysticks capabilities
@@ -82,7 +82,7 @@ DSFML_WINDOW_API DBool sfJoystick_isButtonPressed(DUint joystick, DUint button);
 DSFML_WINDOW_API float sfJoystick_getAxisPosition(DUint joystick, DInt axis);
 
 //Get the joystick information
-DSFML_WINDOW_API void sfJoystick_getIdentification(DUint joystick, const char ** name, DUint * vendorID, DUint* productId);
+DSFML_WINDOW_API void sfJoystick_getIdentification(DUint joystick, const DUint ** name, size_t * nameLength, DUint * vendorID, DUint* productId);
 
 //Update the states of all joysticks
 DSFML_WINDOW_API void sfJoystick_update(void);

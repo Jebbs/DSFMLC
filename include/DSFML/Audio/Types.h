@@ -33,8 +33,8 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 
 typedef struct sfSoundBuffer sfSoundBuffer;
 typedef struct sfSound sfSound;
-typedef struct sfSoundBuffer sfSoundBuffer;
-typedef struct sfSoundFile sfSoundFile;
+//typedef struct sfSoundBuffer sfSoundBuffer;
+typedef struct sfInputSoundFile sfInputSoundFile;
 typedef struct sfSoundRecorder sfSoundRecorder;
 typedef struct sfSoundBufferRecorder sfSoundBufferRecorder;
 

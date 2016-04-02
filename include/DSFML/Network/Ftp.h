@@ -164,5 +164,8 @@ DSFML_NETWORK_API sfFtpResponse* sfFtp_download(sfFtp* ftp, const char* distantF
 //Upload a file to a FTP server
 DSFML_NETWORK_API sfFtpResponse* sfFtp_upload(sfFtp* ftp, const char* localFile, const char* destPath, DInt mode);
 
+//Send a command to the FTP server
+DSFML_NETWORK_API sfFtpResponse* sfFtp_sendCommand(sfFtp* ftp, const char* command, const char* parameter);
+
 
 #endif // DSFML_FTP_H

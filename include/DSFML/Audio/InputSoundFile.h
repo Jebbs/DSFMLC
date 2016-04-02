@@ -37,40 +37,40 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/System/DStream.hpp>
 
 //Creates the sound file
-DSFML_AUDIO_API sfSoundFile* sfSoundFile_create();
+DSFML_AUDIO_API sfInputSoundFile* sfInputSoundFile_create();
 
 //Destroys the sound file
-DSFML_AUDIO_API void sfSoundFile_destroy(sfSoundFile* file);
+DSFML_AUDIO_API void sfInputSoundFile_destroy(sfInputSoundFile* file);
 
 //Get the sample count of the sound file
-DSFML_AUDIO_API DLong sfSoundFile_getSampleCount(const sfSoundFile* file);
+DSFML_AUDIO_API DLong sfInputSoundFile_getSampleCount(const sfInputSoundFile* file);
 
 //Get the channel count of the sound file
-DSFML_AUDIO_API DUint sfSoundFile_getChannelCount( const sfSoundFile* file);
+DSFML_AUDIO_API DUint sfInputSoundFile_getChannelCount( const sfInputSoundFile* file);
 
 //Get the sample rate of the sound file
-DSFML_AUDIO_API DUint sfSoundFile_getSampleRate(const sfSoundFile* file);
+DSFML_AUDIO_API DUint sfInputSoundFile_getSampleRate(const sfInputSoundFile* file);
 
 //Open a sound file for reading
-DSFML_AUDIO_API DBool sfSoundFile_openReadFromFile(sfSoundFile* file, const char* filename);
+DSFML_AUDIO_API DBool sfInputSoundFile_openReadFromFile(sfInputSoundFile* file, const char* filename);
 
 //Open a sound file in memory for reading
-DSFML_AUDIO_API DBool sfSoundFile_openReadFromMemory(sfSoundFile* file,void* data, DLong sizeInBytes);
+DSFML_AUDIO_API DBool sfInputSoundFile_openReadFromMemory(sfInputSoundFile* file,void* data, DLong sizeInBytes);
 
 //Open a sound file from a custom stream for reading
-DSFML_AUDIO_API DBool sfSoundFile_openReadFromStream(sfSoundFile* file, DStream* stream);
+DSFML_AUDIO_API DBool sfInputSoundFile_openReadFromStream(sfInputSoundFile* file, DStream* stream);
 
 //Open a sound file for writting
-DSFML_AUDIO_API DBool sfSoundFile_openWrite(sfSoundFile* file, const char* filename,DUint channelCount,DUint sampleRate);
+DSFML_AUDIO_API DBool sfInputSoundFile_openWrite(sfInputSoundFile* file, const char* filename,DUint channelCount,DUint sampleRate);
 
 //Read samples from a sound file
-DSFML_AUDIO_API DLong sfSoundFile_read(sfSoundFile* file, DShort* data, DLong sampleCount);
+DSFML_AUDIO_API DLong sfInputSoundFile_read(sfInputSoundFile* file, DShort* data, DLong sampleCount);
 
 //Write samples to a sound file
-DSFML_AUDIO_API void sfSoundFile_write(sfSoundFile* file, const DShort* data, DLong sampleCount);
+DSFML_AUDIO_API void sfInputSoundFile_write(sfInputSoundFile* file, const DShort* data, DLong sampleCount);
 
 //Change the current read position in the sound file
-DSFML_AUDIO_API void sfSoundFile_seek(sfSoundFile* file, DLong timeOffset);
+DSFML_AUDIO_API void sfInputSoundFile_seek(sfInputSoundFile* file, DLong timeOffset);
 
 
 #endif // DSFML_SOUNDFILE_H

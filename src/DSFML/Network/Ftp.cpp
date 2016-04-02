@@ -222,3 +222,9 @@ sfFtpResponse* sfFtp_upload(sfFtp* ftp, const char* localFile, const char* destP
                                               destPath ? destPath : "",
                                               static_cast<sf::Ftp::TransferMode>(mode)));
 }
+
+sfFtpResponse* sfFtp_sendCommand(sfFtp* ftp, const char* command, const char* parameter)
+{
+    return new sfFtpResponse(ftp->This.sendCommand(command ? command : "",
+                                              parameter ? parameter : ""));
+}
