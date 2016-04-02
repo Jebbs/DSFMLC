@@ -2,6 +2,9 @@
 set(INCROOT ${PROJECT_SOURCE_DIR}/include/SFML/Graphics)
 set(SRCROOT ${PROJECT_SOURCE_DIR}/src/SFML/Graphics)
 
+set(DINCROOT ${PROJECT_SOURCE_DIR}/include/DSFML/Graphics)
+set(DSRCROOT ${PROJECT_SOURCE_DIR}/src/DSFML/Graphics)
+
 # all source files
 set(SRC
     ${SRCROOT}/BlendMode.cpp
@@ -45,6 +48,39 @@ set(SRC
     ${INCROOT}/View.hpp
     ${SRCROOT}/Vertex.cpp
     ${INCROOT}/Vertex.hpp
+
+    ${DINCROOT}/Export.h
+    ${DSRCROOT}/CreateRenderStates.hpp
+    ${DSRCROOT}/CreateTransform.hpp
+    ${DSRCROOT}/Font.cpp
+    ${DSRCROOT}/FontStruct.h
+    ${DINCROOT}/Font.h
+    ${DSRCROOT}/Image.cpp
+    ${DSRCROOT}/ImageStruct.h
+    ${DINCROOT}/Image.h
+    ${DSRCROOT}/RenderTexture.cpp
+    ${DSRCROOT}/RenderTextureStruct.h
+    ${DINCROOT}/RenderTexture.h
+    ${DSRCROOT}/RenderWindow.cpp
+    ${DSRCROOT}/RenderWindowStruct.h
+    ${DINCROOT}/RenderWindow.h
+    ${DSRCROOT}/Shader.cpp
+    ${DSRCROOT}/ShaderStruct.h
+    ${DINCROOT}/Shader.h
+    ${DSRCROOT}/Texture.cpp
+    ${DSRCROOT}/TextureStruct.h
+    ${DINCROOT}/Texture.h
+    ${DSRCROOT}/DText.cpp
+    ${DSRCROOT}/DText.hpp
+    ${DSRCROOT}/Text.cpp
+    ${DSRCROOT}/TextStruct.h
+    ${DINCROOT}/Text.h
+    ${DSRCROOT}/Transform.cpp
+    ${DINCROOT}/Transform.h
+    ${DINCROOT}/Types.h
+    ${DSRCROOT}/View.cpp
+    ${DSRCROOT}/ViewStruct.h
+    ${DINCROOT}/View.h
 )
 if(NOT SFML_OPENGL_ES)
     list(APPEND SRC ${SRCROOT}/GLLoader.cpp)

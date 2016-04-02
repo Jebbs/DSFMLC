@@ -2,6 +2,9 @@
 set(INCROOT ${PROJECT_SOURCE_DIR}/include/SFML/Audio)
 set(SRCROOT ${PROJECT_SOURCE_DIR}/src/SFML/Audio)
 
+set(DINCROOT ${PROJECT_SOURCE_DIR}/include/DSFML/Audio)
+set(DSRCROOT ${PROJECT_SOURCE_DIR}/src/DSFML/Audio)
+
 # all source files
 set(SRC
     ${SRCROOT}/ALCheck.cpp
@@ -31,6 +34,23 @@ set(SRC
     ${INCROOT}/SoundSource.hpp
     ${SRCROOT}/SoundStream.cpp
     ${INCROOT}/SoundStream.hpp
+
+     ${DINCROOT}/Export.h
+     ${DSRCROOT}/Listener.cpp
+     ${DINCROOT}/Listener.h
+     ${DSRCROOT}/Sound.cpp
+     ${DINCROOT}/Sound.h
+     ${DSRCROOT}/SoundBuffer.cpp
+     ${DINCROOT}/SoundBuffer.h
+     ${DSRCROOT}/InputSoundFile.cpp
+     ${DINCROOT}/InputSoundFile.h
+     ${DSRCROOT}/InputSoundFileStruct.h
+     ${DSRCROOT}/SoundRecorder.cpp
+     ${DINCROOT}/SoundRecorder.h
+     ${DSRCROOT}/SoundRecorderStruct.h
+     ${DSRCROOT}/SoundStreamStruct.h
+     ${DSRCROOT}/SoundStream.cpp
+     ${DINCROOT}/SoundStream.h
 )
 source_group("" FILES ${SRC})
 

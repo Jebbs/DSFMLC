@@ -1,6 +1,8 @@
 
 set(INCROOT ${PROJECT_SOURCE_DIR}/include/SFML/System)
 set(SRCROOT ${PROJECT_SOURCE_DIR}/src/SFML/System)
+set(DINCROOT ${PROJECT_SOURCE_DIR}/include/DSFML/System)
+set(DSRCROOT ${PROJECT_SOURCE_DIR}/src/DSFML/System)
 
 # all source files
 set(SRC
@@ -39,6 +41,17 @@ set(SRC
     ${INCROOT}/FileInputStream.hpp
     ${SRCROOT}/MemoryInputStream.cpp
     ${INCROOT}/MemoryInputStream.hpp
+    
+    ${DSRCROOT}/Clock.cpp
+    ${DINCROOT}/Clock.h
+    ${DSRCROOT}/ClockStruct.h
+    ${DINCROOT}/DStream.hpp
+    ${DSRCROOT}/Err.cpp
+    ${DINCROOT}/Err.h
+    ${DSRCROOT}/String.cpp
+    ${DINCROOT}/String.h
+    ${DINCROOT}/Export.h
+    ${DINCROOT}/Types.h
 )
 source_group("" FILES ${SRC})
 
@@ -88,6 +101,11 @@ if(SFML_OS_LINUX OR SFML_OS_FREEBSD OR SFML_OS_MACOSX)
     list(APPEND SYSTEM_EXT_LIBS pthread)
 endif()
 if(SFML_OS_LINUX)
+    set(SRC
+        ${SRC}
+        ${DSRCROOT}/Threads.cpp
+        ${DINCROOT}/Threads.h
+    )
     list(APPEND SYSTEM_EXT_LIBS rt)
 endif()
 if(SFML_OS_WINDOWS)

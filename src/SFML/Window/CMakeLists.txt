@@ -2,6 +2,9 @@
 set(INCROOT ${PROJECT_SOURCE_DIR}/include/SFML/Window)
 set(SRCROOT ${PROJECT_SOURCE_DIR}/src/SFML/Window)
 
+set(DINCROOT ${PROJECT_SOURCE_DIR}/include/DSFML/Window)
+set(DSRCROOT ${PROJECT_SOURCE_DIR}/src/DSFML/Window)
+
 # all source files
 set(SRC
     ${SRCROOT}/Context.cpp
@@ -39,6 +42,27 @@ set(SRC
     ${SRCROOT}/WindowImpl.cpp
     ${SRCROOT}/WindowImpl.hpp
     ${INCROOT}/WindowStyle.hpp
+
+    ${DINCROOT}/Export.h
+    ${DSRCROOT}/Context.cpp
+    ${DSRCROOT}/ContextStruct.h
+    ${DINCROOT}/Context.h
+    ${DINCROOT}/Event.h
+    ${DINCROOT}/Err.h
+    ${DSRCROOT}/Err.cpp
+    ${DSRCROOT}/Joystick.cpp
+    ${DINCROOT}/Joystick.h
+    ${DSRCROOT}/Keyboard.cpp
+    ${DINCROOT}/Keyboard.h
+    ${DSRCROOT}/Mouse.cpp
+    ${DINCROOT}/Mouse.h
+    ${DINCROOT}/Types.h
+    ${DSRCROOT}/VideoMode.cpp
+    ${DINCROOT}/VideoMode.h
+    ${DSRCROOT}/Window.cpp
+    ${DSRCROOT}/WindowStruct.h
+    ${DINCROOT}/Window.h
+    ${DINCROOT}/WindowHandle.h
 )
 if(SFML_OPENGL_ES AND NOT SFML_OS_IOS)
     list(APPEND SRC ${SRCROOT}/EGLCheck.cpp)
