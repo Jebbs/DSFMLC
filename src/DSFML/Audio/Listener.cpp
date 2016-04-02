@@ -80,3 +80,20 @@ void sfListener_getDirection(float* x, float* y, float* z)
     *y = temp.y;
     *z = temp.z;
 }
+
+void sfListener_setUpVector(float x, float y, float z)
+{
+    sf::Listener::setUpVector(x,y,z);
+}
+
+
+void sfListener_getUpVector(float* x, float* y, float* z)
+{
+    sf::Vector3f temp;
+
+    temp = sf::Listener::getUpVector();
+
+    *x = temp.x;
+    *y = temp.y;
+    *z = temp.z;
+}

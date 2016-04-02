@@ -81,6 +81,14 @@ struct DEvent
 		DInt y; /// Y position of the mouse pointer, relative to the top of the owner window
 	};
 
+	struct MouseWheelScrollEvent
+	{
+		DInt wheel; /// Which wheel (for mice with multiple ones)
+		float delta; /// Wheel offset. High precision mice may use non-integral offsets.
+		DInt x; /// X position of the mouse pointer, relative to the left of the owner window
+		DInt y; /// Y position of the mouse pointer, relative to the top of the owner window
+	};
+
 	struct JoystickConnectEvent
 	{
 		DUint joystickId; /// Index of the joystick (in range [0 .. Joystick::Count - 1])
@@ -99,6 +107,20 @@ struct DEvent
 		DUint button; /// Index of the button that has been pressed (in range [0 .. Joystick::ButtonCount - 1])
 	};
 
+	struct SensorEvent {
+		DInt type; ///Type of the sensor
+		float x; /// Current value of the sensor on the X Axis
+		float y; /// Current value of the sensor on the X Axis
+		float z; /// Current value of the sensor on the X Axis
+	};
+
+	struct TouchEvent
+	{
+		DUint finger; /// Index of the finger in case of multi-touch events
+		int x; /// X position of the touch, relative to the left of the owner window
+		int y; /// X position of the touch, relative to the left of the owner window
+	};
+
 enum EventType
 	{
 		Closed, /// The window requested to be closed (no data)
@@ -109,6 +131,7 @@ enum EventType
 		KeyPressed, /// A key was pressed (data in event.key)
 		KeyReleased, /// A key was released (data in event.key)
 		MouseWheelMoved, /// The mouse wheel was scrolled (data in event.mouseWheel)
+		MouseWheelScrolled, /// The mouse wheel was scrolled (data in event.mouseWheelScroll)
 		MouseButtonPressed, /// A mouse button was pressed (data in event.mouseButton)
 		MouseButtonReleased, /// A mouse button was released (data in event.mouseButton)
 		MouseMoved, /// The mouse cursor moved (data in event.mouseMove)
@@ -119,6 +142,10 @@ enum EventType
 		JoystickMoved, /// The joystick moved along an axis (data in event.joystickMove)
 		JoystickConnected, /// A joystick was connected (data in event.joystickConnect)
 		JoystickDisconnected, /// A joystick was disconnected (data in event.joystickConnect)
+		TouchBegan, /// A touch event began (data in event.touch)
+		TouchMoved, /// A touch moved (data in event.touch)
+		TouchEnded, /// A touch ended (data in event.touch)
+		SensorChanged, /// A sensor value changed (data in event.sensor)
 
 		Count /// Keep last -- the total number of event types
 	};
@@ -133,9 +160,12 @@ enum EventType
 		MouseMoveEvent mouseMove; ///< Mouse move event parameters (Event::MouseMoved)
 		MouseButtonEvent mouseButton; ///< Mouse button event parameters (Event::MouseButtonPressed, Event::MouseButtonReleased)
 		MouseWheelEvent mouseWheel; ///< Mouse wheel event parameters (Event::MouseWheelMoved)
+		MouseWheelScrollEvent mouseWheelScroll; ///<Mouse wheel event parameters
 		JoystickMoveEvent joystickMove; ///< Joystick move event parameters (Event::JoystickMoved)
 		JoystickButtonEvent joystickButton; ///< Joystick button event parameters (Event::JoystickButtonPressed, Event::JoystickButtonReleased)
 		JoystickConnectEvent joystickConnect; ///< Joystick (dis)connect event parameters (Event::JoystickConnected, Event::JoystickDisconnected)
+		TouchEvent touch; ///< Touch events parameters
+		SensorEvent sensor; ///< Sensor event parameters
 
 	};
 };

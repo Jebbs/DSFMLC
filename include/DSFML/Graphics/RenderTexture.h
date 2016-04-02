@@ -78,7 +78,9 @@ DSFML_GRAPHICS_API void sfRenderTexture_mapCoordsToPixel(const sfRenderTexture* 
 //  Draw primitives defined by an array of vertices to a render texture
 DSFML_GRAPHICS_API void sfRenderTexture_drawPrimitives(sfRenderTexture* renderTexture,
                                                        const void* vertices, DUint vertexCount,
-                                                       DInt type, DInt blendMode,const float* transform, const sfTexture* texture, const sfShader* shader);
+                                                       DInt type, DInt colorSrcFactor, DInt colorDstFactor,
+														DInt colorEquation, DInt alphaSrcFactor, DInt alphaDstFactor,
+														DInt alphaEquation,const float* transform, const sfTexture* texture, const sfShader* shader);
 
 //  Save the current OpenGL render states and matrices
 DSFML_GRAPHICS_API void sfRenderTexture_pushGLStates(sfRenderTexture* renderTexture);

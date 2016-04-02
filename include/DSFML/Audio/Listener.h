@@ -52,5 +52,10 @@ DSFML_AUDIO_API void sfListener_setDirection(float x, float y, float z);
 //Get the direction of the Listener
 DSFML_AUDIO_API void sfListener_getDirection(float* x, float* y, float* z);
 
+//Set the upward vector of the Listener
+DSFML_AUDIO_API void sfListener_setUpVector(float x, float y, float z);
+
+//Get the upward vector of the Listener
+DSFML_AUDIO_API void sfListener_getUpVector(float* x, float* y, float* z);
 
 #endif // DSFML_AUDIO_LISTENER_H
