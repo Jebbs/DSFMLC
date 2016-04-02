@@ -33,6 +33,7 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 
 //Headers
 #include <SFML/Audio/SoundRecorder.hpp>
+#include <SFML/System/Time.hpp>
 #include <DSFML/Config.h>
 
 
@@ -60,6 +61,13 @@ public:
 	{
 		//callBacks = newCallBacks;
 	}
+
+	//XXX Using a public method here to gain access to a C++ Protected method from D. Not sure if this is the best way.
+	void setProcessingIntervalD (DUlong time)
+	{
+		sf::SoundRecorder::setProcessingInterval(sf::microseconds(time));
+	}
+
 protected:
 	virtual bool onStart()
 	{

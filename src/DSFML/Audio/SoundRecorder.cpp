@@ -58,7 +58,48 @@ DUint sfSoundRecorder_getSampleRate(const sfSoundRecorder* soundRecorder)
 	return soundRecorder->This.getSampleRate();
 }
 
+DBool sfSoundRecorder_setDevice(sfSoundRecorder* soundRecorder, const char* name)
+{
+	return soundRecorder->This.setDevice(name);
+}
+
+const char * sfSoundRecorder_getDevice(const sfSoundRecorder* soundRecorder)
+{
+	return soundRecorder->This.getDevice().c_str();
+}
+
+const char ** sfSoundRecorder_getAvailableDevices (size_t* count)
+{
+    static std::vector<const char *> devices;
+
+    // Populate the array on first call
+    if (devices.empty())
+    {
+        const std::vector<std::string>& SFMLDevices = sf::SoundRecorder::getAvailableDevices();
+        for (std::vector<std::string>::const_iterator it = SFMLDevices.begin(); it != SFMLDevices.end(); ++it)
+        {
+
+            devices.push_back(it->c_str());
+        }
+    }
+
+    if (count)
+        *count = devices.size();
+
+    return !devices.empty() ? &devices[0] : NULL;
+}
+
+const char * sfSoundRecorder_getDefaultDevice (void)
+{
+	return sf::SoundRecorder::getDefaultDevice().c_str();
+}
+
 DBool sfSoundRecorder_isAvailable(void)
 {
 	return sf::SoundRecorder::isAvailable() ? DTrue : DFalse;
+}
+
+void sfSoundRecorder_setProcessingInterval(sfSoundRecorder* soundRecorder, DUlong time)
+{
+	soundRecorder->This.setProcessingIntervalD(time);
 }
