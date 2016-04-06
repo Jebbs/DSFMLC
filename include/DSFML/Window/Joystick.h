@@ -81,8 +81,11 @@ DSFML_WINDOW_API DBool sfJoystick_isButtonPressed(DUint joystick, DUint button);
 //Get the current position of a joystick axis
 DSFML_WINDOW_API float sfJoystick_getAxisPosition(DUint joystick, DInt axis);
 
+//Get the length of a joystick name for buffer generation
+DSFML_WINDOW_API size_t sfJoystick_getIdentificationNameSize (DUint joystick);
+
 //Get the joystick information
-DSFML_WINDOW_API void sfJoystick_getIdentification(DUint joystick, const DUint ** name, size_t * nameLength, DUint * vendorID, DUint* productId);
+DSFML_WINDOW_API void sfJoystick_getIdentification(DUint joystick, DUint * nameBuffer, DUint * vendorID, DUint* productId);
 
 //Update the states of all joysticks
 DSFML_WINDOW_API void sfJoystick_update(void);
