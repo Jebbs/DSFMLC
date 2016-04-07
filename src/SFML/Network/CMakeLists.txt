@@ -2,6 +2,9 @@
 set(INCROOT ${PROJECT_SOURCE_DIR}/include/SFML/Network)
 set(SRCROOT ${PROJECT_SOURCE_DIR}/src/SFML/Network)
 
+set(DINCROOT ${PROJECT_SOURCE_DIR}/include/DSFML/Network)
+set(DSRCROOT ${PROJECT_SOURCE_DIR}/src/DSFML/Network)
+
 # all source files
 set(SRC
     ${INCROOT}/Export.hpp
@@ -25,6 +28,34 @@ set(SRC
     ${INCROOT}/TcpSocket.hpp
     ${SRCROOT}/UdpSocket.cpp
     ${INCROOT}/UdpSocket.hpp
+
+    ${DINCROOT}/Export.h
+    ${DINCROOT}/Err.h
+    ${DSRCROOT}/Err.cpp
+    ${DSRCROOT}/Ftp.cpp
+    ${DSRCROOT}/FtpStruct.h
+    ${DINCROOT}/Ftp.h
+    ${DSRCROOT}/Http.cpp
+    ${DSRCROOT}/HttpStruct.h
+    ${DINCROOT}/Http.h
+    ${DSRCROOT}/IpAddress.cpp
+    ${DINCROOT}/IpAddress.h
+    ${DSRCROOT}/Packet.cpp
+    ${DSRCROOT}/PacketStruct.h
+    ${DINCROOT}/Packet.h
+    ${DSRCROOT}/SocketSelector.cpp
+    ${DSRCROOT}/SocketSelectorStruct.h
+    ${DINCROOT}/SocketSelector.h
+    ${DSRCROOT}/TcpListener.cpp
+    ${DSRCROOT}/TcpListenerStruct.h
+    ${DINCROOT}/TcpListener.h
+    ${DSRCROOT}/TcpSocket.cpp
+    ${DSRCROOT}/TcpSocketStruct.h
+    ${DINCROOT}/TcpSocket.h
+    ${DINCROOT}/Types.h
+    ${DSRCROOT}/UdpSocket.cpp
+    ${DSRCROOT}/UdpSocketStruct.h
+    ${DINCROOT}/UdpSocket.h
 )
 
 # add platform specific sources

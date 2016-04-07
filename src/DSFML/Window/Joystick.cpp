@@ -1,0 +1,99 @@
+/*
+DSFML - The Simple and Fast Multimedia Library for D
+
+Copyright (c) <2013> <Jeremy DeHaan>
+
+This software is provided 'as-is', without any express or implied warranty.
+In no event will the authors be held liable for any damages arising from the use of this software.
+
+Permission is granted to anyone to use this software for any purpose, including commercial applications,
+and to alter it and redistribute it freely, subject to the following restrictions:
+
+1. The origin of this software must not be misrepresented; you must not claim that you wrote the original software.
+If you use this software in a product, an acknowledgment in the product documentation would be appreciated but is not required.
+
+2. Altered source versions must be plainly marked as such, and must not be misrepresented as being the original software.
+
+3. This notice may not be removed or altered from any source distribution
+
+
+***All code is based on code written by Laurent Gomila***
+
+
+External Libraries Used:
+
+SFML - The Simple and Fast Multimedia Library
+Copyright (C) 2007-2013 Laurent Gomila (laurent.gom@gmail.com)
+
+All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license.php
+*/
+
+
+// Headers
+#include <DSFML/Window/Joystick.h>
+#include <SFML/Window/Joystick.hpp>
+
+
+
+DBool sfJoystick_isConnected(DUint joystick)
+{
+    return sf::Joystick::isConnected(joystick) ? DTrue : DFalse;
+}
+
+
+
+DUint sfJoystick_getButtonCount(DUint joystick)
+{
+    return sf::Joystick::getButtonCount(joystick);
+}
+
+
+
+DBool sfJoystick_hasAxis(DUint joystick, DInt axis)
+{
+    return sf::Joystick::hasAxis(joystick, static_cast<sf::Joystick::Axis>(axis)) ? DTrue : DFalse;
+}
+
+
+
+DBool sfJoystick_isButtonPressed(DUint joystick, DUint button)
+{
+    return sf::Joystick::isButtonPressed(joystick, button) ? DTrue : DFalse;
+}
+
+
+
+float sfJoystick_getAxisPosition(DUint joystick, DInt axis)
+{
+    return sf::Joystick::getAxisPosition(joystick, static_cast<sf::Joystick::Axis>(axis));
+}
+
+size_t sfJoystick_getIdentificationNameSize (DUint joystick)
+{
+	return sf::Joystick::getIdentification(joystick).name.getSize();
+}
+
+void sfJoystick_getIdentification(DUint joystick, DUint * nameBuffer, DUint * vendorId, DUint* productId)
+{
+	sf::Joystick::Identification sfmlIdentification = sf::Joystick::getIdentification(joystick);
+
+	//XXX Is this the right way to pass a sf::String to D?
+	//*name = sfmlIdentification.name.toUtf32().c_str();
+	//XXX Or is this? SFML documentation says this is for immediate-use data but we'll likely need to make a copy it on the D-side anyway.
+	//*name = sfmlIdentification.name.getData();
+	//*nameSize = sfmlIdentification.name.getSize();
+
+	//XXX WE HATES THIS, PRECIOUS, WE HATES IT
+	for (unsigned int i = 0; i < sfmlIdentification.name.getSize(); i++)
+	{
+		nameBuffer[i] = sfmlIdentification.name[i];
+	}
+	*vendorId = sfmlIdentification.vendorId;
+	*productId = sfmlIdentification.productId;
+}
+
+
+void sfJoystick_update(void)
+{
+    sf::Joystick::update();
+}
