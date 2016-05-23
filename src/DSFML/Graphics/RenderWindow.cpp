@@ -36,30 +36,31 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Graphics/ImageStruct.h>
 #include <DSFML/Graphics/CreateRenderStates.hpp>
 #include <DSFML/ConvertEvent.h>
+#include <SFML/System/String.hpp>
 
 sfRenderWindow* sfRenderWindow_construct(void)
 {
     return new sfRenderWindow;
 }
 
-sfRenderWindow* sfRenderWindow_constructFromSettings(DUint width, DUint height, DUint bitsPerPixel, const DUint* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
+sfRenderWindow* sfRenderWindow_constructFromSettings(DUint width, DUint height, DUint bitsPerPixel, const DUint* title, size_t titleLength, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
 {
     // Convert video mode
     sf::VideoMode videoMode(width, height, bitsPerPixel);
 
     // Convert context settings
     sf::ContextSettings params;
-    
+
     params.depthBits         = depthBits;
     params.stencilBits       = stencilBits;
     params.antialiasingLevel = antialiasingLevel;
     params.majorVersion      = majorVersion;
     params.minorVersion      = minorVersion;
-    
+
 
     // Create the window
     sfRenderWindow* renderWindow = new sfRenderWindow;
-    renderWindow->This.create(videoMode, title, style, params);
+    renderWindow->This.create(videoMode, sf::String(std::basic_string<DUint>(title, titleLength)), style, params);
     renderWindow->DefaultView.This = renderWindow->This.getDefaultView();
     renderWindow->CurrentView.This = renderWindow->This.getView();
 
@@ -70,13 +71,13 @@ sfRenderWindow* sfRenderWindow_constructFromHandle(sfWindowHandle handle, DUint 
 {
     // Convert context settings
     sf::ContextSettings params;
-    
+
     params.depthBits         = depthBits;
     params.stencilBits       = stencilBits;
     params.antialiasingLevel = antialiasingLevel;
     params.majorVersion      = majorVersion;
     params.minorVersion      = minorVersion;
-    
+
 
     // Create the window
     sfRenderWindow* renderWindow = new sfRenderWindow;
@@ -87,21 +88,21 @@ sfRenderWindow* sfRenderWindow_constructFromHandle(sfWindowHandle handle, DUint 
     return renderWindow;
 }
 
-void sfRenderWindow_createFromSettings(sfRenderWindow* renderWindow, DUint width, DUint height, DUint bitsPerPixel, const DUint* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
+void sfRenderWindow_createFromSettings(sfRenderWindow* renderWindow, DUint width, DUint height, DUint bitsPerPixel, const DUint* title, size_t titleLength, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
 {
     // Convert video mode
     sf::VideoMode videoMode(width, height, bitsPerPixel);
 
     // Convert context settings
     sf::ContextSettings params;
-    
+
     params.depthBits         = depthBits;
     params.stencilBits       = stencilBits;
     params.antialiasingLevel = antialiasingLevel;
     params.majorVersion      = majorVersion;
     params.minorVersion      = minorVersion;
-    
-    renderWindow->This.create(videoMode, title, style, params);
+
+    renderWindow->This.create(videoMode, sf::String(std::basic_string<DUint>(title, titleLength)), style, params);
     renderWindow->DefaultView.This = renderWindow->This.getDefaultView();
     renderWindow->CurrentView.This = renderWindow->This.getView();
 }
@@ -110,13 +111,13 @@ void sfRenderWindow_createFromHandle(sfRenderWindow* renderWindow, sfWindowHandl
 {
     // Convert context settings
     sf::ContextSettings params;
-    
+
     params.depthBits         = depthBits;
     params.stencilBits       = stencilBits;
     params.antialiasingLevel = antialiasingLevel;
     params.majorVersion      = majorVersion;
     params.minorVersion      = minorVersion;
-    
+
     renderWindow->This.create(handle, params);
     renderWindow->DefaultView.This = renderWindow->This.getDefaultView();
     renderWindow->CurrentView.This = renderWindow->This.getView();
@@ -229,16 +230,16 @@ void sfRenderWindow_setSize(sfRenderWindow* renderWindow, DInt width, DInt heigh
 
 
 
-void sfRenderWindow_setTitle(sfRenderWindow* renderWindow, const char* title)
+void sfRenderWindow_setTitle(sfRenderWindow* renderWindow, const char* title, size_t length)
 {
-    renderWindow->This.setTitle(title);
+    renderWindow->This.setTitle(std::string(title, length));
 }
 
 
 
-void sfRenderWindow_setUnicodeTitle(sfRenderWindow* renderWindow, const DUint* title)
+void sfRenderWindow_setUnicodeTitle(sfRenderWindow* renderWindow, const DUint* title, size_t length)
 {
-    renderWindow->This.setTitle(title);
+    renderWindow->This.setTitle(sf::String(std::basic_string<DUint>(title, length)));
 }
 
 
@@ -350,7 +351,7 @@ sfView* sfRenderWindow_getDefaultView(const sfRenderWindow* renderWindow)
 
 void sfRenderWindow_getViewport(const sfRenderWindow* renderWindow, const sfView* view, DInt* left, DInt* top, DInt* width, DInt* height)
 {
-    
+
 
     sf::IntRect SFMLrect = renderWindow->This.getViewport(view->This);
     *left   = SFMLrect.left;
@@ -364,7 +365,7 @@ void sfRenderWindow_getViewport(const sfRenderWindow* renderWindow, const sfView
 
 void sfRenderWindow_mapPixelToCoords(const sfRenderWindow* renderWindow, DInt xIn, DInt yIn, float* xOut, float* yOut, const sfView* targetView)
 {
-    
+
 
     sf::Vector2f sfmlPoint;
     if (targetView)
@@ -440,10 +441,10 @@ sfImage* sfRenderWindow_capture(const sfRenderWindow* renderWindow)
 void sfMouse_getPositionRenderWindow(const sfRenderWindow* relativeTo, DInt* x, DInt* y)
 {
     sf::Vector2i sfmlPos;
-   
+
    //Will always be called with a Window
     sfmlPos = sf::Mouse::getPosition(relativeTo->This);
-    
+
     *x = sfmlPos.x;
     *y = sfmlPos.y;
 
@@ -455,5 +456,5 @@ void sfMouse_setPositionRenderWindow(DInt x, DInt y, const sfRenderWindow* relat
 {
     //Will always be called with a Window
     sf::Mouse::setPosition(sf::Vector2i(x, y), relativeTo->This);
-    
+
 }

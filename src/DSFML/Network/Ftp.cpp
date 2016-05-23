@@ -128,9 +128,9 @@ void sfFtp_destroy(sfFtp* ftp)
 }
 
 
-sfFtpResponse* sfFtp_connect(sfFtp* ftp, const char* serverIP, DUshort port, DLong timeout)
+sfFtpResponse* sfFtp_connect(sfFtp* ftp, const char* serverIP, size_t length, DUshort port, DLong timeout)
 {
-    sf::IpAddress SFMLServer(serverIP);
+    sf::IpAddress SFMLServer(std::string(serverIP, length));
 
     return new sfFtpResponse(ftp->This.connect(SFMLServer, port, sf::microseconds(timeout)));
 }
@@ -142,9 +142,9 @@ sfFtpResponse* sfFtp_loginAnonymous(sfFtp* ftp)
 }
 
 
-sfFtpResponse* sfFtp_login(sfFtp* ftp, const char* userName, const char* password)
+sfFtpResponse* sfFtp_login(sfFtp* ftp, const char* userName, size_t userNameLength, const char* password, size_t passwordLength)
 {
-    return new sfFtpResponse(ftp->This.login(userName ? userName : "", password ? password : ""));
+    return new sfFtpResponse(ftp->This.login(userName ? std::string(userName, userNameLength) : "", password ? std::string(password, passwordLength) : ""));
 }
 
 
@@ -166,15 +166,15 @@ sfFtpDirectoryResponse* sfFtp_getWorkingDirectory(sfFtp* ftp)
 }
 
 
-sfFtpListingResponse* sfFtp_getDirectoryListing(sfFtp* ftp, const char* directory)
+sfFtpListingResponse* sfFtp_getDirectoryListing(sfFtp* ftp, const char* directory, size_t length)
 {
-    return new sfFtpListingResponse(ftp->This.getDirectoryListing(directory ? directory : ""));
+    return new sfFtpListingResponse(ftp->This.getDirectoryListing(directory ? std::string(directory, length) : ""));
 }
 
 
-sfFtpResponse* sfFtp_changeDirectory(sfFtp* ftp, const char* directory)
+sfFtpResponse* sfFtp_changeDirectory(sfFtp* ftp, const char* directory, size_t length)
 {
-    return new sfFtpResponse(ftp->This.changeDirectory(directory ? directory : ""));
+    return new sfFtpResponse(ftp->This.changeDirectory(directory ? std::string(directory, length) : ""));
 }
 
 
@@ -184,47 +184,47 @@ sfFtpResponse* sfFtp_parentDirectory(sfFtp* ftp)
 }
 
 
-sfFtpResponse* sfFtp_createDirectory(sfFtp* ftp, const char* name)
+sfFtpResponse* sfFtp_createDirectory(sfFtp* ftp, const char* name, size_t length)
 {
-    return new sfFtpResponse(ftp->This.createDirectory(name ? name : ""));
+    return new sfFtpResponse(ftp->This.createDirectory(name ? std::string(name, length) : ""));
 }
 
 
-sfFtpResponse* sfFtp_deleteDirectory(sfFtp* ftp, const char* name)
+sfFtpResponse* sfFtp_deleteDirectory(sfFtp* ftp, const char* name, size_t length)
 {
-    return new sfFtpResponse(ftp->This.deleteDirectory(name ? name : ""));
+    return new sfFtpResponse(ftp->This.deleteDirectory(name ? std::string(name, length) : ""));
 }
 
 
-sfFtpResponse* sfFtp_renameFile(sfFtp* ftp, const char* file, const char* newName)
+sfFtpResponse* sfFtp_renameFile(sfFtp* ftp, const char* file, size_t fileLength, const char* newName, size_t newNameLength)
 {
-    return new sfFtpResponse(ftp->This.renameFile(file ? file : "", newName ? newName : ""));
+    return new sfFtpResponse(ftp->This.renameFile(file ? std::string(file, fileLength) : "", newName ? std::string(newName, newNameLength) : ""));
 }
 
 
-sfFtpResponse* sfFtp_deleteFile(sfFtp* ftp, const char* name)
+sfFtpResponse* sfFtp_deleteFile(sfFtp* ftp, const char* name, size_t length)
 {
-    return new sfFtpResponse(ftp->This.deleteFile(name ? name : ""));
+    return new sfFtpResponse(ftp->This.deleteFile(name ? std::string(name, length) : ""));
 }
 
 
-sfFtpResponse* sfFtp_download(sfFtp* ftp, const char* distantFile, const char* destPath, DInt mode)
+sfFtpResponse* sfFtp_download(sfFtp* ftp, const char* distantFile, size_t distantFileLength, const char* destPath, size_t destPathLength, DInt mode)
 {
-    return new sfFtpResponse(ftp->This.download(distantFile ? distantFile : "",
-                                                destPath ? destPath : "",
+    return new sfFtpResponse(ftp->This.download(distantFile ? std::string(distantFile, distantFileLength) : "",
+                                                destPath ? std::string(destPath, destPathLength) : "",
                                                 static_cast<sf::Ftp::TransferMode>(mode)));
 }
 
 
-sfFtpResponse* sfFtp_upload(sfFtp* ftp, const char* localFile, const char* destPath, DInt mode)
+sfFtpResponse* sfFtp_upload(sfFtp* ftp, const char* localFile, size_t localFileLength, const char* destPath, size_t destPathLength, DInt mode)
 {
-    return new sfFtpResponse(ftp->This.upload(localFile ? localFile : "",
-                                              destPath ? destPath : "",
+    return new sfFtpResponse(ftp->This.upload(localFile ? std::string(localFile, localFileLength) : "",
+                                              destPath ? std::string(destPath, destPathLength) : "",
                                               static_cast<sf::Ftp::TransferMode>(mode)));
 }
 
-sfFtpResponse* sfFtp_sendCommand(sfFtp* ftp, const char* command, const char* parameter)
+sfFtpResponse* sfFtp_sendCommand(sfFtp* ftp, const char* command, size_t commandLength, const char* parameter, size_t parameterLength)
 {
-    return new sfFtpResponse(ftp->This.sendCommand(command ? command : "",
-                                              parameter ? parameter : ""));
+    return new sfFtpResponse(ftp->This.sendCommand(command ? std::string(command, commandLength) : "",
+                                              parameter ? std::string(parameter, parameterLength) : ""));
 }

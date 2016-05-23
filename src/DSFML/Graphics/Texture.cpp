@@ -43,17 +43,17 @@ sfTexture* sfTexture_construct(void)
 
 
 DBool sfTexture_create(sfTexture* texture, DUint width, DUint height)
-{ 
+{
     return texture->This->create(width, height)?DTrue:DFalse;
 
 }
 
 
-DBool sfTexture_loadFromFile(sfTexture* texture, const char* filename, DInt left, DInt top, DInt width, DInt height)
+DBool sfTexture_loadFromFile(sfTexture* texture, const char* filename, size_t filenameLength, DInt left, DInt top, DInt width, DInt height)
 {
     sf::IntRect rect = sf::IntRect(left, top, width, height);
 
-    return texture->This->loadFromFile(filename, rect)?DTrue:DFalse;
+    return texture->This->loadFromFile(std::string(filename, filenameLength), rect)?DTrue:DFalse;
 }
 
 

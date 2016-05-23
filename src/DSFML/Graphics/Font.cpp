@@ -38,20 +38,20 @@ sfFont* sfFont_construct()
 {
     sfFont* font = new sfFont;
     font->fontTexture = new sfTexture;
-    
+
     //Delete the internal texture and set OwnInstance to false
     //This will allow us to set the sf::Texture vatiable to the address
     //of the one returned by the font without copying it or destroying it.
     delete font->fontTexture->This;
     font->fontTexture->This = 0;
     font->fontTexture->OwnInstance = false;
-    
+
     return font;
 }
 
-DBool sfFont_loadFromFile(sfFont* font, const char* filename)
+DBool sfFont_loadFromFile(sfFont* font, const char* filename, size_t length)
 {
-    return (font->This.loadFromFile(filename))?DTrue:DFalse;
+    return (font->This.loadFromFile(std::string(filename, length)))?DTrue:DFalse;
 }
 
 

@@ -68,26 +68,27 @@ float sfJoystick_getAxisPosition(DUint joystick, DInt axis)
     return sf::Joystick::getAxisPosition(joystick, static_cast<sf::Joystick::Axis>(axis));
 }
 
-size_t sfJoystick_getIdentificationNameSize (DUint joystick)
+size_t sfJoystick_getIdentificationNameLength (DUint joystick)
 {
 	return sf::Joystick::getIdentification(joystick).name.getSize();
 }
 
-void sfJoystick_getIdentification(DUint joystick, DUint * nameBuffer, DUint * vendorId, DUint* productId)
+void sfJoystick_getIdentificationName (DUint joystick, DUint * nameBuffer)
 {
+	//On Linux, just returning the pointer to the name string works fine, but on windows it corrupts during passing.
 	sf::Joystick::Identification sfmlIdentification = sf::Joystick::getIdentification(joystick);
 
-	//XXX Is this the right way to pass a sf::String to D?
-	//*name = sfmlIdentification.name.toUtf32().c_str();
-	//XXX Or is this? SFML documentation says this is for immediate-use data but we'll likely need to make a copy it on the D-side anyway.
-	//*name = sfmlIdentification.name.getData();
-	//*nameSize = sfmlIdentification.name.getSize();
-
-	//XXX WE HATES THIS, PRECIOUS, WE HATES IT
 	for (unsigned int i = 0; i < sfmlIdentification.name.getSize(); i++)
 	{
 		nameBuffer[i] = sfmlIdentification.name[i];
 	}
+
+}
+
+void sfJoystick_getIdentification(DUint joystick, DUint * vendorId, DUint* productId)
+{
+	sf::Joystick::Identification sfmlIdentification = sf::Joystick::getIdentification(joystick);
+
 	*vendorId = sfmlIdentification.vendorId;
 	*productId = sfmlIdentification.productId;
 }

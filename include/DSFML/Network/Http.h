@@ -35,11 +35,7 @@ All Libraries used by SFML
 // Headers
 #include <DSFML/Network/Export.h>
 #include <DSFML/Network/Types.h>
-
-
-
-
-
+#include <stddef.h>
 
 ///HTTP Request Functions
 
@@ -52,7 +48,7 @@ DSFML_NETWORK_API void sfHttpRequest_destroy(sfHttpRequest* httpRequest);
 
 
 //Set the value of a header field of a HTTP request
-DSFML_NETWORK_API void sfHttpRequest_setField(sfHttpRequest* httpRequest, const char* field, const char* value);
+DSFML_NETWORK_API void sfHttpRequest_setField(sfHttpRequest* httpRequest, const char* field, size_t fieldLength, const char* value, size_t valueLength);
 
 
 //Set a HTTP request method
@@ -60,7 +56,7 @@ DSFML_NETWORK_API void sfHttpRequest_setMethod(sfHttpRequest* httpRequest, DInt 
 
 
 //Set a HTTP request URI
-DSFML_NETWORK_API void sfHttpRequest_setUri(sfHttpRequest* httpRequest, const char* uri);
+DSFML_NETWORK_API void sfHttpRequest_setUri(sfHttpRequest* httpRequest, const char* uri, size_t length);
 
 
 //Set the HTTP version of a HTTP request
@@ -68,7 +64,7 @@ DSFML_NETWORK_API void sfHttpRequest_setHttpVersion(sfHttpRequest* httpRequest, 
 
 
 //Set the body of a HTTP request
-DSFML_NETWORK_API void sfHttpRequest_setBody(sfHttpRequest* httpRequest, const char* body);
+DSFML_NETWORK_API void sfHttpRequest_setBody(sfHttpRequest* httpRequest, const char* body, size_t length);
 
 
 ///HTTP Response Functions
@@ -78,7 +74,7 @@ DSFML_NETWORK_API void sfHttpResponse_destroy(sfHttpResponse* httpResponse);
 
 
 //Get the value of a field of a HTTP response
-DSFML_NETWORK_API const char* sfHttpResponse_getField(const sfHttpResponse* httpResponse, const char* field);
+DSFML_NETWORK_API const char* sfHttpResponse_getField(const sfHttpResponse* httpResponse, const char* field, size_t fieldlength);
 
 
 //Get the status code of a HTTP reponse
@@ -108,7 +104,7 @@ DSFML_NETWORK_API void sfHttp_destroy(sfHttp* http);
 
 
 //Set the target host of a HTTP object
-DSFML_NETWORK_API void sfHttp_setHost(sfHttp* http, const char* host, DUshort port);
+DSFML_NETWORK_API void sfHttp_setHost(sfHttp* http, const char* host, size_t length,DUshort port);
 
 
 //Send a HTTP request and return the server's response.

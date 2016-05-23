@@ -37,13 +37,14 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Window/Event.h>
 #include <DSFML/Window/WindowHandle.h>
 #include <DSFML/Window/Types.h>
+#include <stddef.h>
 
 //Construct a new window
 DSFML_WINDOW_API sfWindow* sfWindow_construct(void);
 
 
 //Construct a new window from settings
-DSFML_WINDOW_API void sfWindow_createFromSettings(sfWindow* window, DUint width, DUint height, DUint bitsPerPixel, const DUint* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
+DSFML_WINDOW_API void sfWindow_createFromSettings(sfWindow* window, DUint width, DUint height, DUint bitsPerPixel, const DUint* title, size_t titleLength, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
 
 
 //Construct a window from an existing control
@@ -91,11 +92,11 @@ DSFML_WINDOW_API void sfWindow_setSize(sfWindow* window, DUint width, DUint heig
 
 
 //Change the title of a window
-DSFML_WINDOW_API void sfWindow_setTitle(sfWindow* window, const char* title);
+DSFML_WINDOW_API void sfWindow_setTitle(sfWindow* window, const char* title, size_t length);
 
 
 //Change the title of a window (with a UTF-32 string)
-DSFML_WINDOW_API void sfWindow_setUnicodeTitle(sfWindow* window, const DUint* title);
+DSFML_WINDOW_API void sfWindow_setUnicodeTitle(sfWindow* window, const DUint* title, size_t length);
 
 
 //Change a window's icon

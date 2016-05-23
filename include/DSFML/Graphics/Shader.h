@@ -36,17 +36,17 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Graphics/Export.h>
 #include <DSFML/Graphics/Types.h>
 #include <DSFML/System/DStream.hpp>
-
+#include <stddef.h>
 
 //Construct a new shader
 DSFML_GRAPHICS_API sfShader* sfShader_construct(void);
 
 //Load both the vertex and fragment shaders from files
-DSFML_GRAPHICS_API DBool sfShader_loadFromFile(sfShader* shader, const char* vertexShaderFilename, const char* fragmentShaderFilename);
+DSFML_GRAPHICS_API DBool sfShader_loadFromFile(sfShader* shader, const char* vertexShaderFilename, size_t vertexShaderFilenameLength, const char* fragmentShaderFilename, size_t fragmentShaderFilenameLength);
 
 
 //Load both the vertex and fragment shaders from source codes in memory
-DSFML_GRAPHICS_API DBool sfShader_loadFromMemory(sfShader* shader, const char* vertexShader, const char* fragmentShader);
+DSFML_GRAPHICS_API DBool sfShader_loadFromMemory(sfShader* shader, const char* vertexShader, size_t vertexShaderLength, const char* fragmentShader, size_t fragmentShaderLength);
 
 
 //Load both the vertex and fragment shaders from custom streams
@@ -58,35 +58,35 @@ DSFML_GRAPHICS_API void sfShader_destroy(sfShader* shader);
 
 
 //Change a float parameter of a shader
-DSFML_GRAPHICS_API void sfShader_setFloatParameter(sfShader* shader, const char* name, float x);
+DSFML_GRAPHICS_API void sfShader_setFloatParameter(sfShader* shader, const char* name, size_t length, float x);
 
 
 //Change a 2-components vector parameter of a shader
-DSFML_GRAPHICS_API void sfShader_setFloat2Parameter(sfShader* shader, const char* name, float x, float y);
+DSFML_GRAPHICS_API void sfShader_setFloat2Parameter(sfShader* shader, const char* name, size_t length, float x, float y);
 
 
 //Change a 3-components vector parameter of a shader
-DSFML_GRAPHICS_API void sfShader_setFloat3Parameter(sfShader* shader, const char* name, float x, float y, float z);
+DSFML_GRAPHICS_API void sfShader_setFloat3Parameter(sfShader* shader, const char* name, size_t length, float x, float y, float z);
 
 
 //Change a 4-components vector parameter of a shader
-DSFML_GRAPHICS_API void sfShader_setFloat4Parameter(sfShader* shader, const char* name, float x, float y, float z, float w);
+DSFML_GRAPHICS_API void sfShader_setFloat4Parameter(sfShader* shader, const char* name, size_t length, float x, float y, float z, float w);
 
 
 //Change a color parameter of a shader
-DSFML_GRAPHICS_API void sfShader_setColorParameter(sfShader* shader, const char* name, DUbyte r, DUbyte g, DUbyte b, DUbyte a);
+DSFML_GRAPHICS_API void sfShader_setColorParameter(sfShader* shader, const char* name, size_t length, DUbyte r, DUbyte g, DUbyte b, DUbyte a);
 
 
 //Change a matrix parameter of a shader
-DSFML_GRAPHICS_API void sfShader_setTransformParameter(sfShader* shader, const char* name, float* transform);
+DSFML_GRAPHICS_API void sfShader_setTransformParameter(sfShader* shader, const char* name, size_t length, float* transform);
 
 
 //Change a texture parameter of a shader
-DSFML_GRAPHICS_API void sfShader_setTextureParameter(sfShader* shader, const char* name, const sfTexture* texture);
+DSFML_GRAPHICS_API void sfShader_setTextureParameter(sfShader* shader, const char* name, size_t length, const sfTexture* texture);
 
 
 //Change a texture parameter of a shader
-DSFML_GRAPHICS_API void sfShader_setCurrentTextureParameter(sfShader* shader, const char* name);
+DSFML_GRAPHICS_API void sfShader_setCurrentTextureParameter(sfShader* shader, const char* name, size_t length);
 
 
 //Bind a shader for rendering (activate it)

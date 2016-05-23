@@ -35,6 +35,7 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Audio/Export.h>
 #include <DSFML/Audio/Types.h>
 #include <DSFML/System/DStream.hpp>
+#include <stddef.h>
 
 //Creates the sound file
 DSFML_AUDIO_API sfInputSoundFile* sfInputSoundFile_create();
@@ -52,7 +53,7 @@ DSFML_AUDIO_API DUint sfInputSoundFile_getChannelCount( const sfInputSoundFile* 
 DSFML_AUDIO_API DUint sfInputSoundFile_getSampleRate(const sfInputSoundFile* file);
 
 //Open a sound file for reading
-DSFML_AUDIO_API DBool sfInputSoundFile_openFromFile(sfInputSoundFile* file, const char* filename);
+DSFML_AUDIO_API DBool sfInputSoundFile_openFromFile(sfInputSoundFile* file, const char* filename, size_t length);
 
 //Open a sound file in memory for reading
 DSFML_AUDIO_API DBool sfInputSoundFile_openFromMemory(sfInputSoundFile* file,void* data, DLong sizeInBytes);

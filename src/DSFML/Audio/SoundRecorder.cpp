@@ -58,9 +58,9 @@ DUint sfSoundRecorder_getSampleRate(const sfSoundRecorder* soundRecorder)
 	return soundRecorder->This.getSampleRate();
 }
 
-DBool sfSoundRecorder_setDevice(sfSoundRecorder* soundRecorder, const char* name)
+DBool sfSoundRecorder_setDevice(sfSoundRecorder* soundRecorder, const char* name, size_t length)
 {
-	return soundRecorder->This.setDevice(name);
+	return soundRecorder->This.setDevice(std::string(name, length));
 }
 
 const char * sfSoundRecorder_getDevice(const sfSoundRecorder* soundRecorder)

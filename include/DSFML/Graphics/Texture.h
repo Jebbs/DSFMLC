@@ -45,7 +45,7 @@ DSFML_GRAPHICS_API sfTexture* sfTexture_construct(void);
 DSFML_GRAPHICS_API DBool sfTexture_create(sfTexture* texture, DUint width, DUint height);
 
 //Create a new texture from a file
-DSFML_GRAPHICS_API DBool sfTexture_loadFromFile(sfTexture* texture, const char* filename, DInt left, DInt top, DInt width, DInt height);
+DSFML_GRAPHICS_API DBool sfTexture_loadFromFile(sfTexture* texture, const char* filename, size_t filenameLength, DInt left, DInt top, DInt width, DInt height);
 
 //Create a new texture from a file in memory
 DSFML_GRAPHICS_API DBool sfTexture_loadFromMemory(sfTexture* texture, const void* data, size_t sizeInBytes, DInt left, DInt top, DInt width, DInt height);

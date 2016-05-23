@@ -37,9 +37,9 @@ sfSoundBuffer* sfSoundBuffer_construct()
     return new sfSoundBuffer;
 }
 
-DBool sfSoundBuffer_loadFromFile(sfSoundBuffer* soundBuffer, const char* filename)
+DBool sfSoundBuffer_loadFromFile(sfSoundBuffer* soundBuffer, const char* filename, size_t length)
 {
-    return (soundBuffer->This.loadFromFile(filename))?DTrue:DFalse;
+    return (soundBuffer->This.loadFromFile(std::string(filename, length)))?DTrue:DFalse;
 }
 
 DBool sfSoundBuffer_loadFromMemory(sfSoundBuffer* soundBuffer, const void* data, size_t sizeInBytes)
@@ -68,9 +68,9 @@ void sfSoundBuffer_destroy(sfSoundBuffer* soundBuffer)
     delete soundBuffer;
 }
 
-DBool sfSoundBuffer_saveToFile(const sfSoundBuffer* soundBuffer, const char* filename)
+DBool sfSoundBuffer_saveToFile(const sfSoundBuffer* soundBuffer, const char* filename, size_t length)
 {
-    return (soundBuffer->This.saveToFile(filename))? DTrue: DFalse;
+    return (soundBuffer->This.saveToFile(std::string(filename, length)))? DTrue: DFalse;
 }
 
 const DShort* sfSoundBuffer_getSamples(const sfSoundBuffer* soundBuffer)

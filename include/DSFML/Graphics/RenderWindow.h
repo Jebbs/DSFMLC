@@ -38,18 +38,19 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Window/VideoMode.h>
 #include <DSFML/Window/WindowHandle.h>
 #include <DSFML/Window/Window.h>
+#include <stddef.h>
 
 //Construct a new render window
 DSFML_GRAPHICS_API sfRenderWindow* sfRenderWindow_construct(void);
 
 //Construct a new render window from settings
-DSFML_GRAPHICS_API sfRenderWindow* sfRenderWindow_constructFromSettings(DUint width, DUint height, DUint bitsPerPixel, const DUint* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
+DSFML_GRAPHICS_API sfRenderWindow* sfRenderWindow_constructFromSettings(DUint width, DUint height, DUint bitsPerPixel, const DUint* title, size_t titleLength, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
 
 //Construct a render window from an existing control
 DSFML_GRAPHICS_API sfRenderWindow* sfRenderWindow_constructFromHandle(sfWindowHandle handle, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
 
 //Create(or recreate) a new render window from settings
-DSFML_GRAPHICS_API void sfRenderWindow_createFromSettings(sfRenderWindow* renderWindow, DUint width, DUint height, DUint bitsPerPixel, const DUint* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
+DSFML_GRAPHICS_API void sfRenderWindow_createFromSettings(sfRenderWindow* renderWindow, DUint width, DUint height, DUint bitsPerPixel, const DUint* title, size_t titleLength, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
 
 //Create(or recreate) a render window from an existing control
 DSFML_GRAPHICS_API void sfRenderWindow_createFromHandle(sfRenderWindow* renderWindow, sfWindowHandle handle, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion);
@@ -85,10 +86,10 @@ DSFML_GRAPHICS_API void sfRenderWindow_getSize(const sfRenderWindow* renderWindo
 DSFML_GRAPHICS_API void sfRenderWindow_setSize(sfRenderWindow* renderWindow, DInt width, DInt height);
 
 //Change the title of a render window
-DSFML_GRAPHICS_API void sfRenderWindow_setTitle(sfRenderWindow* renderWindow, const char* title);
+DSFML_GRAPHICS_API void sfRenderWindow_setTitle(sfRenderWindow* renderWindow, const char* title, size_t length);
 
 //Change the title of a render window (with a UTF-32 string)
-DSFML_GRAPHICS_API void sfRenderWindow_setUnicodeTitle(sfRenderWindow* renderWindow, const DUint* title);
+DSFML_GRAPHICS_API void sfRenderWindow_setUnicodeTitle(sfRenderWindow* renderWindow, const DUint* title, size_t length);
 
 //Change a render window's icon
 DSFML_GRAPHICS_API void sfRenderWindow_setIcon(sfRenderWindow* renderWindow, DUint width, DUint height, const DUbyte* pixels);
