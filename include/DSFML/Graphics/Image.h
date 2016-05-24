@@ -51,7 +51,7 @@ DSFML_GRAPHICS_API void sfImage_createFromColor(sfImage* image, DUint width, DUi
 DSFML_GRAPHICS_API void sfImage_createFromPixels(sfImage* image, DUint width, DUint height, const DUbyte* pixels);
 
 //Create an image from a file on disk
-DSFML_GRAPHICS_API DBool sfImage_loadFromFile(sfImage* image, const char* filename);
+DSFML_GRAPHICS_API DBool sfImage_loadFromFile(sfImage* image, const char* filename, size_t length);
 
 //Create an image from a file in memory
 DSFML_GRAPHICS_API DBool sfImage_loadFromMemory(sfImage* image, const void* data, size_t size);
@@ -66,7 +66,7 @@ DSFML_GRAPHICS_API sfImage* sfImage_copy(const sfImage* image);
 DSFML_GRAPHICS_API void sfImage_destroy(sfImage* image);
 
 //Save an image to a file on disk
-DSFML_GRAPHICS_API DBool sfImage_saveToFile(const sfImage* image, const char* filename);
+DSFML_GRAPHICS_API DBool sfImage_saveToFile(const sfImage* image, const char* filename, size_t length);
 
 //Return the size of an image
 DSFML_GRAPHICS_API void sfImage_getSize(const sfImage* image, DUint* width, DUint* height);

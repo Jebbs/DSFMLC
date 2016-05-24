@@ -42,7 +42,7 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 DSFML_GRAPHICS_API sfFont* sfFont_construct(void);
 
 //Load a new font from a file
-DSFML_GRAPHICS_API DBool sfFont_loadFromFile(sfFont* font, const char* filename);
+DSFML_GRAPHICS_API DBool sfFont_loadFromFile(sfFont* font, const char* filename, size_t length);
 
 
 //Load a new image font a file in memory

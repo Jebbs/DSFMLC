@@ -106,7 +106,7 @@ DSFML_NETWORK_API void sfFtp_destroy(sfFtp* ftp);
 
 
 //Connect to the specified FTP server
-DSFML_NETWORK_API sfFtpResponse* sfFtp_connect(sfFtp* ftp, const char* serverIP, DUshort port, DLong timeout);
+DSFML_NETWORK_API sfFtpResponse* sfFtp_connect(sfFtp* ftp, const char* serverIP, size_t serverIPLength, DUshort port, DLong timeout);
 
 
 //Log in using an anonymous account
@@ -114,7 +114,7 @@ DSFML_NETWORK_API sfFtpResponse* sfFtp_loginAnonymous(sfFtp* ftp);
 
 
 //Log in using a username and a password
-DSFML_NETWORK_API sfFtpResponse* sfFtp_login(sfFtp* ftp, const char* userName, const char* password);
+DSFML_NETWORK_API sfFtpResponse* sfFtp_login(sfFtp* ftp, const char* userName, size_t userNameLength, const char* password, size_t passwordLength);
 
 
 //Close the connection with the server
@@ -130,11 +130,11 @@ DSFML_NETWORK_API sfFtpDirectoryResponse* sfFtp_getWorkingDirectory(sfFtp* ftp);
 
 
 //Get the contents of the given directory
-DSFML_NETWORK_API sfFtpListingResponse* sfFtp_getDirectoryListing(sfFtp* ftp, const char* directory);
+DSFML_NETWORK_API sfFtpListingResponse* sfFtp_getDirectoryListing(sfFtp* ftp, const char* directory, size_t length);
 
 
 //Change the current working directory
-DSFML_NETWORK_API sfFtpResponse* sfFtp_changeDirectory(sfFtp* ftp, const char* directory);
+DSFML_NETWORK_API sfFtpResponse* sfFtp_changeDirectory(sfFtp* ftp, const char* directory, size_t length);
 
 
 //Go to the parent directory of the current one
@@ -142,30 +142,30 @@ DSFML_NETWORK_API sfFtpResponse* sfFtp_parentDirectory(sfFtp* ftp);
 
 
 //Create a new directory
-DSFML_NETWORK_API sfFtpResponse* sfFtp_createDirectory(sfFtp* ftp, const char* name);
+DSFML_NETWORK_API sfFtpResponse* sfFtp_createDirectory(sfFtp* ftp, const char* name, size_t length);
 
 
 //Remove an existing directory
-DSFML_NETWORK_API sfFtpResponse* sfFtp_deleteDirectory(sfFtp* ftp, const char* name);
+DSFML_NETWORK_API sfFtpResponse* sfFtp_deleteDirectory(sfFtp* ftp, const char* name, size_t length);
 
 
 //Rename an existing file
-DSFML_NETWORK_API sfFtpResponse* sfFtp_renameFile(sfFtp* ftp, const char* file, const char* newName);
+DSFML_NETWORK_API sfFtpResponse* sfFtp_renameFile(sfFtp* ftp, const char* file, size_t fileLength, const char* newName, size_t newNameLength);
 
 
 //Remove an existing file
-DSFML_NETWORK_API sfFtpResponse* sfFtp_deleteFile(sfFtp* ftp, const char* name);
+DSFML_NETWORK_API sfFtpResponse* sfFtp_deleteFile(sfFtp* ftp, const char* name, size_t length);
 
 
 //Download a file from a FTP server
-DSFML_NETWORK_API sfFtpResponse* sfFtp_download(sfFtp* ftp, const char* distantFile, const char* destPath, DInt mode);
+DSFML_NETWORK_API sfFtpResponse* sfFtp_download(sfFtp* ftp, const char* distantFile, size_t distantFileLength, const char* destPath, size_t destpathLength, DInt mode);
 
 
 //Upload a file to a FTP server
-DSFML_NETWORK_API sfFtpResponse* sfFtp_upload(sfFtp* ftp, const char* localFile, const char* destPath, DInt mode);
+DSFML_NETWORK_API sfFtpResponse* sfFtp_upload(sfFtp* ftp, const char* localFile, size_t localFileLength, const char* destPath, size_t destPathLength, DInt mode);
 
 //Send a command to the FTP server
-DSFML_NETWORK_API sfFtpResponse* sfFtp_sendCommand(sfFtp* ftp, const char* command, const char* parameter);
+DSFML_NETWORK_API sfFtpResponse* sfFtp_sendCommand(sfFtp* ftp, const char* command, size_t commandLength, const char* parameter, size_t parameterLength);
 
 
 #endif // DSFML_FTP_H

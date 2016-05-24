@@ -32,6 +32,7 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 #include <DSFML/Window/Window.h>
 #include <DSFML/Window/WindowStruct.h>
 #include <DSFML/ConvertEvent.h>
+#include <SFML/System/String.hpp>
 
 
 sfWindow* sfWindow_construct(void)
@@ -39,7 +40,7 @@ sfWindow* sfWindow_construct(void)
     return new sfWindow;
 }
 
-void sfWindow_createFromSettings(sfWindow* window, DUint width, DUint height, DUint bitsPerPixel, const DUint* title, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
+void sfWindow_createFromSettings(sfWindow* window, DUint width, DUint height, DUint bitsPerPixel, const DUint* title, size_t titleLength, DInt style, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
 {
     // Convert video mode
     sf::VideoMode videoMode(width, height, bitsPerPixel);
@@ -54,7 +55,7 @@ void sfWindow_createFromSettings(sfWindow* window, DUint width, DUint height, DU
         params.minorVersion      = minorVersion;
 
 
-    window->This.create(videoMode, title, style, params);
+    window->This.create(videoMode, sf::String(std::basic_string<DUint>(title, titleLength)), style, params);
 }
 
 void sfWindow_createFromHandle(sfWindow* window, sfWindowHandle handle, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
@@ -176,9 +177,9 @@ void sfWindow_setTitle(sfWindow* window, const char* title)
 }
 
 
-void sfWindow_setUnicodeTitle(sfWindow* window, const DUint* title)
+void sfWindow_setUnicodeTitle(sfWindow* window, const DUint* title, size_t length)
 {
-    window->This.setTitle(title);
+    window->This.setTitle(std::basic_string<DUint>(title, length));
 }
 
 

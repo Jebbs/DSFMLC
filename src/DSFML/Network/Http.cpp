@@ -49,10 +49,10 @@ void sfHttpRequest_destroy(sfHttpRequest* httpRequest)
 
 
 
-void sfHttpRequest_setField(sfHttpRequest* httpRequest, const char* field, const char* value)
+void sfHttpRequest_setField(sfHttpRequest* httpRequest, const char* field, size_t fieldLength, const char* value, size_t valueLength)
 {
     if (field)
-        httpRequest->This.setField(field, value);
+        httpRequest->This.setField(std::string(field, fieldLength), std::string(value, valueLength));
 }
 
 
@@ -64,9 +64,9 @@ void sfHttpRequest_setMethod(sfHttpRequest* httpRequest, DInt method)
 
 
 
-void sfHttpRequest_setUri(sfHttpRequest* httpRequest, const char* uri)
+void sfHttpRequest_setUri(sfHttpRequest* httpRequest, const char* uri, size_t length)
 {
-    httpRequest->This.setUri(uri ? uri : "");
+    httpRequest->This.setUri(uri ? std::string(uri, length) : "");
 }
 
 
@@ -78,9 +78,9 @@ void sfHttpRequest_setHttpVersion(sfHttpRequest* httpRequest, DUint major, DUint
 
 
 
-void sfHttpRequest_setBody(sfHttpRequest* httpRequest, const char* body)
+void sfHttpRequest_setBody(sfHttpRequest* httpRequest, const char* body, size_t length)
 {
-    httpRequest->This.setBody(body ? body : "");
+    httpRequest->This.setBody(body ? std::string(body, length) : "");
 }
 
 
@@ -92,12 +92,12 @@ void sfHttpResponse_destroy(sfHttpResponse* httpResponse)
 }
 
 
-const char* sfHttpResponse_getField(const sfHttpResponse* httpResponse, const char* field)
+const char* sfHttpResponse_getField(const sfHttpResponse* httpResponse, const char* field, size_t length)
 {
     if (!field)
         return NULL;
 
-    return httpResponse->This.getField(field).c_str();
+    return httpResponse->This.getField(std::string(field, length)).c_str();
 }
 
 
@@ -145,9 +145,9 @@ void sfHttp_destroy(sfHttp* http)
 
 
 
-void sfHttp_setHost(sfHttp* http, const char* host, DUshort port)
+void sfHttp_setHost(sfHttp* http, const char* host, size_t length, DUshort port)
 {
-    http->This.setHost(host ? host : "", port);
+    http->This.setHost(host ? std::string(host, length) : "", port);
 }
 
 

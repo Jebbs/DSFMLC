@@ -43,16 +43,16 @@ namespace
     }
 
     // Helper function for converting an array address to a SFML one
-    sf::IpAddress toSFMLAddress(const char* ipAddress)
+    sf::IpAddress toSFMLAddress(const char* ipAddress, size_t length)
     {
-        return sf::IpAddress(ipAddress);
+        return sf::IpAddress(std::string(ipAddress, length));
     }
 }
 
 
-void sfIpAddress_fromString(const char* address, char* ipAddress)
+void sfIpAddress_fromString(const char* address, size_t addressLength, char* ipAddress)
 {
-    fromSFMLAddress(sf::IpAddress(address), ipAddress);
+    fromSFMLAddress(sf::IpAddress(std::string(address, addressLength)), ipAddress);
 }
 
 
@@ -68,9 +68,9 @@ void sfIpAddress_fromInteger(DUint address, char* ipAddress)
 }
 
 
-DUint sfIpAddress_toInteger(const char* ipAddress)
+DUint sfIpAddress_toInteger(const char* ipAddress, size_t length)
 {
-    return toSFMLAddress(ipAddress).toInteger();
+    return toSFMLAddress(ipAddress, length).toInteger();
 }
 
 

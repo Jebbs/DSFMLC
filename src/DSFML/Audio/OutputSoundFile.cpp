@@ -42,9 +42,9 @@ void sfOutputSoundFile_destroy(sfOutputSoundFile* file)
     delete file;
 }
 
-DBool sfOutputSoundFile_openFromFile(sfOutputSoundFile* file, const char* filename,DUint channelCount,DUint sampleRate)
+DBool sfOutputSoundFile_openFromFile(sfOutputSoundFile* file, const char* filename, size_t length, DUint channelCount, DUint sampleRate)
 {
-    bool toReturn = file->This.openFromFile(filename,channelCount,sampleRate);
+    bool toReturn = file->This.openFromFile(std::string(filename, length), channelCount, sampleRate);
 
     return toReturn?DTrue:DFalse;
 }

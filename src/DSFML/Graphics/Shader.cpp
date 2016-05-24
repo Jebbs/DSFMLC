@@ -39,26 +39,28 @@ sfShader* sfShader_construct(void)
     return new sfShader;
 }
 
-DBool sfShader_loadFromFile(sfShader* shader, const char* vertexShaderFilename, const char* fragmentShaderFilename)
+DBool sfShader_loadFromFile(sfShader* shader, const char* vertexShaderFilename, size_t vertexShaderFilenameLength,
+							const char* fragmentShaderFilename, size_t fragmentShaderFilenameLength)
 {
     bool success = false;
-    
+
     if (vertexShaderFilename || fragmentShaderFilename)
     {
-        if (!vertexShaderFilename)
+        if (!vertexShaderFilename || vertexShaderFilenameLength < 1)
         {
             // fragment shader only
-            success = shader->This.loadFromFile(fragmentShaderFilename, sf::Shader::Fragment);
+            success = shader->This.loadFromFile(std::string(fragmentShaderFilename, fragmentShaderFilenameLength), sf::Shader::Fragment);
         }
-        else if (!fragmentShaderFilename)
+        else if (!fragmentShaderFilename || fragmentShaderFilenameLength < 1)
         {
             // vertex shader only
-            success = shader->This.loadFromFile(vertexShaderFilename, sf::Shader::Vertex);
+            success = shader->This.loadFromFile(std::string(vertexShaderFilename, vertexShaderFilenameLength), sf::Shader::Vertex);
         }
         else
         {
             // vertex + fragment shaders
-            success = shader->This.loadFromFile(vertexShaderFilename, fragmentShaderFilename);
+            success = shader->This.loadFromFile(std::string(vertexShaderFilename, vertexShaderFilenameLength),
+            			std::string(fragmentShaderFilename, fragmentShaderFilenameLength));
         }
     }
 
@@ -66,26 +68,28 @@ DBool sfShader_loadFromFile(sfShader* shader, const char* vertexShaderFilename, 
 }
 
 
-DBool sfShader_loadFromMemory(sfShader* shader, const char* vertexShader, const char* fragmentShader)
+DBool sfShader_loadFromMemory(sfShader* shader, const char* vertexShader, size_t vertexShaderLength,
+								const char* fragmentShader, size_t fragmentShaderLength)
 {
     bool success = false;
 
     if (vertexShader || fragmentShader)
     {
-        if (!vertexShader)
+        if (!vertexShader || vertexShaderLength < 1)
         {
             // fragment shader only
-            success = shader->This.loadFromMemory(fragmentShader, sf::Shader::Fragment);
+            success = shader->This.loadFromMemory(std::string(fragmentShader, fragmentShaderLength), sf::Shader::Fragment);
         }
-        else if (!fragmentShader)
+        else if (!fragmentShader || fragmentShaderLength < 1)
         {
             // vertex shader only
-            success = shader->This.loadFromMemory(vertexShader, sf::Shader::Vertex);
+            success = shader->This.loadFromMemory(std::string(vertexShader, vertexShaderLength), sf::Shader::Vertex);
         }
         else
         {
             // vertex + fragment shaders
-            success = shader->This.loadFromMemory(vertexShader, fragmentShader);
+            success = shader->This.loadFromMemory(std::string(vertexShader, vertexShaderLength),
+            										std::string(fragmentShader, fragmentShaderLength));
         }
     }
 
@@ -96,7 +100,7 @@ DBool sfShader_loadFromMemory(sfShader* shader, const char* vertexShader, const 
 DBool sfShader_loadFromStream(sfShader* shader, DStream* vertexShaderStream, DStream* fragmentShaderStream)
 {
     bool success = false;
-    
+
     if (vertexShaderStream || fragmentShaderStream)
     {
         if (!vertexShaderStream)
@@ -130,51 +134,51 @@ void sfShader_destroy(sfShader* shader)
 }
 
 
-void sfShader_setFloatParameter(sfShader* shader, const char* name, float x)
+void sfShader_setFloatParameter(sfShader* shader, const char* name, size_t length , float x)
 {
-    shader->This.setParameter(name, x);
+    shader->This.setParameter(std::string(name, length), x);
 }
 
 
-void sfShader_setFloat2Parameter(sfShader* shader, const char* name, float x, float y)
+void sfShader_setFloat2Parameter(sfShader* shader, const char* name, size_t length, float x, float y)
 {
-    shader->This.setParameter(name, x, y);
+    shader->This.setParameter(std::string(name, length), x, y);
 }
 
 
-void sfShader_setFloat3Parameter(sfShader* shader, const char* name, float x, float y, float z)
+void sfShader_setFloat3Parameter(sfShader* shader, const char* name, size_t length, float x, float y, float z)
 {
-    shader->This.setParameter(name, x, y, z);
+    shader->This.setParameter(std::string(name, length), x, y, z);
 }
 
 
-void sfShader_setFloat4Parameter(sfShader* shader, const char* name, float x, float y, float z, float w)
+void sfShader_setFloat4Parameter(sfShader* shader, const char* name, size_t length, float x, float y, float z, float w)
 {
-    shader->This.setParameter(name, x, y, z, w);
+    shader->This.setParameter(std::string(name, length), x, y, z, w);
 }
 
 
-void sfShader_setColorParameter(sfShader* shader, const char* name, DUbyte r, DUbyte g, DUbyte b, DUbyte a)
+void sfShader_setColorParameter(sfShader* shader, const char* name, size_t length, DUbyte r, DUbyte g, DUbyte b, DUbyte a)
 {
-    shader->This.setParameter(name, sf::Color(r, g, b, a));
+    shader->This.setParameter(std::string(name, length), sf::Color(r, g, b, a));
 }
 
 
-void sfShader_setTransformParameter(sfShader* shader, const char* name, float* transform)
+void sfShader_setTransformParameter(sfShader* shader, const char* name, size_t length, float* transform)
 {
-    shader->This.setParameter(name, createTransform(transform));
+    shader->This.setParameter(std::string(name, length), createTransform(transform));
 }
 
 
-void sfShader_setTextureParameter(sfShader* shader, const char* name, const sfTexture* texture)
+void sfShader_setTextureParameter(sfShader* shader, const char* name, size_t length, const sfTexture* texture)
 {
-    shader->This.setParameter(name, *texture->This);
+    shader->This.setParameter(std::string(name, length), *texture->This);
 }
 
 
-void sfShader_setCurrentTextureParameter(sfShader* shader, const char* name)
+void sfShader_setCurrentTextureParameter(sfShader* shader, const char* name, size_t length)
 {
-    shader->This.setParameter(name, sf::Shader::CurrentTexture);
+    shader->This.setParameter(std::string(name, length), sf::Shader::CurrentTexture);
 }
 
 

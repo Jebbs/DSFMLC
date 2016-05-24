@@ -56,9 +56,9 @@ void sfImage_createFromPixels(sfImage* image, DUint width, DUint height, const D
 }
 
 
-DBool sfImage_loadFromFile(sfImage* image, const char* filename)
+DBool sfImage_loadFromFile(sfImage* image, const char* filename, size_t length)
 {
-    return image->This.loadFromFile(filename)?DTrue:DFalse;
+    return image->This.loadFromFile(std::string(filename, length))?DTrue:DFalse;
 }
 
 
@@ -71,7 +71,7 @@ DBool sfImage_loadFromMemory(sfImage* image, const void* data, size_t sizeInByte
 DBool sfImage_loadFromStream(sfImage* image, DStream* stream)
 {
     sfmlStream Stream = sfmlStream(stream);
-    
+
     return image->This.loadFromStream(Stream)?DTrue:DFalse;
 }
 
@@ -89,9 +89,9 @@ void sfImage_destroy(sfImage* image)
 }
 
 
-DBool sfImage_saveToFile(const sfImage* image, const char* filename)
+DBool sfImage_saveToFile(const sfImage* image, const char* filename, size_t length)
 {
-    return image->This.saveToFile(filename)?DTrue:DFalse;
+    return image->This.saveToFile(std::string(filename, length))?DTrue:DFalse;
 }
 
 

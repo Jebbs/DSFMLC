@@ -34,6 +34,7 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 //Headers
 #include <DSFML/Audio/Export.h>
 #include <DSFML/Audio/Types.h>
+#include <stddef.h>
 
 //Creates the sound file
 DSFML_AUDIO_API sfOutputSoundFile* sfOutputSoundFile_create();
@@ -42,7 +43,7 @@ DSFML_AUDIO_API sfOutputSoundFile* sfOutputSoundFile_create();
 DSFML_AUDIO_API void sfOutputSoundFile_destroy(sfOutputSoundFile* file);
 
 //Open a sound file for writting
-DSFML_AUDIO_API DBool sfOutputSoundFile_openFromFile(sfOutputSoundFile* file, const char* filename,DUint channelCount,DUint sampleRate);
+DSFML_AUDIO_API DBool sfOutputSoundFile_openFromFile(sfOutputSoundFile* file, const char* filename, size_t length, DUint channelCount, DUint sampleRate);
 
 //Write samples to a sound file
 DSFML_AUDIO_API void sfOutputSoundFile_write(sfOutputSoundFile* file, const DShort* data, DLong sampleCount);

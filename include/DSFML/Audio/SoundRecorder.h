@@ -34,7 +34,7 @@ All Libraries used by SFML - For a full list see http://www.sfml-dev.org/license
 //Headers
 #include <DSFML/Audio/Export.h>
 #include <DSFML/Audio/SoundRecorderStruct.h>
-
+#include <stddef.h>
 
 DSFML_AUDIO_API sfSoundRecorder* sfSoundRecorder_construct(SoundRecorderCallBacks* newCallBacks);
 
@@ -46,7 +46,7 @@ DSFML_AUDIO_API void sfSoundRecorder_stop(sfSoundRecorder* soundRecorder);
 
 DSFML_AUDIO_API DUint sfSoundRecorder_getSampleRate(const sfSoundRecorder* soundRecorder);
 
-DSFML_AUDIO_API DBool sfSoundRecorder_setDevice (sfSoundRecorder* soundRecorder, const char * name);
+DSFML_AUDIO_API DBool sfSoundRecorder_setDevice (sfSoundRecorder* soundRecorder, const char * name, size_t length);
 
 DSFML_AUDIO_API const char * sfSoundRecorder_getDevice(const sfSoundRecorder* soundRecorder);
 

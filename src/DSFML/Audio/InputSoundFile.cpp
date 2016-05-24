@@ -60,9 +60,9 @@ DUint sfInputSoundFile_getSampleRate(const sfInputSoundFile* file)
     return test;
 }
 
-DBool sfInputSoundFile_openFromFile(sfInputSoundFile* file, const char* filename)
+DBool sfInputSoundFile_openFromFile(sfInputSoundFile* file, const char* filename, size_t length)
 {
-    if(file->This.openFromFile(filename))
+    if(file->This.openFromFile(std::string(filename, length)))
     {
         return DTrue;
     }
