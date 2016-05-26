@@ -57,23 +57,19 @@ DSFML_GRAPHICS_API void sfRenderTexture_display(sfRenderTexture* renderTexture);
 DSFML_GRAPHICS_API void sfRenderTexture_clear(sfRenderTexture* renderTexture, DUbyte r, DUbyte g, DUbyte b, DUbyte a);
 
 //  Change the current active view of a render texture
-DSFML_GRAPHICS_API void sfRenderTexture_setView(sfRenderTexture* renderTexture, const sfView* view);
+DSFML_GRAPHICS_API void sfRenderTexture_setView(sfRenderTexture* renderTexture, float centerX, float centerY, float sizeX,
+												float sizeY, float rotation, float viewportLeft, float viewportTop, float viewportWidth,
+												float viewportHeight);
 
 //  Get the current active view of a render texture
-DSFML_GRAPHICS_API sfView* sfRenderTexture_getView(const sfRenderTexture* renderTexture);
+DSFML_GRAPHICS_API void sfRenderTexture_getView(const sfRenderTexture* renderTexture, float* centerX, float* centerY, float* sizeX,
+												float* sizeY, float* rotation, float* viewportLeft, float* viewportTop, float* viewportWidth,
+												float* viewportHeight);
 
 //  Get the default view of a render texture
-DSFML_GRAPHICS_API sfView* sfRenderTexture_getDefaultView(const sfRenderTexture* renderTexture);
-
-//  Get the viewport of a view applied to this target
-DSFML_GRAPHICS_API void sfRenderTexture_getViewport(const sfRenderTexture* renderTexture, const sfView* view, DInt* rectLeft, DInt* rectTop, DInt* rectWidth, DInt* rectHeight);
-
-//  Convert a point from texture coordinates to world coordinates
-DSFML_GRAPHICS_API void sfRenderTexture_mapPixelToCoords(const sfRenderTexture* renderTexture, DInt xIn, DInt yIn, float* xOut, float* yOut, const sfView* targetView);
-
-// Convert a point from world coordinates to texture coordinates
-DSFML_GRAPHICS_API void sfRenderTexture_mapCoordsToPixel(const sfRenderTexture* renderTexture, float xIn, float yIn, DInt* xOut, DInt* yOut, const sfView* targetView);
-
+DSFML_GRAPHICS_API void sfRenderTexture_getDefaultView(const sfRenderTexture* renderTexture, float* centerX, float* centerY, float* sizeX,
+														float* sizeY, float* rotation, float* viewportLeft, float* viewportTop, float* viewportWidth,
+														float* viewportHeight);
 
 //  Draw primitives defined by an array of vertices to a render texture
 DSFML_GRAPHICS_API void sfRenderTexture_drawPrimitives(sfRenderTexture* renderTexture,

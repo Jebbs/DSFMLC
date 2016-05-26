@@ -29,7 +29,6 @@
 // Headers
 ////////////////////////////////////////////////////////////
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <DSFML/Graphics/ViewStruct.h>
 
 
 ////////////////////////////////////////////////////////////
@@ -38,8 +37,6 @@
 struct sfRenderWindow
 {
     sf::RenderWindow This;
-    sfView           DefaultView;
-    sfView           CurrentView;
 };
 
 
