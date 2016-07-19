@@ -98,6 +98,9 @@ DSFML_GRAPHICS_API void sfTexture_bind(const sfTexture* texture);
 //Get the maximum texture size allowed
 DSFML_GRAPHICS_API DUint sfTexture_getMaximumSize();
 
+//Flush the OpenGL command buffer
+DSFML_GRAPHICS_API void sfTexture_flush();
+
 
 
 
