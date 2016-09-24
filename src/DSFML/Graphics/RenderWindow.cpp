@@ -321,7 +321,8 @@ void sfRenderWindow_setView(sfRenderWindow* renderWindow, float centerX, float c
 {
 	sf::View view;
 	view.setCenter(centerX, centerY);
-	view.setSize(centerX, centerY);
+	view.setSize(sizeX, sizeY);
+	view.setRotation(rotation);
 	view.setViewport(sf::FloatRect(viewportLeft, viewportTop, viewportWidth, viewportHeight));
     renderWindow->This.setView(view);
 }
@@ -336,6 +337,7 @@ void sfRenderWindow_getView(const sfRenderWindow* renderWindow, float* centerX, 
     *centerY = view.getCenter().y;
     *sizeX = view.getSize().x;
     *sizeY = view.getSize().y;
+    *rotation = view.getRotation();
     *viewportLeft = view.getViewport().left;
     *viewportTop = view.getViewport().top;
     *viewportWidth = view.getViewport().width;
@@ -352,6 +354,7 @@ void sfRenderWindow_getDefaultView(const sfRenderWindow* renderWindow, float* ce
     *centerY = view.getCenter().y;
     *sizeX = view.getSize().x;
     *sizeY = view.getSize().y;
+    *rotation = view.getRotation();
     *viewportLeft = view.getViewport().left;
     *viewportTop = view.getViewport().top;
     *viewportWidth = view.getViewport().width;
