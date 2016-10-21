@@ -44,7 +44,4 @@ typedef struct sfSprite sfSprite;
 typedef struct sfText sfText;
 typedef struct sfTexture sfTexture;
 
-typedef struct sfView sfView;
-
-
 #endif // SFML_GRAPHICS_TYPES_H

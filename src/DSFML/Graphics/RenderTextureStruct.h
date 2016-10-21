@@ -30,7 +30,6 @@
 ////////////////////////////////////////////////////////////
 #include <SFML/Graphics/RenderTexture.hpp>
 #include <DSFML/Graphics/TextureStruct.h>
-#include <DSFML/Graphics/ViewStruct.h>
 
 
 ////////////////////////////////////////////////////////////
@@ -40,8 +39,6 @@ struct sfRenderTexture
 {
     sf::RenderTexture This;
     const sfTexture*  Target;
-    sfView            DefaultView;
-    sfView            CurrentView;
 };
 
 

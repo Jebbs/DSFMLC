@@ -78,9 +78,6 @@ set(SRC
     ${DSRCROOT}/Transform.cpp
     ${DINCROOT}/Transform.h
     ${DINCROOT}/Types.h
-    ${DSRCROOT}/View.cpp
-    ${DSRCROOT}/ViewStruct.h
-    ${DINCROOT}/View.h
 )
 if(NOT SFML_OPENGL_ES)
     list(APPEND SRC ${SRCROOT}/GLLoader.cpp)

@@ -61,8 +61,6 @@ sfRenderWindow* sfRenderWindow_constructFromSettings(DUint width, DUint height, 
     // Create the window
     sfRenderWindow* renderWindow = new sfRenderWindow;
     renderWindow->This.create(videoMode, sf::String(std::basic_string<DUint>(title, titleLength)), style, params);
-    renderWindow->DefaultView.This = renderWindow->This.getDefaultView();
-    renderWindow->CurrentView.This = renderWindow->This.getView();
 
     return renderWindow;
 }
@@ -82,8 +80,6 @@ sfRenderWindow* sfRenderWindow_constructFromHandle(sfWindowHandle handle, DUint 
     // Create the window
     sfRenderWindow* renderWindow = new sfRenderWindow;
     renderWindow->This.create(handle, params);
-    renderWindow->DefaultView.This = renderWindow->This.getDefaultView();
-    renderWindow->CurrentView.This = renderWindow->This.getView();
 
     return renderWindow;
 }
@@ -103,8 +99,6 @@ void sfRenderWindow_createFromSettings(sfRenderWindow* renderWindow, DUint width
     params.minorVersion      = minorVersion;
 
     renderWindow->This.create(videoMode, sf::String(std::basic_string<DUint>(title, titleLength)), style, params);
-    renderWindow->DefaultView.This = renderWindow->This.getDefaultView();
-    renderWindow->CurrentView.This = renderWindow->This.getView();
 }
 
 void sfRenderWindow_createFromHandle(sfRenderWindow* renderWindow, sfWindowHandle handle, DUint depthBits, DUint stencilBits, DUint antialiasingLevel, DUint majorVersion, DUint minorVersion)
@@ -119,8 +113,6 @@ void sfRenderWindow_createFromHandle(sfRenderWindow* renderWindow, sfWindowHandl
     params.minorVersion      = minorVersion;
 
     renderWindow->This.create(handle, params);
-    renderWindow->DefaultView.This = renderWindow->This.getDefaultView();
-    renderWindow->CurrentView.This = renderWindow->This.getView();
 }
 
 void sfRenderWindow_destroy(sfRenderWindow* renderWindow)
@@ -323,77 +315,51 @@ void sfRenderWindow_clear(sfRenderWindow* renderWindow, DUbyte r, DUbyte g, DUby
 
 
 
-void sfRenderWindow_setView(sfRenderWindow* renderWindow, const sfView* view)
+void sfRenderWindow_setView(sfRenderWindow* renderWindow, float centerX, float centerY, float sizeX,
+		float sizeY, float rotation, float viewportLeft, float viewportTop, float viewportWidth,
+		float viewportHeight)
 {
-    renderWindow->This.setView(view->This);
-    renderWindow->CurrentView.This = view->This;
+	sf::View view;
+	view.setCenter(centerX, centerY);
+	view.setSize(sizeX, sizeY);
+	view.setRotation(rotation);
+	view.setViewport(sf::FloatRect(viewportLeft, viewportTop, viewportWidth, viewportHeight));
+    renderWindow->This.setView(view);
 }
 
 
-
-sfView* sfRenderWindow_getView(const sfRenderWindow* renderWindow)
+void sfRenderWindow_getView(const sfRenderWindow* renderWindow, float* centerX, float* centerY, float* sizeX,
+		float* sizeY, float* rotation, float* viewportLeft, float* viewportTop, float* viewportWidth,
+		float* viewportHeight)
 {
-    //Safe because this is only used when user calls RenderWindow.getView, which returns a
-    //const(View)
-    return const_cast<sfView*>(&renderWindow->CurrentView);
+    sf::View view = renderWindow->This.getView();
+    *centerX = view.getCenter().x;
+    *centerY = view.getCenter().y;
+    *sizeX = view.getSize().x;
+    *sizeY = view.getSize().y;
+    *rotation = view.getRotation();
+    *viewportLeft = view.getViewport().left;
+    *viewportTop = view.getViewport().top;
+    *viewportWidth = view.getViewport().width;
+    *viewportHeight = view.getViewport().height;
 }
 
 
-
-sfView* sfRenderWindow_getDefaultView(const sfRenderWindow* renderWindow)
+void sfRenderWindow_getDefaultView(const sfRenderWindow* renderWindow, float* centerX, float* centerY, float* sizeX,
+		float* sizeY, float* rotation, float* viewportLeft, float* viewportTop, float* viewportWidth,
+		float* viewportHeight)
 {
-    //Safe because this is only used when user calls RenderWindow.getDefaultView, which returns a
-    //const(View)
-    return const_cast<sfView*>(&renderWindow->DefaultView);
+    sf::View view = renderWindow->This.getDefaultView();
+    *centerX = view.getCenter().x;
+    *centerY = view.getCenter().y;
+    *sizeX = view.getSize().x;
+    *sizeY = view.getSize().y;
+    *rotation = view.getRotation();
+    *viewportLeft = view.getViewport().left;
+    *viewportTop = view.getViewport().top;
+    *viewportWidth = view.getViewport().width;
+    *viewportHeight = view.getViewport().height;
 }
-
-
-
-void sfRenderWindow_getViewport(const sfRenderWindow* renderWindow, const sfView* view, DInt* left, DInt* top, DInt* width, DInt* height)
-{
-
-
-    sf::IntRect SFMLrect = renderWindow->This.getViewport(view->This);
-    *left   = SFMLrect.left;
-    *top    = SFMLrect.top;
-    *width  = SFMLrect.width;
-    *height = SFMLrect.height;
-
-}
-
-
-
-void sfRenderWindow_mapPixelToCoords(const sfRenderWindow* renderWindow, DInt xIn, DInt yIn, float* xOut, float* yOut, const sfView* targetView)
-{
-
-
-    sf::Vector2f sfmlPoint;
-    if (targetView)
-        sfmlPoint = renderWindow->This.mapPixelToCoords(sf::Vector2i(xIn, yIn), targetView->This);
-    else
-        sfmlPoint = renderWindow->This.mapPixelToCoords(sf::Vector2i(xIn, yIn));
-
-    *xOut = sfmlPoint.x;
-    *yOut = sfmlPoint.y;
-
-}
-
-
-
-void sfRenderWindow_mapCoordsToPixel(const sfRenderWindow* renderWindow, float xIn, float yIn, DInt* xOut, DInt* yOut, const sfView* targetView)
-{
-
-    sf::Vector2i sfmlPoint;
-    if (targetView)
-        sfmlPoint = renderWindow->This.mapCoordsToPixel(sf::Vector2f(xIn, yIn), targetView->This);
-    else
-        sfmlPoint = renderWindow->This.mapCoordsToPixel(sf::Vector2f(xIn, yIn));
-
-    *xOut = sfmlPoint.x;
-    *yOut = sfmlPoint.y;
-}
-
-
 
 void sfRenderWindow_drawPrimitives(sfRenderWindow* renderWindow,
                                                       const void* vertices, DUint vertexCount, DInt type, DInt colorSrcFactor, DInt colorDstFactor, DInt colorEquation,

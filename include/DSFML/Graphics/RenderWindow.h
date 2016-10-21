@@ -125,23 +125,19 @@ DSFML_GRAPHICS_API sfWindowHandle sfRenderWindow_getSystemHandle(const sfRenderW
 DSFML_GRAPHICS_API void sfRenderWindow_clear(sfRenderWindow* renderWindow, DUbyte r, DUbyte g, DUbyte b, DUbyte a);
 
 //Change the current active view of a render window
-DSFML_GRAPHICS_API void sfRenderWindow_setView(sfRenderWindow* renderWindow, const sfView* view);
+DSFML_GRAPHICS_API void sfRenderWindow_setView(sfRenderWindow* renderWindow, float centerX, float centerY, float sizeX,
+												float sizeY, float rotation, float viewportLeft, float viewportTop, float viewportWidth,
+												float viewportHeight);
 
 //Get the current active view of a render window
-DSFML_GRAPHICS_API sfView* sfRenderWindow_getView(const sfRenderWindow* renderWindow);
+DSFML_GRAPHICS_API void sfRenderWindow_getView(const sfRenderWindow* renderWindow, float* centerX, float* centerY, float* sizeX,
+												float* sizeY, float* rotation, float* viewportLeft, float* viewportTop, float* viewportWidth,
+												float* viewportHeight);
 
 //Get the default view of a render window
-DSFML_GRAPHICS_API sfView* sfRenderWindow_getDefaultView(const sfRenderWindow* renderWindow);
-
-//Get the viewport of a view applied to this target
-DSFML_GRAPHICS_API void sfRenderWindow_getViewport(const sfRenderWindow* renderWindow, const sfView* view, DInt* left, DInt* top, DInt* width, DInt* height);
-
-//Convert a point from window coordinates to world coordinates
-DSFML_GRAPHICS_API void sfRenderWindow_mapPixelToCoords(const sfRenderWindow* renderWindow, DInt xIn, DInt yIn, float* xOut, float* yOut, const sfView* targetView);
-
-//Convert a point from world coordinates to window coordinates
-DSFML_GRAPHICS_API void sfRenderWindow_mapCoordsToPixel(const sfRenderWindow* renderWindow, float xIn, float yIn, DInt* xOut, DInt* yOut, const sfView* targetView);
-
+DSFML_GRAPHICS_API void sfRenderWindow_getDefaultView(const sfRenderWindow* renderWindow, float* centerX, float* centerY, float* sizeX,
+														float* sizeY, float* rotation, float* viewportLeft, float* viewportTop, float* viewportWidth,
+														float* viewportHeight);
 
 //Draw primitives defined by an array of vertices to a render window
 DSFML_GRAPHICS_API void sfRenderWindow_drawPrimitives(sfRenderWindow* renderWindow,

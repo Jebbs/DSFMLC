@@ -43,8 +43,6 @@ void sfRenderTexture_create(sfRenderTexture* renderTexture, DUint width, DUint h
 
     renderTexture->This.create(width, height, depthBuffer == DTrue);
     //renderTexture->Target = new sfTexture(const_cast<sf::Texture*>(&renderTexture->This.getTexture()));
-    renderTexture->DefaultView.This = renderTexture->This.getDefaultView();
-    renderTexture->CurrentView.This = renderTexture->This.getView();
 }
 
 
@@ -82,66 +80,51 @@ void sfRenderTexture_clear(sfRenderTexture* renderTexture, DUbyte r, DUbyte g, D
 }
 
 
-void sfRenderTexture_setView(sfRenderTexture* renderTexture, const sfView* view)
+void sfRenderTexture_setView(sfRenderTexture* renderTexture, float centerX, float centerY, float sizeX,
+		float sizeY, float rotation, float viewportLeft, float viewportTop, float viewportWidth,
+		float viewportHeight)
 {
-    renderTexture->This.setView(view->This);
-    renderTexture->CurrentView.This = view->This;
+	sf::View view;
+	view.setCenter(centerX, centerY);
+	view.setSize(sizeX, sizeY);
+	view.setRotation(rotation);
+	view.setViewport(sf::FloatRect(viewportLeft, viewportTop, viewportWidth, viewportHeight));
+    renderTexture->This.setView(view);
 }
 
 
-sfView* sfRenderTexture_getView(const sfRenderTexture* renderTexture)
+void sfRenderTexture_getView(const sfRenderTexture* renderTexture, float* centerX, float* centerY, float* sizeX,
+		float* sizeY, float* rotation, float* viewportLeft, float* viewportTop, float* viewportWidth,
+		float* viewportHeight)
 {
-    //Safe because the pointer will only be used in a const instance
-    return const_cast<sfView*>(&renderTexture->CurrentView);
+    sf::View view = renderTexture->This.getView();
+    *centerX = view.getCenter().x;
+    *centerY = view.getCenter().y;
+    *sizeX = view.getSize().x;
+    *sizeY = view.getSize().y;
+    *rotation = view.getRotation();
+    *viewportLeft = view.getViewport().left;
+    *viewportTop = view.getViewport().top;
+    *viewportWidth = view.getViewport().width;
+    *viewportHeight = view.getViewport().height;
 }
 
 
-sfView* sfRenderTexture_getDefaultView(const sfRenderTexture* renderTexture)
+void sfRenderTexture_getDefaultView(const sfRenderTexture* renderTexture, float* centerX, float* centerY, float* sizeX,
+		float* sizeY, float* rotation, float* viewportLeft, float* viewportTop, float* viewportWidth,
+		float* viewportHeight)
 {
-    //Safe because the pointer will only be used in a const instance
-    return const_cast<sfView*>(&renderTexture->DefaultView);
+    sf::View view = renderTexture->This.getDefaultView();
+    *centerX = view.getCenter().x;
+    *centerY = view.getCenter().y;
+    *sizeX = view.getSize().x;
+    *sizeY = view.getSize().y;
+    *rotation = view.getRotation();
+    *viewportLeft = view.getViewport().left;
+    *viewportTop = view.getViewport().top;
+    *viewportWidth = view.getViewport().width;
+    *viewportHeight = view.getViewport().height;
 }
-
-
-void sfRenderTexture_getViewport(const sfRenderTexture* renderTexture, const sfView* view, DInt* rectLeft, DInt* rectTop, DInt* rectWidth, DInt* rectHeight)
-{
-    sf::IntRect SFMLrect = renderTexture->This.getViewport(view->This);
-    *rectLeft   = SFMLrect.left;
-    *rectTop    = SFMLrect.top;
-    *rectWidth  = SFMLrect.width;
-    *rectHeight = SFMLrect.height;
-
-}
-
-
-void sfRenderTexture_mapPixelToCoords(const sfRenderTexture* renderTexture, DInt xIn, DInt yIn, float* xOut, float* yOut, const sfView* targetView)
-{
-    sf::Vector2f sfmlPoint;
-    if (targetView)
-        sfmlPoint = renderTexture->This.mapPixelToCoords(sf::Vector2i(xIn, yIn), targetView->This);
-    else
-        sfmlPoint = renderTexture->This.mapPixelToCoords(sf::Vector2i(xIn, yIn));
-
-    *xOut = sfmlPoint.x;
-    *xOut = sfmlPoint.y;
-
-}
-
-
-void sfRenderTexture_mapCoordsToPixel(const sfRenderTexture* renderTexture, float xIn, float yIn, DInt* xOut, DInt* yOut, const sfView* targetView)
-{
-    sf::Vector2i sfmlPoint;
-    if (targetView)
-        sfmlPoint = renderTexture->This.mapCoordsToPixel(sf::Vector2f(xIn, yIn), targetView->This);
-    else
-        sfmlPoint = renderTexture->This.mapCoordsToPixel(sf::Vector2f(xIn, yIn));
-
-    *xOut = sfmlPoint.x;
-    *yOut = sfmlPoint.y;
-
-}
-
-
 
 void sfRenderTexture_drawPrimitives(sfRenderTexture* renderTexture,
                                     const void* vertices, DUint vertexCount,
